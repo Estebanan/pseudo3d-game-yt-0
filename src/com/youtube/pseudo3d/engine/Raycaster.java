@@ -24,6 +24,22 @@ public class Raycaster {
 	private TextureHolder textureHolder;
 	private Main main;
 	
+	private Vector2d rayDirection;
+	private Vector2i playerPositionOnMap;
+	private Vector2d deltaDistance;
+	
+	private Vector2i step;
+	private Vector2d sideDistance;
+	
+	private Vector2i rayPositionOnTexture;
+	private Vector2d wallOnScreen;
+	
+	private double rayLength;
+	private int projectedLineHeight;
+	
+	private int drawStart;
+	private int drawEnd;
+	
 	public Raycaster(Main main) {
 		this.main = main;
 		initTextures();
@@ -55,6 +71,13 @@ public class Raycaster {
 	private void initRaycastingFields() {
 		camera = new Camera();
 		player = new Player(camera, textureHolder);
+		
+		rayDirection = new Vector2d();
+		playerPositionOnMap = new Vector2i();
+		deltaDistance = new Vector2d();
+		
+		rayPositionOnTexture = new Vector2i();
+		wallOnScreen = new Vector2d();
 	}
 	
 	public void handleInput(double elapsed) {
@@ -68,96 +91,56 @@ public class Raycaster {
 	}
 	
 	private void projectRays() {
-		// CAST WALLS
 		for (int x = 0; x < screen.getWidth(); x++) {
 			double cameraX = 2 * x / (double) screen.getWidth() - 1;
 
-			Vector2d rayDirection = new Vector2d(
-					(player.getDirection().x / player.getActualFov() + camera.getPlane().x * cameraX),
-					(player.getDirection().y / player.getActualFov() + camera.getPlane().y * cameraX)
-					);
+			rayDirection.x = (player.getDirection().x / player.getActualFov() + camera.getPlane().x * cameraX);
+			rayDirection.y = (player.getDirection().y / player.getActualFov() + camera.getPlane().y * cameraX);
 
-			Vector2i mapPosition = new Vector2i(
-					(int) player.getPosition().x, 
-					(int) player.getPosition().y
-					);
+			playerPositionOnMap.x = (int) player.getPosition().x; 
+			playerPositionOnMap.y = (int) player.getPosition().y;
 
-
-			Vector2d deltaDistance = new Vector2d(
-					Math.abs(1 / rayDirection.x), 
-					Math.abs(1 / rayDirection.y)
-					);
+			deltaDistance.x = Math.abs(1 / rayDirection.x); 
+			deltaDistance.y = Math.abs(1 / rayDirection.y);
 			
-			double rayLength;
-
 			boolean hit = false;
 			boolean side = false;
 
-			Vector2i step = nextStep(rayDirection);
-			Vector2d sideDistance = nextSideDistance(rayDirection, mapPosition, deltaDistance);
+			step = nextStep();
+			sideDistance = nextSideDistance();
 
 			// PERFORM DDA
 			while (!hit) {
-				// jump to next map square
-				if (sideDistance.x < sideDistance.y) { // jump to the x square
-					sideDistance.x += deltaDistance.x;
-					mapPosition.x += step.x;
-					side = false;
-				} else { // jump to the y square
-					sideDistance.y += deltaDistance.y;
-					mapPosition.y += step.y;
-					side = true;
-				}
-				// Check if ray has hit a wall
-				if (textureHolder.get(ID.TEST_MAP).getRGB(mapPosition.x, mapPosition.y) != 0xff000000)
-					hit = true;
+				side = performedDDASide();
+				hit = performedDDAHit();
 			}
 
-			// Calculate distance projected on camera direction
-			if (!side)
-				rayLength = (mapPosition.x - player.getPosition().x + (1 - step.x) / 2) / rayDirection.x;
-			else
-				rayLength = (mapPosition.y - player.getPosition().y + (1 - step.y) / 2) / rayDirection.y;
+			rayLength = calculatedRayLength(side);	
+			projectedLineHeight = (int) (screen.getHeight() / rayLength);
 
-			// Calculate height of line to draw on screen
-			int lineHeight = (int) (screen.getHeight() / rayLength);
-
-			// Calculate lowest and highest pixel to fill in current stripe
-			int drawStart = -lineHeight / 2 + screen.getHeight() / 2;
-			if (drawStart < 0)
-				drawStart = 0;
-			int drawEnd = lineHeight / 2 + screen.getHeight() / 2;
-			if (drawEnd >= screen.getHeight())
-				drawEnd = screen.getHeight() - 1;
+			// CALCULATE LOWEST AND HIGHEST PIXEL TO FILL IN CURRENT STRIPE
+			drawStart = -projectedLineHeight / 2 + screen.getHeight() / 2;
+			drawEnd = projectedLineHeight / 2 + screen.getHeight() / 2;
+			handleDrawingOutOfBounds();
 			
-			int tileColor = textureHolder.get(ID.TEST_MAP).getRGB(mapPosition.x, mapPosition.y);
+			int tileColor = textureHolder.get(ID.TEST_MAP).getRGB(playerPositionOnMap.x, playerPositionOnMap.y);
 			
-			double wallX;
-			if(!side)
-				wallX = player.getPosition().y + rayLength * rayDirection.y;
-			else
-				wallX = player.getPosition().x + rayLength * rayDirection.x;
-			wallX -= Math.floor(wallX);
+			calculateWallPositionOnScreen(side);
+			calculateRayPositionOnTexture(side);
 			
-			int texX = (int)(wallX * (double)(TEST_MAP_TEXTURE_WIDTH));
-			if(!side && rayDirection.x > 0)
-				texX = TEST_MAP_TEXTURE_WIDTH - texX - 1;
-			if(side && rayDirection.y < 0)
-				texX = TEST_MAP_TEXTURE_WIDTH - texX - 1;
-
 			for(int y=drawStart; y<drawEnd; y++) {
-				int d = y * 256 - screen.getHeight() * 128 + lineHeight * 128;
-				int texY = ((d * TEST_MAP_TEXTURE_HEIGHT) / lineHeight) / 256;
+				int d = y * 256 - screen.getHeight() * 128 + projectedLineHeight * 128;
+				rayPositionOnTexture.y = ((d * TEST_MAP_TEXTURE_HEIGHT) / projectedLineHeight) / 256;
 				
-				if(texX <= TEST_MAP_TEXTURE_WIDTH && texY <= TEST_MAP_TEXTURE_HEIGHT)
-					screen.setRGB(x, y, properWallColor(tileColor, texX, texY, side));
+				if(rayPositionOnTexture.x <= TEST_MAP_TEXTURE_WIDTH && rayPositionOnTexture.y <= TEST_MAP_TEXTURE_HEIGHT)
+					screen.setRGB(x, y, properWallColor(tileColor, rayPositionOnTexture.x, rayPositionOnTexture.y, side));
 				else
 					screen.setRGB(x, y, 0);
 			}
 		}
 	}
 	
-	private Vector2i nextStep(Vector2d rayDirection) {
+	private Vector2i nextStep() {
 		Vector2i step = new Vector2i();
 		
 		step.x = (rayDirection.x < 0) ? -1 : 1;
@@ -166,17 +149,68 @@ public class Raycaster {
 		return step;
 	}
 	
-	private Vector2d nextSideDistance(Vector2d rayDirection, Vector2i mapPosition, Vector2d deltaDistance) {
+	private Vector2d nextSideDistance() {
 		Vector2d sideDistance = new Vector2d();
 
 		sideDistance.x = 
-				(rayDirection.x < 0) ? (player.getPosition().x - mapPosition.x) * deltaDistance.x
-									 : (mapPosition.x + 1.0 - player.getPosition().x) * deltaDistance.x;
+				(rayDirection.x < 0) ? (player.getPosition().x - playerPositionOnMap.x) * deltaDistance.x
+									 : (playerPositionOnMap.x + 1.0 - player.getPosition().x) * deltaDistance.x;
 		sideDistance.y =
-				(rayDirection.y < 0) ? (player.getPosition().y - mapPosition.y) * deltaDistance.y
-									 : (mapPosition.y + 1.0 - player.getPosition().y) * deltaDistance.y;
+				(rayDirection.y < 0) ? (player.getPosition().y - playerPositionOnMap.y) * deltaDistance.y
+									 : (playerPositionOnMap.y + 1.0 - player.getPosition().y) * deltaDistance.y;
 				
 		return sideDistance;
+	}
+	
+	private boolean performedDDASide() {
+		boolean side = false;
+		
+		if (sideDistance.x < sideDistance.y) {
+			sideDistance.x += deltaDistance.x;
+			playerPositionOnMap.x += step.x;
+			side = false;
+		} else {
+			sideDistance.y += deltaDistance.y;
+			playerPositionOnMap.y += step.y;
+			side = true;
+		}
+		
+		return side;
+	}
+	
+	private boolean performedDDAHit() {
+		return (textureHolder.get(ID.TEST_MAP).getRGB(playerPositionOnMap.x, playerPositionOnMap.y) 
+				!= 0xff000000);
+	}
+	
+	private double calculatedRayLength(boolean side) {
+		return
+		(side) ? (playerPositionOnMap.y - player.getPosition().y + (1 - step.y) / 2)/ rayDirection.y
+				   : (playerPositionOnMap.x - player.getPosition().x + (1 - step.x) / 2) / rayDirection.x;
+	}
+	
+	private void handleDrawingOutOfBounds() {
+		if (drawStart < 0)
+			drawStart = 0;
+		if (drawEnd >= screen.getHeight())
+			drawEnd = screen.getHeight() - 1;
+	}
+	
+	private void calculateWallPositionOnScreen(boolean side) {
+		if(!side)
+			wallOnScreen.x = player.getPosition().y + rayLength * rayDirection.y;
+		else
+			wallOnScreen.x = player.getPosition().x + rayLength * rayDirection.x;
+		wallOnScreen.x -= Math.floor(wallOnScreen.x);
+		
+	}
+	
+	private void calculateRayPositionOnTexture(boolean side) {
+		rayPositionOnTexture.x = (int)(wallOnScreen.x * (double)(TEST_MAP_TEXTURE_WIDTH));
+		if(!side && rayDirection.x > 0)
+			rayPositionOnTexture.x = TEST_MAP_TEXTURE_WIDTH - rayPositionOnTexture.x - 1;
+		if(side && rayDirection.y < 0)
+			rayPositionOnTexture.x = TEST_MAP_TEXTURE_WIDTH - rayPositionOnTexture.x - 1;
 	}
 	
 	private int properWallColor(int tileColor, int texX, int texY, boolean side) {
