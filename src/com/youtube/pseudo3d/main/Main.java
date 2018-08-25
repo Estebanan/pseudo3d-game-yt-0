@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
+import com.youtube.pseudo3d.engine.Raycaster;
 import com.youtube.pseudo3d.input.InputHandler;
 import com.youtube.pseudo3d.util.Constants;
 
@@ -16,6 +17,7 @@ public class Main extends Canvas implements Runnable{
 	private Thread thread;
 	
 	private Window window;
+	private Raycaster raycaster;
 	
 	private double fps;
 	
@@ -23,6 +25,7 @@ public class Main extends Canvas implements Runnable{
 		initCanvas();
 		initWindow();
 		initInput();
+		initRaycaster();
 	}
 	
 	private void initCanvas() {
@@ -39,6 +42,10 @@ public class Main extends Canvas implements Runnable{
 	
 	private void initInput() {
 		addKeyListener(new InputHandler());
+	}
+	
+	private void initRaycaster() {
+		raycaster = new Raycaster(this);
 	}
 	
 	@Override
@@ -64,11 +71,11 @@ public class Main extends Canvas implements Runnable{
 	}
 	
 	public void handleInput(double elapsed) {
-		
+		raycaster.handleInput(elapsed);
 	}
 	
 	public void update(double elapsed) {
-		
+		raycaster.update(elapsed);
 	}
 	
 	public void render() {
@@ -80,7 +87,9 @@ public class Main extends Canvas implements Runnable{
 		
 		Graphics g = bs.getDrawGraphics();
 		
-		g.fillRect(0, 0, 100, 100);
+		g.clearRect(0, 0, getWidth(), getHeight());
+		
+		raycaster.render(g);
 		
 		g.dispose();
 		bs.show();
