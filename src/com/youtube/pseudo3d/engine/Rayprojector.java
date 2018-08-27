@@ -18,6 +18,10 @@ public class Rayprojector {
 	private Vector2i rayPositionOnTexture;
 	private Vector2d wallOnScreen;
 	
+	private Vector2d floorWall;
+	
+	private double wallDistance, playerDistance, currentDistance;
+	
 	private double rayLength;
 	private int projectedLineHeight;
 	
@@ -33,10 +37,15 @@ public class Rayprojector {
 		
 		rayPositionOnTexture = new Vector2i();
 		wallOnScreen = new Vector2d();
+		
+		floorWall = new Vector2d();
 	}
 	
 	public void projectRays() {
 		for (int x = 0; x < raycaster.getScreen().getWidth(); x++) {
+			boolean hit = false;
+			boolean side = false;
+			
 			double cameraX = 2 * x / (double) raycaster.getScreen().getWidth() - 1;
 
 			rayDirection.x = (raycaster.getPlayer().getDirection().x / raycaster.getPlayer().getActualFov() + raycaster.getCamera().getPlane().x * cameraX);
@@ -48,8 +57,6 @@ public class Rayprojector {
 			deltaDistance.x = Math.abs(1 / rayDirection.x); 
 			deltaDistance.y = Math.abs(1 / rayDirection.y);
 			
-			boolean hit = false;
-			boolean side = false;
 
 			step = nextStep();
 			sideDistance = nextSideDistance();
@@ -64,8 +71,8 @@ public class Rayprojector {
 			projectedLineHeight = (int) (raycaster.getScreen().getHeight() / rayLength);
 
 			// CALCULATE LOWEST AND HIGHEST PIXEL TO FILL IN CURRENT STRIPE
-			drawStart = -projectedLineHeight / 2 + raycaster.getScreen().getHeight() / 2;
-			drawEnd = projectedLineHeight / 2 + raycaster.getScreen().getHeight() / 2;
+			drawStart = (-projectedLineHeight / 2 + raycaster.getScreen().getHeight() / 2);
+			drawEnd = (projectedLineHeight / 2 + raycaster.getScreen().getHeight() / 2);
 			handleDrawingOutOfBounds();
 			
 			int tileColor = raycaster.getTextureHolder().get(ID.TEST_MAP).getRGB(playerPositionOnMap.x, playerPositionOnMap.y);
@@ -82,9 +89,11 @@ public class Rayprojector {
 				else
 					raycaster.getScreen().setRGB(x, y, 0);
 			}
+			
+			projectFloor(side, x);
 		}
+
 	}
-	
 	
 	private Vector2i nextStep() {
 		Vector2i step = new Vector2i();
@@ -157,5 +166,50 @@ public class Rayprojector {
 			rayPositionOnTexture.x = Raycaster.TEST_MAP_TEXTURE_WIDTH - rayPositionOnTexture.x - 1;
 		if(side && rayDirection.y < 0)
 			rayPositionOnTexture.x = Raycaster.TEST_MAP_TEXTURE_WIDTH - rayPositionOnTexture.x - 1;
+	}
+	
+	private void projectFloor(boolean side, int x) {
+		if(!side && rayDirection.x > 0) {
+			floorWall.x = playerPositionOnMap.x;
+			floorWall.y = playerPositionOnMap.y + wallOnScreen.x;
+		}else if(!side && rayDirection.x < 0) {
+			floorWall.x = playerPositionOnMap.x + 1.0;
+			floorWall.y = playerPositionOnMap.y + wallOnScreen.x;
+		}else if(side && rayDirection.y > 0) {
+			floorWall.x = playerPositionOnMap.x + wallOnScreen.x;
+			floorWall.y = playerPositionOnMap.y;
+		}else {
+			floorWall.x = playerPositionOnMap.x + wallOnScreen.x;
+			floorWall.y = playerPositionOnMap.y + 1.0;
+		}
+		
+		wallDistance = rayLength;
+		playerDistance = .0;
+		
+		if(drawEnd < 0)
+			drawEnd = raycaster.getScreen().getHeight();
+		
+		
+		for(int y=drawEnd+1; y<raycaster.getScreen().getHeight();  y++) {
+			currentDistance = raycaster.getScreen().getHeight() / (2.0 * y - raycaster.getScreen().getHeight());
+			
+			double weight = (currentDistance - playerDistance) / (wallDistance - playerDistance);
+			
+			Vector2d currentFloor = new Vector2d(
+					weight * floorWall.x + (1.0 - weight) * raycaster.getPlayer().getPosition().x,
+					weight * floorWall.y + (1.0 - weight) * raycaster.getPlayer().getPosition().y
+					);
+			
+			Vector2i floorTexture = new Vector2i(
+					(int)(currentFloor.x * Raycaster.TEST_MAP_TEXTURE_WIDTH) % Raycaster.TEST_MAP_TEXTURE_WIDTH,
+					(int)(currentFloor.y * Raycaster.TEST_MAP_TEXTURE_HEIGHT) % Raycaster.TEST_MAP_TEXTURE_HEIGHT
+					);
+			
+			int floorColor = (raycaster.getTextureHolder().get(ID.COBBLESTONE).getRGB(floorTexture.x, floorTexture.y) & 0xfefefe) >> 1;
+			int ceilingColor = (raycaster.getTextureHolder().get(ID.WOOD).getRGB(floorTexture.x, floorTexture.y) & 0xfefefe) >> 1;
+			
+			raycaster.getScreen().setRGB(x, y, floorColor);
+			raycaster.getScreen().setRGB(x, raycaster.getScreen().getHeight() - y, ceilingColor);
+		}
 	}
 }
