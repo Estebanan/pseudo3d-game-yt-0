@@ -65,6 +65,7 @@ public class Raycaster {
 	
 	public void update(double elapsed) {
 		// UPDATE SCREEN SIZE DEPENDING ON WINDOW SIZE
+		screen = new BufferedImage(Constants.RESOLUTION_WIDTH, Constants.RESOLUTION_HEIGHT, BufferedImage.TYPE_INT_RGB);
 		rayprojector.projectRays();
 	}
 	
