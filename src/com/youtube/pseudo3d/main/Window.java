@@ -14,8 +14,8 @@ public class Window extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(true);
 		
-		int winX = Toolkit.getDefaultToolkit().getScreenSize().width / 2 - Constants.WIDTH / 2;
-		int winY = Toolkit.getDefaultToolkit().getScreenSize().height / 2 - Constants.HEIGHT / 2;
+		int winX = Toolkit.getDefaultToolkit().getScreenSize().width / 2 - Constants.WINDOW_WIDTH / 2;
+		int winY = Toolkit.getDefaultToolkit().getScreenSize().height / 2 - Constants.WINDOW_HEIGHT / 2;
 		setLocation(winX, winY);
 		
 		setTitle(Constants.TITLE);

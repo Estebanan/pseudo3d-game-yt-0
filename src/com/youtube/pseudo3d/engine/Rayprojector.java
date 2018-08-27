@@ -1,6 +1,7 @@
 package com.youtube.pseudo3d.engine;
 
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
+import com.youtube.pseudo3d.util.MathUtil;
 import com.youtube.pseudo3d.util.Vector2d;
 import com.youtube.pseudo3d.util.Vector2i;
 
@@ -76,7 +77,7 @@ public class Rayprojector {
 			handleDrawingOutOfBounds();
 			
 			int tileColor = raycaster.getTextureHolder().get(ID.TEST_MAP).getRGB(playerPositionOnMap.x, playerPositionOnMap.y);
-			
+						
 			calculateWallPositionOnScreen(side);
 			calculateRayPositionOnTexture(side);
 			
@@ -85,15 +86,58 @@ public class Rayprojector {
 				rayPositionOnTexture.y = ((d * Raycaster.TEST_MAP_TEXTURE_HEIGHT) / projectedLineHeight) / 256;
 				
 				if(rayPositionOnTexture.x <= Raycaster.TEST_MAP_TEXTURE_WIDTH && rayPositionOnTexture.y <= Raycaster.TEST_MAP_TEXTURE_HEIGHT)
-					raycaster.getScreen().setRGB(x, y, raycaster.properWallColor(tileColor, rayPositionOnTexture.x, rayPositionOnTexture.y, side));
+					raycaster.getScreen().setRGB(x, y, properWallColor(tileColor, rayPositionOnTexture.x, rayPositionOnTexture.y, side));
 				else
 					raycaster.getScreen().setRGB(x, y, 0);
 			}
+			
 			
 			projectFloor(side, x);
 		}
 
 	}
+	
+	
+	public int properWallColor(int tileColor, int texX, int texY, boolean side) {
+		int color = 0;
+		
+		switch(tileColor) {
+		case 0xffff0000:
+			color = raycaster.getTextureHolder().get(ID.BRICK_0).getRGB(Math.abs(texX), Math.abs(texY));
+			break;
+		case 0xff00ff00:
+			color = raycaster.getTextureHolder().get(ID.BRICK_1).getRGB(Math.abs(texX), Math.abs(texY));
+			break;
+		case 0xff0000ff:
+			color = raycaster.getTextureHolder().get(ID.BLUESTONE).getRGB(Math.abs(texX), Math.abs(texY));
+			break;
+		case 0xffff00ff:
+			color = raycaster.getTextureHolder().get(ID.COBBLESTONE).getRGB(Math.abs(texX), Math.abs(texY));
+			break;
+		case 0xffffff00:
+			color = raycaster.getTextureHolder().get(ID.PURPLESTONE).getRGB(Math.abs(texX), Math.abs(texY));
+			break;
+		case 0xff00ffff:
+			color = raycaster.getTextureHolder().get(ID.WOOD).getRGB(Math.abs(texX), Math.abs(texY));
+			break;
+		case 0xffabcdef:
+			color = raycaster.getTextureHolder().get(ID.EMBLEM).getRGB(Math.abs(texX), Math.abs(texY));
+			break;
+		default:
+			color = raycaster.getTextureHolder().get(ID.MOSSYSTONE).getRGB(Math.abs(texX), Math.abs(texY));
+			break;
+		}
+
+		if(side)
+			color = (color & 0xfefefe) >> 1;
+
+		//SHADE COLORS
+		if(rayLength > 1)
+			color = MathUtil.shadeColor(color, rayLength * 1.1);
+			
+		return color;
+	}
+	
 	
 	private Vector2i nextStep() {
 		Vector2i step = new Vector2i();
@@ -208,8 +252,22 @@ public class Rayprojector {
 			int floorColor = (raycaster.getTextureHolder().get(ID.COBBLESTONE).getRGB(floorTexture.x, floorTexture.y) & 0xfefefe) >> 1;
 			int ceilingColor = (raycaster.getTextureHolder().get(ID.WOOD).getRGB(floorTexture.x, floorTexture.y) & 0xfefefe) >> 1;
 			
+			//SHADE COLORS
+			floorColor = MathUtil.shadeColor(floorColor, currentDistance);
+			ceilingColor = MathUtil.shadeColor(ceilingColor, currentDistance);
+				
 			raycaster.getScreen().setRGB(x, y, floorColor);
 			raycaster.getScreen().setRGB(x, raycaster.getScreen().getHeight() - y, ceilingColor);
 		}
 	}
+
+	public double getRayLength() {
+		return rayLength;
+	}
+
+	public void setRayLength(double rayLength) {
+		this.rayLength = rayLength;
+	}
+	
+	
 }

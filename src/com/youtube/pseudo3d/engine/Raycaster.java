@@ -1,6 +1,7 @@
 package com.youtube.pseudo3d.engine;
 
 import java.awt.Color;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -49,7 +50,7 @@ public class Raycaster {
 	}
 	
 	private void initScreen() {
-		screen = new BufferedImage(Constants.WIDTH, Constants.HEIGHT, BufferedImage.TYPE_INT_RGB);
+		screen = new BufferedImage(Constants.RESOLUTION_WIDTH, Constants.RESOLUTION_HEIGHT, BufferedImage.TYPE_INT_RGB);
 	}
 	
 	private void initRaycastingFields() {
@@ -64,49 +65,11 @@ public class Raycaster {
 	
 	public void update(double elapsed) {
 		// UPDATE SCREEN SIZE DEPENDING ON WINDOW SIZE
-		screen = new BufferedImage(main.getWidth(), main.getHeight(), BufferedImage.TYPE_INT_RGB);
 		rayprojector.projectRays();
 	}
 	
-	public int properWallColor(int tileColor, int texX, int texY, boolean side) {
-		int color = 0;
-		
-		switch(tileColor) {
-		case 0xffff0000:
-			color = textureHolder.get(ID.BRICK_0).getRGB(Math.abs(texX), Math.abs(texY));
-			break;
-		case 0xff00ff00:
-			color = textureHolder.get(ID.BRICK_1).getRGB(Math.abs(texX), Math.abs(texY));
-			break;
-		case 0xff0000ff:
-			color = textureHolder.get(ID.BLUESTONE).getRGB(Math.abs(texX), Math.abs(texY));
-			break;
-		case 0xffff00ff:
-			color = textureHolder.get(ID.COBBLESTONE).getRGB(Math.abs(texX), Math.abs(texY));
-			break;
-		case 0xffffff00:
-			color = textureHolder.get(ID.PURPLESTONE).getRGB(Math.abs(texX), Math.abs(texY));
-			break;
-		case 0xff00ffff:
-			color = textureHolder.get(ID.WOOD).getRGB(Math.abs(texX), Math.abs(texY));
-			break;
-		case 0xffabcdef:
-			color = textureHolder.get(ID.EMBLEM).getRGB(Math.abs(texX), Math.abs(texY));
-			break;
-		default:
-			color = textureHolder.get(ID.MOSSYSTONE).getRGB(Math.abs(texX), Math.abs(texY));
-			break;
-		}
-		
-		if(side)
-			color = (color & 0xfefefe) >> 1;
-				
-				
-		return color;
-	}
-	
 	public void render(Graphics g) {
-		g.drawImage(screen, 0, 0, screen.getWidth(), screen.getHeight(), null);
+		g.drawImage(screen, 0, 0, main.getWidth(), main.getHeight(), null);
 		
 		//DEBUG INFO
 		g.setColor(Color.GRAY);

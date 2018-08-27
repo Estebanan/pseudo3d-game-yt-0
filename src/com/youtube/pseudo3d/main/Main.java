@@ -29,9 +29,9 @@ public class Main extends Canvas implements Runnable{
 	}
 	
 	private void initCanvas() {
-		setMinimumSize(new Dimension(Constants.WIDTH, Constants.HEIGHT));
-		setPreferredSize(new Dimension(Constants.WIDTH, Constants.HEIGHT));
-		setMaximumSize(new Dimension(Constants.WIDTH, Constants.HEIGHT));
+		setMinimumSize(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+		setPreferredSize(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+		setMaximumSize(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
 	}
 	
 	private void initWindow() {
