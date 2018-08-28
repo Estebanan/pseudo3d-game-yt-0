@@ -96,12 +96,12 @@ public class Player {
 
 	public void move(double delta) {
 		// ONLY MOVE IF THE CURRENT TILE IS 0XFF000000 - BLACK
-		if (textureHolder.get(ID.TEST_MAP).getRGB((int) (position.x + direction.x * delta),
+		if (textureHolder.get(ID.TEST_MAP).getRGB((int) (position.x + direction.y * delta),
 				(int) (position.y)) == 0xff000000)
-			position.x += direction.x * delta;
+			position.x += direction.y * delta;
 		if (textureHolder.get(ID.TEST_MAP).getRGB((int) (position.x),
-				(int) (position.y + direction.y * delta)) == 0xff000000)
-			position.y += direction.y * delta;
+				(int) (position.y + direction.x * delta)) == 0xff000000)
+			position.y += direction.x * delta;
 	}
 	
 	public void rotate(double angle) {

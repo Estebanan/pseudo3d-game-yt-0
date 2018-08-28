@@ -47,6 +47,9 @@ public class Raycaster {
 		textureHolder.load(ID.MOSSYSTONE, 	"/tiles/mossystone.png");
 		textureHolder.load(ID.WOOD, 		"/tiles/wood.png");
 		textureHolder.load(ID.COBBLESTONE, 	"/tiles/cobblestone.png");
+		textureHolder.load(ID.BARREL, 		"/sprites/barrel.png");
+		textureHolder.load(ID.PILLAR, 		"/sprites/pillar.png");
+		textureHolder.load(ID.GREENLIGHT, 	"/sprites/greenlight.png");
 	}
 	
 	private void initScreen() {

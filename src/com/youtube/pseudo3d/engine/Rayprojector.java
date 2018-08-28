@@ -28,7 +28,7 @@ public class Rayprojector {
 	
 	private int drawStart;
 	private int drawEnd;
-	
+		
 	public Rayprojector(Raycaster raycaster) {
 		this.raycaster = raycaster;
 		
@@ -49,15 +49,14 @@ public class Rayprojector {
 			
 			double cameraX = 2 * x / (double) raycaster.getScreen().getWidth() - 1;
 
-			rayDirection.x = (raycaster.getPlayer().getDirection().x / raycaster.getPlayer().getActualFov() + raycaster.getCamera().getPlane().x * cameraX);
-			rayDirection.y = (raycaster.getPlayer().getDirection().y / raycaster.getPlayer().getActualFov() + raycaster.getCamera().getPlane().y * cameraX);
+			rayDirection.y = (raycaster.getPlayer().getDirection().x / raycaster.getPlayer().getActualFov() + raycaster.getCamera().getPlane().x * cameraX);
+			rayDirection.x = (raycaster.getPlayer().getDirection().y / raycaster.getPlayer().getActualFov() + raycaster.getCamera().getPlane().y * cameraX);
 
 			playerPositionOnMap.x = (int) raycaster.getPlayer().getPosition().x; 
 			playerPositionOnMap.y = (int) raycaster.getPlayer().getPosition().y;
 
 			deltaDistance.x = Math.abs(1 / rayDirection.x); 
 			deltaDistance.y = Math.abs(1 / rayDirection.y);
-			
 
 			step = nextStep();
 			sideDistance = nextSideDistance();
@@ -90,8 +89,7 @@ public class Rayprojector {
 				else
 					raycaster.getScreen().setRGB(x, y, 0);
 			}
-			
-			
+							
 			projectFloor(side, x);
 		}
 
