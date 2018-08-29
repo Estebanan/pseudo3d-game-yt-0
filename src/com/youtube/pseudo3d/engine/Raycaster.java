@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 import com.youtube.pseudo3d.engine.objects.Barrel;
 import com.youtube.pseudo3d.engine.objects.GameObject;
-import com.youtube.pseudo3d.engine.objects.Greenlight;
 import com.youtube.pseudo3d.engine.objects.Pillar;
+import com.youtube.pseudo3d.engine.objects.Spider;
 import com.youtube.pseudo3d.main.Main;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
@@ -54,23 +54,30 @@ public class Raycaster {
 		TextureHolder.load(ID.COBBLESTONE, 	"/tiles/cobblestone.png");
 		TextureHolder.load(ID.BARREL, 		"/sprites/barrel.png");
 		TextureHolder.load(ID.PILLAR, 		"/sprites/pillar.png");
-		TextureHolder.load(ID.GREENLIGHT, 	"/sprites/greenlight.png");
+		TextureHolder.load(ID.SPIDER, 		"/sprites/spider.png");
 	}
 	
 	private void initGameObjects() {
 		gameObjects = new ArrayList<GameObject>();
 
+		for(int i=0; i<20; i++)
+			
 		gameObjects.add(new Barrel(this, new Vector2d(16.5, 22.5)));
-		gameObjects.add(new Barrel(this, new Vector2d(17.5, 21.5)));
+		gameObjects.add(new Spider(this, new Vector2d(17.5, 21.5)));
 		gameObjects.add(new Barrel(this, new Vector2d(17.5, 18.5)));
 
 		gameObjects.add(new Pillar(this, new Vector2d(22.5, 13.5)));
-		gameObjects.add(new Pillar(this, new Vector2d(22.5, 7.5)));
+		gameObjects.add(new Barrel(this, new Vector2d(22.5, 7.5)));
 		gameObjects.add(new Pillar(this, new Vector2d(22.5, 6.5)));
 
-		gameObjects.add(new Greenlight(this, new Vector2d(22.5, 2.5)));
-		gameObjects.add(new Greenlight(this, new Vector2d(22.5, 1.5)));
-		gameObjects.add(new Greenlight(this, new Vector2d(21.5, 1.5)));
+		gameObjects.add(new Spider(this, new Vector2d(22.5, 2.5)));
+		gameObjects.add(new Barrel(this, new Vector2d(22.5, 1.5)));
+		gameObjects.add(new Spider(this, new Vector2d(21.5, 1.5)));
+		
+		gameObjects.add(new Spider(this, new Vector2d(15.5, 13.5)));
+		gameObjects.add(new Barrel(this, new Vector2d(16.5, 13.5)));
+		gameObjects.add(new Barrel(this, new Vector2d(17.5, 15.5)));
+		gameObjects.add(new Barrel(this, new Vector2d(19.5, 14.5)));
 	}
 	
 	private void initScreen() {

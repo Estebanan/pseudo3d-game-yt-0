@@ -18,7 +18,6 @@ public class MathUtil {
 		int gap = amount;
 		boolean swapped = false;
 		while (gap > 1 || swapped) {
-			// shrink factor 1.3
 			gap = (gap * 10) / 13;
 			if (gap == 9 || gap == 10)
 				gap = 11;

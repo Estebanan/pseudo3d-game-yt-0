@@ -115,7 +115,7 @@ public class Rayprojector {
 			projectFloor(side, x);
 		}
 
-		castSprites();
+		projectSprites();
 	}
 
 	private void updateInitialGameObjectValues() {
@@ -281,7 +281,7 @@ public class Rayprojector {
 		}
 	}
 
-	private void castSprites() {
+	private void projectSprites() {
 		for (int i = 0; i < raycaster.getGameObjects().size(); i++) {
 			objectsOrder[i] = i;
 			objectsDistance[i] = ((raycaster.getPlayer().getPosition().x - raycaster.getGameObjects().get(i).getPosition().x)

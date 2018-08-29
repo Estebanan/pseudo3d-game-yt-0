@@ -13,13 +13,13 @@ public class TextureHolder {
 		BLUESTONE,
 		COBBLESTONE,
 		EMBLEM,
-		GREENLIGHT,
 		BRICK_0,
 		BRICK_1,
 		MOSSYSTONE,
 		PILLAR,
 		PURPLESTONE,
-		WOOD
+		WOOD,
+		SPIDER
 	}
 
 	private static HashMap<ID, BufferedImage> textureMap = new HashMap<ID, BufferedImage>();
