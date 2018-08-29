@@ -1,5 +1,11 @@
 package com.youtube.pseudo3d.engine;
 
+import java.util.ArrayList;
+
+import com.youtube.pseudo3d.engine.objects.Barrel;
+import com.youtube.pseudo3d.engine.objects.GameObject;
+import com.youtube.pseudo3d.engine.objects.Greenlight;
+import com.youtube.pseudo3d.engine.objects.Pillar;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
 import com.youtube.pseudo3d.util.MathUtil;
@@ -11,7 +17,7 @@ public class Rayprojector {
 	private Raycaster raycaster;
 	
 	private Vector2d rayDirection;
-	private Vector2i playerPositionOnMap;
+	private Vector2i positionOnMap;
 	private Vector2d deltaDistance;
 	
 	private Vector2i step;
@@ -29,22 +35,53 @@ public class Rayprojector {
 	
 	private int drawStart;
 	private int drawEnd;
-			
+	
+	private ArrayList<GameObject> gameObjects;
+
+	private double ZBuffer[];
+	
+	private int spriteOrder[];
+	private double spriteDistance[];
 	
 	public Rayprojector(Raycaster raycaster) {
 		this.raycaster = raycaster;
+
+		initGameObjects();
+		initRayprojectorFields();
+	}
+	
+	private void initGameObjects() {
+		gameObjects = new ArrayList<GameObject>();
 		
+		gameObjects.add(new Barrel(raycaster, new Vector2d(16.5, 22.5)));
+		gameObjects.add(new Barrel(raycaster, new Vector2d(17.5, 21.5)));
+		gameObjects.add(new Barrel(raycaster, new Vector2d(17.5, 18.5)));
+				
+		gameObjects.add(new Pillar(raycaster, new Vector2d(22.5, 13.5)));
+		gameObjects.add(new Pillar(raycaster, new Vector2d(22.5, 7.5)));
+		gameObjects.add(new Pillar(raycaster, new Vector2d(22.5, 6.5)));
+		
+		gameObjects.add(new Greenlight(raycaster, new Vector2d(22.5, 2.5)));
+		gameObjects.add(new Greenlight(raycaster, new Vector2d(22.5, 1.5)));
+		gameObjects.add(new Greenlight(raycaster, new Vector2d(21.5, 1.5)));
+	}
+		
+	private void initRayprojectorFields() {
 		rayDirection = new Vector2d();
-		playerPositionOnMap = new Vector2i();
+		positionOnMap = new Vector2i();
 		deltaDistance = new Vector2d();
 		
 		rayPositionOnTexture = new Vector2i();
 		wallOnScreen = new Vector2d();
 		
 		floorWall = new Vector2d();
+		
+		ZBuffer = new double[raycaster.getScreen().getWidth()];
+		spriteOrder = new int[gameObjects.size()];
+		spriteDistance = new double[gameObjects.size()];
 	}
-	
-	public void projectRays() {
+
+	public void projectRays() {		
 		for (int x = 0; x < raycaster.getScreen().getWidth(); x++) {
 			boolean hit = false;
 			boolean side = false;
@@ -54,8 +91,8 @@ public class Rayprojector {
 			rayDirection.y = (raycaster.getPlayer().getDirection().x / raycaster.getPlayer().getActualFov() + raycaster.getCamera().getPlane().x * cameraX);
 			rayDirection.x = (raycaster.getPlayer().getDirection().y / raycaster.getPlayer().getActualFov() + raycaster.getCamera().getPlane().y * cameraX);
 
-			playerPositionOnMap.x = (int) raycaster.getPlayer().getPosition().x; 
-			playerPositionOnMap.y = (int) raycaster.getPlayer().getPosition().y;
+			positionOnMap.x = (int) raycaster.getPlayer().getPosition().x; 
+			positionOnMap.y = (int) raycaster.getPlayer().getPosition().y;
 
 			deltaDistance.x = Math.abs(1 / rayDirection.x); 
 			deltaDistance.y = Math.abs(1 / rayDirection.y);
@@ -77,7 +114,7 @@ public class Rayprojector {
 			drawEnd = (projectedLineHeight / 2 + raycaster.getScreen().getHeight() / 2);
 			handleDrawingOutOfBounds();
 			
-			int tileColor = TextureHolder.get(ID.TEST_MAP).getRGB(playerPositionOnMap.x, playerPositionOnMap.y);
+			int tileColor = TextureHolder.get(ID.TEST_MAP).getRGB(positionOnMap.x, positionOnMap.y);
 						
 			calculateWallPositionOnScreen(side);
 			calculateRayPositionOnTexture(side);
@@ -91,10 +128,68 @@ public class Rayprojector {
 				else
 					raycaster.getScreen().setRGB(x, y, 0);
 			}
-							
+					
+			ZBuffer[x] = rayLength;
+			
 			projectFloor(side, x);
 		}
+		
+		   //SPRITE CASTING
+	    //sort sprites from far to close
+	    for(int i = 0; i < gameObjects.size(); i++)
+	    {
+	      spriteOrder[i] = i;
+	      spriteDistance[i] = ((raycaster.getPlayer().getPosition().x - gameObjects.get(i).getPosition().x) * (raycaster.getPlayer().getPosition().x - gameObjects.get(i).getPosition().x) 
+	    		  + 
+	      (raycaster.getPlayer().getPosition().y - gameObjects.get(i).getPosition().y) * (raycaster.getPlayer().getPosition().y - gameObjects.get(i).getPosition().y)); //sqrt not taken, unneeded
+	    }
+	    
+	    combSort(spriteOrder, spriteDistance, gameObjects.size());
 
+	    for(int i = 0; i < gameObjects.size(); i++)
+	    {
+		  double spriteY = gameObjects.get(i).getPosition().x - raycaster.getPlayer().getPosition().x;
+	      double spriteX = gameObjects.get(i).getPosition().y - raycaster.getPlayer().getPosition().y;
+
+	      double invDet = 1.0 / (raycaster.getCamera().getPlane().x / raycaster.getPlayer().getActualFov() * raycaster.getPlayer().getDirection().y
+	    		  - 
+	    		 raycaster.getPlayer().getDirection().x / raycaster.getPlayer().getActualFov() * raycaster.getCamera().getPlane().y);
+
+	      double transformX = invDet * (raycaster.getPlayer().getDirection().y / raycaster.getPlayer().getActualFov() * spriteX - raycaster.getPlayer().getDirection().x / raycaster.getPlayer().getActualFov() * spriteY);
+	      double transformY = invDet * (-raycaster.getCamera().getPlane().y * spriteX + raycaster.getCamera().getPlane().x * spriteY); 
+
+	      int spriteScreenX = (int)((raycaster.getScreen().getWidth() / 2) * (1 + transformX / transformY));
+
+	      int spriteHeight = Math.abs((int)(raycaster.getScreen().getHeight() / (transformY)));
+
+	      int drawStartY = -spriteHeight / 2 + raycaster.getScreen().getHeight() / 2;
+	      if(drawStartY < 0) drawStartY = 0;
+	      int drawEndY = spriteHeight / 2 + raycaster.getScreen().getHeight() / 2;
+	      if(drawEndY >= raycaster.getScreen().getHeight()) drawEndY = raycaster.getScreen().getHeight() - 1;
+
+	      int spriteWidth = Math.abs( (int) (raycaster.getScreen().getHeight() / (transformY)));
+	      int drawStartX = -spriteWidth / 2 + spriteScreenX;
+	      if(drawStartX < 0) drawStartX = 0;
+	      int drawEndX = spriteWidth / 2 + spriteScreenX;
+	      if(drawEndX >= raycaster.getScreen().getWidth()) drawEndX = raycaster.getScreen().getWidth() - 1;
+
+	      for(int stripe = drawStartX; stripe < drawEndX; stripe++)
+	      {
+	        int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * Raycaster.TEST_MAP_TEXTURE_WIDTH / spriteWidth) / 256;
+	        
+	        if(transformY > 0 && stripe > 0 && stripe < raycaster.getScreen().getWidth() && transformY < ZBuffer[stripe])
+	        	
+	        for(int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
+	        {
+	          int d = (y) * 256 - raycaster.getScreen().getHeight() * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
+	          int texY = ((d * Raycaster.TEST_MAP_TEXTURE_HEIGHT) / spriteHeight) / 256;
+	          
+	          int color = TextureHolder.get(gameObjects.get(i).getTexture()).getRGB(texX, texY);
+	          if(color != 0xff000000)
+	        	  raycaster.getScreen().setRGB(stripe, y, color);
+	        }
+	      }
+	    }
 	}
 	
 	
@@ -152,11 +247,11 @@ public class Rayprojector {
 		Vector2d sideDistance = new Vector2d();
 
 		sideDistance.x = 
-				(rayDirection.x < 0) ? (raycaster.getPlayer().getPosition().x - playerPositionOnMap.x) * deltaDistance.x
-									 : (playerPositionOnMap.x + 1.0 - raycaster.getPlayer().getPosition().x) * deltaDistance.x;
+				(rayDirection.x < 0) ? (raycaster.getPlayer().getPosition().x - positionOnMap.x) * deltaDistance.x
+									 : (positionOnMap.x + 1.0 - raycaster.getPlayer().getPosition().x) * deltaDistance.x;
 		sideDistance.y =
-				(rayDirection.y < 0) ? (raycaster.getPlayer().getPosition().y - playerPositionOnMap.y) * deltaDistance.y
-									 : (playerPositionOnMap.y + 1.0 - raycaster.getPlayer().getPosition().y) * deltaDistance.y;
+				(rayDirection.y < 0) ? (raycaster.getPlayer().getPosition().y - positionOnMap.y) * deltaDistance.y
+									 : (positionOnMap.y + 1.0 - raycaster.getPlayer().getPosition().y) * deltaDistance.y;
 				
 		return sideDistance;
 	}
@@ -166,11 +261,11 @@ public class Rayprojector {
 		
 		if (sideDistance.x < sideDistance.y) {
 			sideDistance.x += deltaDistance.x;
-			playerPositionOnMap.x += step.x;
+			positionOnMap.x += step.x;
 			side = false;
 		} else {
 			sideDistance.y += deltaDistance.y;
-			playerPositionOnMap.y += step.y;
+			positionOnMap.y += step.y;
 			side = true;
 		}
 		
@@ -178,14 +273,14 @@ public class Rayprojector {
 	}
 	
 	private boolean performedDDAHit() {
-		return (TextureHolder.get(ID.TEST_MAP).getRGB(playerPositionOnMap.x, playerPositionOnMap.y) 
+		return (TextureHolder.get(ID.TEST_MAP).getRGB(positionOnMap.x, positionOnMap.y) 
 				!= 0xff000000);
 	}
 	
 	private double calculatedRayLength(boolean side) {
 		return
-		(side) ? (playerPositionOnMap.y - raycaster.getPlayer().getPosition().y + (1 - step.y) / 2)/ rayDirection.y
-				   : (playerPositionOnMap.x - raycaster.getPlayer().getPosition().x + (1 - step.x) / 2) / rayDirection.x;
+		(side) ? (positionOnMap.y - raycaster.getPlayer().getPosition().y + (1 - step.y) / 2)/ rayDirection.y
+				   : (positionOnMap.x - raycaster.getPlayer().getPosition().x + (1 - step.x) / 2) / rayDirection.x;
 	}
 	
 	private void handleDrawingOutOfBounds() {
@@ -214,17 +309,17 @@ public class Rayprojector {
 	
 	private void projectFloor(boolean side, int x) {
 		if(!side && rayDirection.x > 0) {
-			floorWall.x = playerPositionOnMap.x;
-			floorWall.y = playerPositionOnMap.y + wallOnScreen.x;
+			floorWall.x = positionOnMap.x;
+			floorWall.y = positionOnMap.y + wallOnScreen.x;
 		}else if(!side && rayDirection.x < 0) {
-			floorWall.x = playerPositionOnMap.x + 1.0;
-			floorWall.y = playerPositionOnMap.y + wallOnScreen.x;
+			floorWall.x = positionOnMap.x + 1.0;
+			floorWall.y = positionOnMap.y + wallOnScreen.x;
 		}else if(side && rayDirection.y > 0) {
-			floorWall.x = playerPositionOnMap.x + wallOnScreen.x;
-			floorWall.y = playerPositionOnMap.y;
+			floorWall.x = positionOnMap.x + wallOnScreen.x;
+			floorWall.y = positionOnMap.y;
 		}else {
-			floorWall.x = playerPositionOnMap.x + wallOnScreen.x;
-			floorWall.y = playerPositionOnMap.y + 1.0;
+			floorWall.x = positionOnMap.x + wallOnScreen.x;
+			floorWall.y = positionOnMap.y + 1.0;
 		}
 		
 		wallDistance = rayLength;
@@ -261,6 +356,45 @@ public class Rayprojector {
 		}
 	}
 
+ 
+	private void combSort(int order[], double dist[], int amount)
+	{
+	  int gap = amount;
+	  boolean swapped = false;
+	  while(gap > 1 || swapped)
+	  {
+	    //shrink factor 1.3
+	    gap = (gap * 10) / 13;
+	    if(gap == 9 || gap == 10) gap = 11;
+	    if (gap < 1) gap = 1;
+	    swapped = false;
+	    for(int i = 0; i < amount - gap; i++)
+	    {
+	      int j = i + gap;
+	      if(dist[i] < dist[j])
+	      {
+	        swap(dist, i, j);
+	        swap(order, i, j);
+	        swapped = true;
+	      }
+	    }
+	  }
+	}
+	
+	private void swap(int array[], final int i, final int j) {
+		int temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
+	}
+	
+	private void swap(double array[], final int i, final int j) {
+		double temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
+	}
+	
+	
+	
 	public double getRayLength() {
 		return rayLength;
 	}

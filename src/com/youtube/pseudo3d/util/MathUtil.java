@@ -12,4 +12,5 @@ public class MathUtil {
 		color = Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]);
 		return color;
 	}
+	
 }
