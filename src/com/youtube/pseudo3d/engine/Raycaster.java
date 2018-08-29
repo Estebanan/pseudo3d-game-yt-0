@@ -1,14 +1,19 @@
 package com.youtube.pseudo3d.engine;
 
 import java.awt.Color;
-
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
+import com.youtube.pseudo3d.engine.objects.Barrel;
+import com.youtube.pseudo3d.engine.objects.GameObject;
+import com.youtube.pseudo3d.engine.objects.Greenlight;
+import com.youtube.pseudo3d.engine.objects.Pillar;
 import com.youtube.pseudo3d.main.Main;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
 import com.youtube.pseudo3d.util.Constants;
+import com.youtube.pseudo3d.util.Vector2d;
 
 public class Raycaster {
 
@@ -23,10 +28,12 @@ public class Raycaster {
 	
 	private Main main;
 
+	private ArrayList<GameObject> gameObjects;
 	
 	public Raycaster(Main main) {
 		this.main = main;
 		initTextures();
+		initGameObjects();
 		initScreen();
 		initRaycastingFields();
 	}
@@ -48,6 +55,22 @@ public class Raycaster {
 		TextureHolder.load(ID.BARREL, 		"/sprites/barrel.png");
 		TextureHolder.load(ID.PILLAR, 		"/sprites/pillar.png");
 		TextureHolder.load(ID.GREENLIGHT, 	"/sprites/greenlight.png");
+	}
+	
+	private void initGameObjects() {
+		gameObjects = new ArrayList<GameObject>();
+
+		gameObjects.add(new Barrel(this, new Vector2d(16.5, 22.5)));
+		gameObjects.add(new Barrel(this, new Vector2d(17.5, 21.5)));
+		gameObjects.add(new Barrel(this, new Vector2d(17.5, 18.5)));
+
+		gameObjects.add(new Pillar(this, new Vector2d(22.5, 13.5)));
+		gameObjects.add(new Pillar(this, new Vector2d(22.5, 7.5)));
+		gameObjects.add(new Pillar(this, new Vector2d(22.5, 6.5)));
+
+		gameObjects.add(new Greenlight(this, new Vector2d(22.5, 2.5)));
+		gameObjects.add(new Greenlight(this, new Vector2d(22.5, 1.5)));
+		gameObjects.add(new Greenlight(this, new Vector2d(21.5, 1.5)));
 	}
 	
 	private void initScreen() {
@@ -104,5 +127,15 @@ public class Raycaster {
 
 	public void setCamera(Camera camera) {
 		this.camera = camera;
+	}
+
+	public ArrayList<GameObject> getGameObjects() {
+		return gameObjects;
+	}
+
+	public void setGameObjects(ArrayList<GameObject> gameObjects) {
+		this.gameObjects = gameObjects;
 	}	
+	
+	
 }
