@@ -22,18 +22,14 @@ public class TextureHolder {
 		WOOD
 	}
 
-	private HashMap<ID, BufferedImage> textureMap;
+	private static HashMap<ID, BufferedImage> textureMap = new HashMap<ID, BufferedImage>();
 	
-	public TextureHolder() {
-		textureMap = new HashMap<ID, BufferedImage>();
-	}
-	
-	public void load(ID id, String src) {
+	public static void load(ID id, String src) {
 		BufferedImage image = ImageHandler.readImage(src);
 		textureMap.put(id, image);
 	}
 	
-	public BufferedImage get(ID id) {
+	public static BufferedImage get(ID id) {
 		return textureMap.get(id);
 	}
 }

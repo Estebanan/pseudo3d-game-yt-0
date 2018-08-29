@@ -12,9 +12,8 @@ public class Player {
 	private Vector2d position;
 	private Vector2d direction;
 
-	private Camera camera;
-	private TextureHolder textureHolder;
-
+	private Raycaster raycaster;
+	
 	private double initialFov;
 	private double actualFov;
 	private double fovAcceleration;
@@ -27,9 +26,8 @@ public class Player {
 
 	private double movementAcceleration;
 
-	public Player(Camera camera, TextureHolder textureHolder) {
-		this.camera = camera;
-		this.textureHolder = textureHolder;
+	public Player(Raycaster raycaster) {
+		this.raycaster = raycaster;
 
 		initInitialFields();
 	}
@@ -96,10 +94,10 @@ public class Player {
 
 	public void move(double delta) {
 		// ONLY MOVE IF THE CURRENT TILE IS 0XFF000000 - BLACK
-		if (textureHolder.get(ID.TEST_MAP).getRGB((int) (position.x + direction.y * delta),
+		if (TextureHolder.get(ID.TEST_MAP).getRGB((int) (position.x + direction.y * delta),
 				(int) (position.y)) == 0xff000000)
 			position.x += direction.y * delta;
-		if (textureHolder.get(ID.TEST_MAP).getRGB((int) (position.x),
+		if (TextureHolder.get(ID.TEST_MAP).getRGB((int) (position.x),
 				(int) (position.y + direction.x * delta)) == 0xff000000)
 			position.y += direction.x * delta;
 	}
@@ -108,9 +106,9 @@ public class Player {
 		double oldDirX = direction.x;
 		direction.x = direction.x * Math.cos(angle) - direction.y * Math.sin(angle);
 		direction.y = oldDirX * Math.sin(angle) + direction.y * Math.cos(angle);
-		double oldPlaneX = camera.getPlane().x;
-		camera.getPlane().x = camera.getPlane().x * Math.cos(angle) - camera.getPlane().y * Math.sin(angle);
-		camera.getPlane().y = oldPlaneX * Math.sin(angle) + camera.getPlane().y * Math.cos(angle);
+		double oldPlaneX = raycaster.getCamera().getPlane().x;
+		raycaster.getCamera().getPlane().x = raycaster.getCamera().getPlane().x * Math.cos(angle) - raycaster.getCamera().getPlane().y * Math.sin(angle);
+		raycaster.getCamera().getPlane().y = oldPlaneX * Math.sin(angle) + raycaster.getCamera().getPlane().y * Math.cos(angle);
 	}
 
 	public Vector2d getPosition() {

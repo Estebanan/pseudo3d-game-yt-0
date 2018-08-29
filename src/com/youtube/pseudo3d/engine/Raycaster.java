@@ -21,7 +21,6 @@ public class Raycaster {
 	
 	private BufferedImage screen;
 	
-	private TextureHolder textureHolder;
 	private Main main;
 
 	
@@ -33,23 +32,22 @@ public class Raycaster {
 	}
 	
 	private void initTextures() {
-		textureHolder = new TextureHolder();
 		generateTextures();
 	}
 	
 	private void generateTextures() {
-		textureHolder.load(ID.TEST_MAP, 	"/maps/test_map.png");
-		textureHolder.load(ID.EMBLEM, 		"/tiles/emblem.png");
-		textureHolder.load(ID.BRICK_0, 		"/tiles/brick_0.png");
-		textureHolder.load(ID.BRICK_1, 		"/tiles/brick_1.png");
-		textureHolder.load(ID.PURPLESTONE, 	"/tiles/purplestone.png");
-		textureHolder.load(ID.BLUESTONE, 	"/tiles/bluestone.png");
-		textureHolder.load(ID.MOSSYSTONE, 	"/tiles/mossystone.png");
-		textureHolder.load(ID.WOOD, 		"/tiles/wood.png");
-		textureHolder.load(ID.COBBLESTONE, 	"/tiles/cobblestone.png");
-		textureHolder.load(ID.BARREL, 		"/sprites/barrel.png");
-		textureHolder.load(ID.PILLAR, 		"/sprites/pillar.png");
-		textureHolder.load(ID.GREENLIGHT, 	"/sprites/greenlight.png");
+		TextureHolder.load(ID.TEST_MAP, 	"/maps/test_map.png");
+		TextureHolder.load(ID.EMBLEM, 		"/tiles/emblem.png");
+		TextureHolder.load(ID.BRICK_0, 		"/tiles/brick_0.png");
+		TextureHolder.load(ID.BRICK_1, 		"/tiles/brick_1.png");
+		TextureHolder.load(ID.PURPLESTONE, 	"/tiles/purplestone.png");
+		TextureHolder.load(ID.BLUESTONE, 	"/tiles/bluestone.png");
+		TextureHolder.load(ID.MOSSYSTONE, 	"/tiles/mossystone.png");
+		TextureHolder.load(ID.WOOD, 		"/tiles/wood.png");
+		TextureHolder.load(ID.COBBLESTONE, 	"/tiles/cobblestone.png");
+		TextureHolder.load(ID.BARREL, 		"/sprites/barrel.png");
+		TextureHolder.load(ID.PILLAR, 		"/sprites/pillar.png");
+		TextureHolder.load(ID.GREENLIGHT, 	"/sprites/greenlight.png");
 	}
 	
 	private void initScreen() {
@@ -58,7 +56,7 @@ public class Raycaster {
 	
 	private void initRaycastingFields() {
 		camera = new Camera();
-		player = new Player(camera, textureHolder);
+		player = new Player(this);
 		rayprojector = new Rayprojector(this);
 	}
 	
@@ -106,14 +104,5 @@ public class Raycaster {
 
 	public void setCamera(Camera camera) {
 		this.camera = camera;
-	}
-
-	public TextureHolder getTextureHolder() {
-		return textureHolder;
-	}
-
-	public void setTextureHolder(TextureHolder textureHolder) {
-		this.textureHolder = textureHolder;
-	}
-	
+	}	
 }
