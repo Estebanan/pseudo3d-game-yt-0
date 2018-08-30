@@ -59,8 +59,6 @@ public class Raycaster {
 	
 	private void initGameObjects() {
 		gameObjects = new ArrayList<GameObject>();
-
-		for(int i=0; i<20; i++)
 			
 		gameObjects.add(new Barrel(this, new Vector2d(16.5, 22.5)));
 		gameObjects.add(new Spider(this, new Vector2d(17.5, 21.5)));
@@ -78,6 +76,17 @@ public class Raycaster {
 		gameObjects.add(new Barrel(this, new Vector2d(16.5, 13.5)));
 		gameObjects.add(new Barrel(this, new Vector2d(17.5, 15.5)));
 		gameObjects.add(new Barrel(this, new Vector2d(19.5, 14.5)));
+		
+		gameObjects.add(new Barrel(this, new Vector2d(8.5, 14.5)));
+		gameObjects.add(new Spider(this, new Vector2d(7.5, 15.5)));
+		gameObjects.add(new Barrel(this, new Vector2d(2.5, 14.5)));
+		gameObjects.add(new Spider(this, new Vector2d(2.5, 13.5)));
+		gameObjects.add(new Pillar(this, new Vector2d(1.5, 12.5)));
+		gameObjects.add(new Spider(this, new Vector2d(5.5, 22.5)));
+		gameObjects.add(new Pillar(this, new Vector2d(9.5, 22.5)));
+		gameObjects.add(new Pillar(this, new Vector2d(10.5,22.5)));
+		gameObjects.add(new Spider(this, new Vector2d(6.5, 21.5)));
+		gameObjects.add(new Barrel(this, new Vector2d(6.5, 20.5)));
 	}
 	
 	private void initScreen() {
