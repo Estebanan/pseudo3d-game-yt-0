@@ -43,18 +43,23 @@ public class Raycaster {
 	}
 	
 	private void generateTextures() {
-		TextureHolder.load(ID.TEST_MAP, 	"/maps/test_map.png");
-		TextureHolder.load(ID.EMBLEM, 		"/tiles/emblem.png");
-		TextureHolder.load(ID.BRICK_0, 		"/tiles/brick_0.png");
-		TextureHolder.load(ID.BRICK_1, 		"/tiles/brick_1.png");
-		TextureHolder.load(ID.PURPLESTONE, 	"/tiles/purplestone.png");
-		TextureHolder.load(ID.BLUESTONE, 	"/tiles/bluestone.png");
-		TextureHolder.load(ID.MOSSYSTONE, 	"/tiles/mossystone.png");
-		TextureHolder.load(ID.WOOD, 		"/tiles/wood.png");
-		TextureHolder.load(ID.COBBLESTONE, 	"/tiles/cobblestone.png");
-		TextureHolder.load(ID.BARREL, 		"/sprites/barrel.png");
-		TextureHolder.load(ID.PILLAR, 		"/sprites/pillar.png");
-		TextureHolder.load(ID.SPIDER, 		"/sprites/spider.png");
+		TextureHolder.load(ID.TEST_MAP, 		"/maps/test_map.png");
+		TextureHolder.load(ID.EMBLEM, 			"/tiles/emblem.png");
+		TextureHolder.load(ID.BRICK_0, 			"/tiles/brick_0.png");
+		TextureHolder.load(ID.BRICK_1, 			"/tiles/brick_1.png");
+		TextureHolder.load(ID.PURPLESTONE, 		"/tiles/purplestone.png");
+		TextureHolder.load(ID.BLUESTONE, 		"/tiles/bluestone.png");
+		TextureHolder.load(ID.MOSSYSTONE, 		"/tiles/mossystone.png");
+		TextureHolder.load(ID.WOOD, 			"/tiles/wood.png");
+		TextureHolder.load(ID.COBBLESTONE, 		"/tiles/cobblestone.png");
+		TextureHolder.load(ID.BARREL, 			"/sprites/barrel.png");
+		TextureHolder.load(ID.PILLAR, 			"/sprites/pillar.png");
+		TextureHolder.load(ID.SPIDER, 			"/sprites/spider.png");
+		
+		TextureHolder.load(ID.PLAYER_LATTERN,	"/sprites/player/lattern_hand.png");
+		TextureHolder.load(ID.PLAYER_SWORD,	"/sprites/player/sword_hand.png");
+		TextureHolder.load(ID.PLAYER_AXE,	"/sprites/player/axe_hand.png");
+		TextureHolder.load(ID.PLAYER_WAND,	"/sprites/player/wand_hand.png");
 	}
 	
 	private void initGameObjects() {
@@ -107,10 +112,13 @@ public class Raycaster {
 		// UPDATE SCREEN SIZE DEPENDING ON WINDOW SIZE
 		screen = new BufferedImage(Constants.RESOLUTION_WIDTH, Constants.RESOLUTION_HEIGHT, BufferedImage.TYPE_INT_RGB);
 		rayprojector.projectRays();
+		player.update(elapsed);
 	}
 	
 	public void render(Graphics g) {
 		g.drawImage(screen, 0, 0, main.getWidth(), main.getHeight(), null);
+		
+		player.render(g);
 		
 		//DEBUG INFO
 		g.setColor(Color.GRAY);
@@ -121,6 +129,10 @@ public class Raycaster {
 				, 100, 20);
 	}
 
+	public Main getMain() {
+		return main;
+	}
+	
 	public Player getPlayer() {
 		return player;
 	}

@@ -19,7 +19,11 @@ public class TextureHolder {
 		PILLAR,
 		PURPLESTONE,
 		WOOD,
-		SPIDER
+		SPIDER,
+		PLAYER_LATTERN,
+		PLAYER_SWORD,
+		PLAYER_AXE,
+		PLAYER_WAND
 	}
 
 	private static HashMap<ID, BufferedImage> textureMap = new HashMap<ID, BufferedImage>();

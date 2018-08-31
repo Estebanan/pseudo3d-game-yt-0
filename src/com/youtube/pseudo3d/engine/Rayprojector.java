@@ -158,8 +158,8 @@ public class Rayprojector {
 			color = (color & 0xfefefe) >> 1;
 
 		// SHADE COLORS
-		if (rayLength > 1)
-			color = MathUtil.shadeColor(color, rayLength * 1.1);
+		if (rayLength > raycaster.getPlayer().getEmittedLight())
+			color = MathUtil.shadeColor(color, rayLength / raycaster.getPlayer().getEmittedLight());
 
 		return color;
 	}
@@ -273,8 +273,10 @@ public class Rayprojector {
 			int ceilingColor = (TextureHolder.get(ID.WOOD).getRGB(floorTexture.x, floorTexture.y) & 0xfefefe) >> 1;
 
 			// SHADE COLORS
-			floorColor = MathUtil.shadeColor(floorColor, currentDistance);
-			ceilingColor = MathUtil.shadeColor(ceilingColor, currentDistance);
+			if(currentDistance > raycaster.getPlayer().getEmittedLight()) {
+				floorColor = MathUtil.shadeColor(floorColor, currentDistance / raycaster.getPlayer().getEmittedLight());
+				ceilingColor = MathUtil.shadeColor(ceilingColor, currentDistance / raycaster.getPlayer().getEmittedLight());
+			}
 
 			raycaster.getScreen().setRGB(x, y, floorColor);
 			raycaster.getScreen().setRGB(x, raycaster.getScreen().getHeight() - y, ceilingColor);
@@ -341,8 +343,8 @@ public class Rayprojector {
 
 						int color = TextureHolder.get(raycaster.getGameObjects().get(objectsOrder[i]).getTexture()).getRGB(texX, texY);
 
-						if (spriteHeight < 300)
-							color = MathUtil.shadeColor(color, 400 / spriteHeight);
+						if (spriteHeight < 300 / raycaster.getPlayer().getEmittedLight())
+							color = MathUtil.shadeColor(color, 400 / (spriteHeight * raycaster.getPlayer().getEmittedLight()));
 
 						if (color != 0xff000000)
 							raycaster.getScreen().setRGB(stripe, y, color);

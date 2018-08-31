@@ -1,6 +1,9 @@
 package com.youtube.pseudo3d.engine;
 
+import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 import com.youtube.pseudo3d.input.InputHandler;
 import com.youtube.pseudo3d.resource.TextureHolder;
@@ -9,6 +12,8 @@ import com.youtube.pseudo3d.util.Vector2d;
 
 public class Player {
 
+	private BufferedImage currentTexture;
+	
 	private Vector2d position;
 	private Vector2d direction;
 
@@ -26,6 +31,12 @@ public class Player {
 
 	private double movementAcceleration;
 
+	private double emittedLight;
+	
+	private Vector2d spriteScale;
+	
+	private int time = 0;
+	
 	public Player(Raycaster raycaster) {
 		this.raycaster = raycaster;
 
@@ -49,12 +60,28 @@ public class Player {
 		position = new Vector2d(22, 22);
 		direction = new Vector2d(-1, 0);
 
+		spriteScale = new Vector2d(.44, .73);
+		
 		rotate(Math.PI / 2);
 	}
 
 	public void handleInput(double elapsed) {
+		handleInputHoldingItem();
 		handleInputMovement(elapsed);
 		handleInputSprinting(elapsed);
+	}
+	
+	private void handleInputHoldingItem() {
+		if(InputHandler.isKeyPressed(KeyEvent.VK_1))
+			Items.holding = Items.Holding.HAND;
+		if(InputHandler.isKeyPressed(KeyEvent.VK_2) && Items.unlocked.get(Items.Holding.TORCH))
+			Items.holding = Items.Holding.TORCH;
+		if(InputHandler.isKeyPressed(KeyEvent.VK_3) && Items.unlocked.get(Items.Holding.SWORD))
+			Items.holding = Items.Holding.SWORD;
+		if(InputHandler.isKeyPressed(KeyEvent.VK_4) && Items.unlocked.get(Items.Holding.AXE))
+			Items.holding = Items.Holding.AXE;
+		if(InputHandler.isKeyPressed(KeyEvent.VK_5) && Items.unlocked.get(Items.Holding.WAND))
+			Items.holding = Items.Holding.WAND;
 	}
 	
 	private void handleInputMovement(double elapsed) {
@@ -75,7 +102,6 @@ public class Player {
 	}
 	
 	private void handleInputSprinting(double elapsed) {
-		// SPRINTING VELOCITY
 		if (InputHandler.isKeyPressed(KeyEvent.VK_SHIFT)
 				&& (InputHandler.isKeyPressed(KeyEvent.VK_W) && actualMovementSpeed < 3.4 * initialMovementSpeed)) {
 			actualMovementSpeed += movementAcceleration;
@@ -83,7 +109,6 @@ public class Player {
 			actualMovementSpeed -= movementAcceleration;
 		}
 
-		// SPRINTING FOV
 		if (InputHandler.isKeyPressed(KeyEvent.VK_SHIFT)
 				&& (InputHandler.isKeyPressed(KeyEvent.VK_W) && actualFov < 2.0 * initialFov)) {
 			actualFov += fovAcceleration;
@@ -109,6 +134,72 @@ public class Player {
 		double oldPlaneX = raycaster.getCamera().getPlane().x;
 		raycaster.getCamera().getPlane().x = raycaster.getCamera().getPlane().x * Math.cos(angle) - raycaster.getCamera().getPlane().y * Math.sin(angle);
 		raycaster.getCamera().getPlane().y = oldPlaneX * Math.sin(angle) + raycaster.getCamera().getPlane().y * Math.cos(angle);
+	}
+	
+	public void update(double elapsed) {
+		time += (elapsed * 1e3);
+
+		updateCurrentTexture();
+		updateEmittedLight();
+	}
+	
+	private void updateCurrentTexture() {
+		switch(Items.holding) {
+		default:
+		case HAND:
+			currentTexture = null;
+			break;
+		case TORCH:{
+			currentTexture = TextureHolder.get(ID.PLAYER_LATTERN);
+			spriteScale.x = .44;
+			spriteScale.y = .73;
+		}
+			break;
+		case SWORD:{
+			currentTexture = TextureHolder.get(ID.PLAYER_SWORD);
+			spriteScale.x = .44;
+			spriteScale.y = .73;
+		}
+			break;
+		case AXE:{
+			currentTexture = TextureHolder.get(ID.PLAYER_AXE);
+			spriteScale.x = .5;
+			spriteScale.y = 1.3;
+		}
+			break;
+		case WAND:{
+			currentTexture = TextureHolder.get(ID.PLAYER_WAND);
+			spriteScale.x = .5;
+			spriteScale.y = 1.3;
+		}
+			break;
+		}
+	}
+	
+	private void updateEmittedLight() {
+		switch(Items.holding) {
+		default:
+		case HAND:
+		case AXE:
+		case SWORD:
+			emittedLight = 0.5;
+			break;
+		case WAND:
+			emittedLight = 1.0;
+			break;
+		case TORCH:
+			emittedLight = 2.0;
+			break;
+		}
+	}
+	
+	public void render(Graphics g) {		
+		g.drawImage(currentTexture,
+				(int)(raycaster.getMain().getWidth() - spriteScale.x * raycaster.getMain().getWidth() + 50 + Math.cos(position.x * 2) * Math.cos(position.y * 2) * 10),
+				(int)(raycaster.getMain().getHeight() - spriteScale.y * raycaster.getMain().getHeight() + Math.sin(position.x) * Math.sin(position.y) * 50) + 100,
+				(int)(spriteScale.x * raycaster.getMain().getWidth()),
+				(int)(spriteScale.y * raycaster.getMain().getHeight()),
+				null);
 	}
 
 	public Vector2d getPosition() {
@@ -189,6 +280,14 @@ public class Player {
 
 	public void setMovementAcceleration(double movementAcceleration) {
 		this.movementAcceleration = movementAcceleration;
+	}
+
+	public double getEmittedLight() {
+		return emittedLight;
+	}
+
+	public void setEmittedLight(double emittedLight) {
+		this.emittedLight = emittedLight;
 	}
 	
 }
