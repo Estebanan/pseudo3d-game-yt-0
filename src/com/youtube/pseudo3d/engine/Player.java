@@ -11,7 +11,7 @@ import com.youtube.pseudo3d.util.Vector2d;
 
 public class Player {
 
-	public static int HEALTH = 100;
+	public static int HEALTH = 80;
 	
 	private BufferedImage currentTexture;
 	

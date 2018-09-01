@@ -9,7 +9,7 @@ public class Items {
 		SWORD,
 		AXE,
 		WAND,
-		EXTRA_0,
+		EXTRA,
 	}
 	
 	public static HashMap<Holding, Boolean> unlocked = new HashMap<Holding, Boolean>();

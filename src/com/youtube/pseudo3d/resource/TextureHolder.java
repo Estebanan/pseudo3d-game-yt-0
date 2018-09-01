@@ -29,7 +29,11 @@ public class TextureHolder {
 		
 		GUI_EMPTY_SLOT,
 		GUI_SELECTED_SLOT,
-		GUI_HEALTH_BAR
+		GUI_HEALTH_BAR,
+		GUI_LATTERN_ICON,
+		GUI_SWORD_ICON,
+		GUI_AXE_ICON,
+		GUI_WAND_ICON
 	}
 
 	private static HashMap<ID, BufferedImage> textureMap = new HashMap<ID, BufferedImage>();

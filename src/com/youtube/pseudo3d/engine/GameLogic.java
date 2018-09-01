@@ -69,6 +69,10 @@ public class GameLogic {
 		TextureHolder.load(ID.GUI_EMPTY_SLOT,	"/gui/empty-slot.png");
 		TextureHolder.load(ID.GUI_SELECTED_SLOT,"/gui/selected-slot.png");
 		TextureHolder.load(ID.GUI_HEALTH_BAR,   "/gui/health-bar.png");
+		TextureHolder.load(ID.GUI_LATTERN_ICON, "/gui/lattern-icon.png");
+		TextureHolder.load(ID.GUI_SWORD_ICON, 	"/gui/sword-icon.png");
+		TextureHolder.load(ID.GUI_AXE_ICON, 	"/gui/axe-icon.png");
+		TextureHolder.load(ID.GUI_WAND_ICON, 	"/gui/wand-icon.png");
 	}
 	
 	private void initGameObjects() {
@@ -126,6 +130,7 @@ public class GameLogic {
 		screen = new BufferedImage(Constants.RESOLUTION_WIDTH, Constants.RESOLUTION_HEIGHT, BufferedImage.TYPE_INT_RGB);
 		rayprojector.projectRays();
 		player.update(elapsed);
+		gui.update(elapsed);
 	}
 	
 	public void render(Graphics g) {

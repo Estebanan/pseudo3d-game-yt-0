@@ -22,7 +22,6 @@ public class Gui {
 	}
 	
 	public void update(double elapsed) {
-		
 	}
 	
 	public void render(Graphics g) {
@@ -34,6 +33,19 @@ public class Gui {
 	}
 	
 	private void renderSlots(Graphics g, int slotWidth, int slotHeight) {
+		if(Items.unlocked.get(Items.Holding.TORCH))
+			g.drawImage(TextureHolder.get(ID.GUI_LATTERN_ICON), (int) (gameLogic.getMain().getWidth() / 3) + slotWidth, (int)(gameLogic.getMain().getHeight() - 1.2*slotHeight), slotWidth, slotHeight, null);
+		
+		if(Items.unlocked.get(Items.Holding.SWORD))
+			g.drawImage(TextureHolder.get(ID.GUI_SWORD_ICON), (int) (gameLogic.getMain().getWidth() / 3) + 2*slotWidth, (int)(gameLogic.getMain().getHeight() - 1.2*slotHeight), slotWidth, slotHeight, null);
+		
+		if(Items.unlocked.get(Items.Holding.AXE))
+			g.drawImage(TextureHolder.get(ID.GUI_AXE_ICON), (int) (gameLogic.getMain().getWidth() / 3) + 3*slotWidth, (int)(gameLogic.getMain().getHeight() - 1.2*slotHeight), slotWidth, slotHeight, null);
+		
+		if(Items.unlocked.get(Items.Holding.WAND))
+			g.drawImage(TextureHolder.get(ID.GUI_WAND_ICON), (int) (gameLogic.getMain().getWidth() / 3) + 4*slotWidth, (int)(gameLogic.getMain().getHeight() - 1.2*slotHeight), slotWidth, slotHeight, null);
+		
+		
 		int slotIterator = 0;
 		for(int i=(int) (gameLogic.getMain().getWidth() / 3); i<gameLogic.getMain().getWidth() / 3 + 6 * slotWidth; i+=slotWidth) {
 			if(Items.holding != Holding.values()[slotIterator])
@@ -43,10 +55,11 @@ public class Gui {
 
 			slotIterator++;
 		}
+		
 	}
 	
 	private void renderHealth(Graphics g, int slotWidth, int slotHeight) {
-		g.setColor(Color.RED);
+		g.setColor(new Color(111, 2, 2, 200));
 		g.fillRect((int) (gameLogic.getMain().getWidth() / 2.678), (int)(gameLogic.getMain().getHeight() - slotHeight) - slotHeight, (int)(Player.HEALTH * slotWidth * slotScale / 1.7), (int)(slotHeight * .6));
 		g.drawImage(TextureHolder.get(ID.GUI_HEALTH_BAR), (int) (gameLogic.getMain().getWidth() / 3.58), (int)(gameLogic.getMain().getHeight() - 1.2*slotHeight) - slotHeight, slotWidth * 8, slotHeight, null);
 	}
