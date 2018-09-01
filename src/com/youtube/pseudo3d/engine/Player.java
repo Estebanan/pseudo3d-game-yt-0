@@ -11,7 +11,7 @@ import com.youtube.pseudo3d.util.Vector2d;
 
 public class Player {
 
-	public static int HEALTH = 80;
+	public static int HEALTH = 100;
 	
 	private BufferedImage currentTexture;
 	
@@ -75,8 +75,8 @@ public class Player {
 	private void handleInputHoldingItem() {
 		if(InputHandler.isKeyPressed(KeyEvent.VK_1))
 			Items.holding = Items.Holding.HAND;
-		if(InputHandler.isKeyPressed(KeyEvent.VK_2) && Items.unlocked.get(Items.Holding.TORCH))
-			Items.holding = Items.Holding.TORCH;
+		if(InputHandler.isKeyPressed(KeyEvent.VK_2) && Items.unlocked.get(Items.Holding.LATTERN))
+			Items.holding = Items.Holding.LATTERN;
 		if(InputHandler.isKeyPressed(KeyEvent.VK_3) && Items.unlocked.get(Items.Holding.SWORD))
 			Items.holding = Items.Holding.SWORD;
 		if(InputHandler.isKeyPressed(KeyEvent.VK_4) && Items.unlocked.get(Items.Holding.AXE))
@@ -150,7 +150,7 @@ public class Player {
 		case HAND:
 			currentTexture = null;
 			break;
-		case TORCH:{
+		case LATTERN:{
 			currentTexture = TextureHolder.get(ID.PLAYER_LATTERN);
 			spriteScale.x = .44;
 			spriteScale.y = .73;
@@ -188,7 +188,7 @@ public class Player {
 		case WAND:
 			emittedLight = 1.0;
 			break;
-		case TORCH:
+		case LATTERN:
 			emittedLight = 2.0;
 			break;
 		}

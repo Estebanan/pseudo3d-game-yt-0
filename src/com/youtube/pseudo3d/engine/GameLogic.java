@@ -5,10 +5,14 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import com.youtube.pseudo3d.engine.objects.AxeCollect;
 import com.youtube.pseudo3d.engine.objects.Barrel;
 import com.youtube.pseudo3d.engine.objects.GameObject;
+import com.youtube.pseudo3d.engine.objects.LatternCollect;
 import com.youtube.pseudo3d.engine.objects.Pillar;
 import com.youtube.pseudo3d.engine.objects.Spider;
+import com.youtube.pseudo3d.engine.objects.SwordCollect;
+import com.youtube.pseudo3d.engine.objects.WandCollect;
 import com.youtube.pseudo3d.gui.Gui;
 import com.youtube.pseudo3d.main.Main;
 import com.youtube.pseudo3d.resource.TextureHolder;
@@ -60,6 +64,10 @@ public class GameLogic {
 		TextureHolder.load(ID.BARREL, 			"/sprites/barrel.png");
 		TextureHolder.load(ID.PILLAR, 			"/sprites/pillar.png");
 		TextureHolder.load(ID.SPIDER, 			"/sprites/spider.png");
+		TextureHolder.load(ID.LATTERN_COLLECT,  "/sprites/collect/lattern_collect.png");
+		TextureHolder.load(ID.SWORD_COLLECT,  	"/sprites/collect/sword_collect.png");
+		TextureHolder.load(ID.AXE_COLLECT,  	"/sprites/collect/axe_collect.png");
+		TextureHolder.load(ID.WAND_COLLECT,  	"/sprites/collect/wand_collect.png");
 		
 		TextureHolder.load(ID.PLAYER_LATTERN,	"/sprites/player/lattern_hand.png");
 		TextureHolder.load(ID.PLAYER_SWORD,		"/sprites/player/sword_hand.png");
@@ -105,6 +113,11 @@ public class GameLogic {
 		gameObjects.add(new Pillar(this, new Vector2d(10.5,22.5)));
 		gameObjects.add(new Spider(this, new Vector2d(6.5, 21.5)));
 		gameObjects.add(new Barrel(this, new Vector2d(6.5, 20.5)));
+		
+		gameObjects.add(new LatternCollect(this, new Vector2d(18.5, 18.5)));
+		gameObjects.add(new SwordCollect(this, new Vector2d(17.5, 17.5)));
+		gameObjects.add(new AxeCollect(this, new Vector2d(16.5, 16.5)));
+		gameObjects.add(new WandCollect(this, new Vector2d(15.5, 15.5)));
 	}
 	
 	private void initScreen() {
@@ -131,6 +144,55 @@ public class GameLogic {
 		rayprojector.projectRays();
 		player.update(elapsed);
 		gui.update(elapsed);
+		
+		updatePickupLattern();
+		updatePickupSword();
+		updatePickupAxe();
+		updatePickupWand();
+	}
+	
+	private void updatePickupLattern() {
+		for(int i=0; i<gameObjects.size(); i++)
+			if(gameObjects.get(i) instanceof LatternCollect
+					&& Math.floor(gameObjects.get(i).getPosition().x) == Math.floor(player.getPosition().x)
+					&& Math.floor(gameObjects.get(i).getPosition().y) == Math.floor(player.getPosition().y)) {
+				Items.unlocked.put(Items.Holding.LATTERN, true);
+				gameObjects.remove(i);
+				i--;
+			}
+	}
+	
+	private void updatePickupSword() {
+		for(int i=0; i<gameObjects.size(); i++)
+			if(gameObjects.get(i) instanceof SwordCollect
+					&& Math.floor(gameObjects.get(i).getPosition().x) == Math.floor(player.getPosition().x)
+					&& Math.floor(gameObjects.get(i).getPosition().y) == Math.floor(player.getPosition().y)) {
+				Items.unlocked.put(Items.Holding.SWORD, true);
+				gameObjects.remove(i);
+				i--;
+			}
+	}
+	
+	private void updatePickupAxe() {
+		for(int i=0; i<gameObjects.size(); i++)
+			if(gameObjects.get(i) instanceof AxeCollect
+					&& Math.floor(gameObjects.get(i).getPosition().x) == Math.floor(player.getPosition().x)
+					&& Math.floor(gameObjects.get(i).getPosition().y) == Math.floor(player.getPosition().y)) {
+				Items.unlocked.put(Items.Holding.AXE, true);
+				gameObjects.remove(i);
+				i--;
+			}
+	}
+	
+	private void updatePickupWand() {
+		for(int i=0; i<gameObjects.size(); i++)
+			if(gameObjects.get(i) instanceof WandCollect
+					&& Math.floor(gameObjects.get(i).getPosition().x) == Math.floor(player.getPosition().x)
+					&& Math.floor(gameObjects.get(i).getPosition().y) == Math.floor(player.getPosition().y)) {
+				Items.unlocked.put(Items.Holding.WAND, true);
+				gameObjects.remove(i);
+				i--;
+			}
 	}
 	
 	public void render(Graphics g) {
