@@ -9,21 +9,27 @@ public class TextureHolder {
 
 	public static enum ID{
 		TEST_MAP,
-		BARREL,
 		BLUESTONE,
 		COBBLESTONE,
 		EMBLEM,
 		BRICK_0,
 		BRICK_1,
 		MOSSYSTONE,
-		PILLAR,
 		PURPLESTONE,
 		WOOD,
+		
 		SPIDER,
+		PILLAR,
+		BARREL,
+		
 		PLAYER_LATTERN,
 		PLAYER_SWORD,
 		PLAYER_AXE,
-		PLAYER_WAND
+		PLAYER_WAND,
+		
+		GUI_EMPTY_SLOT,
+		GUI_SELECTED_SLOT,
+		GUI_HEALTH_BAR
 	}
 
 	private static HashMap<ID, BufferedImage> textureMap = new HashMap<ID, BufferedImage>();

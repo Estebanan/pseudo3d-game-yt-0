@@ -5,7 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
-import com.youtube.pseudo3d.engine.Raycaster;
+import com.youtube.pseudo3d.engine.GameLogic;
 import com.youtube.pseudo3d.input.InputHandler;
 import com.youtube.pseudo3d.util.Constants;
 
@@ -17,7 +17,7 @@ public class Main extends Canvas implements Runnable{
 	private Thread thread;
 	
 	private Window window;
-	private Raycaster raycaster;
+	private GameLogic raycaster;
 	
 	private double fps;
 	
@@ -45,7 +45,7 @@ public class Main extends Canvas implements Runnable{
 	}
 	
 	private void initRaycaster() {
-		raycaster = new Raycaster(this);
+		raycaster = new GameLogic(this);
 	}
 	
 	@Override

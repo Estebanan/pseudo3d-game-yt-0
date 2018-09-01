@@ -3,7 +3,6 @@ package com.youtube.pseudo3d.engine;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 
 import com.youtube.pseudo3d.input.InputHandler;
 import com.youtube.pseudo3d.resource.TextureHolder;
@@ -12,12 +11,14 @@ import com.youtube.pseudo3d.util.Vector2d;
 
 public class Player {
 
+	public static int HEALTH = 100;
+	
 	private BufferedImage currentTexture;
 	
 	private Vector2d position;
 	private Vector2d direction;
 
-	private Raycaster raycaster;
+	private GameLogic raycaster;
 	
 	private double initialFov;
 	private double actualFov;
@@ -35,9 +36,9 @@ public class Player {
 	
 	private Vector2d spriteScale;
 	
-	private int time = 0;
+	public int time = 0;
 	
-	public Player(Raycaster raycaster) {
+	public Player(GameLogic raycaster) {
 		this.raycaster = raycaster;
 
 		initInitialFields();
@@ -195,8 +196,10 @@ public class Player {
 	
 	public void render(Graphics g) {		
 		g.drawImage(currentTexture,
-				(int)(raycaster.getMain().getWidth() - spriteScale.x * raycaster.getMain().getWidth() + 50 + Math.cos(position.x * 2) * Math.cos(position.y * 2) * 10),
-				(int)(raycaster.getMain().getHeight() - spriteScale.y * raycaster.getMain().getHeight() + Math.sin(position.x) * Math.sin(position.y) * 50) + 100,
+				(int)(raycaster.getMain().getWidth() - 
+						spriteScale.x * raycaster.getMain().getWidth() + 50 + Math.cos(position.x * 2) * Math.cos(position.y * 2) * 10),
+				(int)(raycaster.getMain().getHeight() - 
+						spriteScale.y * raycaster.getMain().getHeight() + Math.sin(position.x) * Math.sin(position.y) * 50) + 100,
 				(int)(spriteScale.x * raycaster.getMain().getWidth()),
 				(int)(spriteScale.y * raycaster.getMain().getHeight()),
 				null);

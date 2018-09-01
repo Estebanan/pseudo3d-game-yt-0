@@ -9,13 +9,14 @@ import com.youtube.pseudo3d.engine.objects.Barrel;
 import com.youtube.pseudo3d.engine.objects.GameObject;
 import com.youtube.pseudo3d.engine.objects.Pillar;
 import com.youtube.pseudo3d.engine.objects.Spider;
+import com.youtube.pseudo3d.gui.Gui;
 import com.youtube.pseudo3d.main.Main;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
 import com.youtube.pseudo3d.util.Constants;
 import com.youtube.pseudo3d.util.Vector2d;
 
-public class Raycaster {
+public class GameLogic {
 
 	public static final int TEST_MAP_TEXTURE_WIDTH = 64;
 	public static final int TEST_MAP_TEXTURE_HEIGHT = 64;
@@ -30,12 +31,15 @@ public class Raycaster {
 
 	private ArrayList<GameObject> gameObjects;
 	
-	public Raycaster(Main main) {
+	private Gui gui;
+	
+	public GameLogic(Main main) {
 		this.main = main;
 		initTextures();
 		initGameObjects();
 		initScreen();
 		initRaycastingFields();
+		initGui();
 	}
 	
 	private void initTextures() {
@@ -52,14 +56,19 @@ public class Raycaster {
 		TextureHolder.load(ID.MOSSYSTONE, 		"/tiles/mossystone.png");
 		TextureHolder.load(ID.WOOD, 			"/tiles/wood.png");
 		TextureHolder.load(ID.COBBLESTONE, 		"/tiles/cobblestone.png");
+		
 		TextureHolder.load(ID.BARREL, 			"/sprites/barrel.png");
 		TextureHolder.load(ID.PILLAR, 			"/sprites/pillar.png");
 		TextureHolder.load(ID.SPIDER, 			"/sprites/spider.png");
 		
 		TextureHolder.load(ID.PLAYER_LATTERN,	"/sprites/player/lattern_hand.png");
-		TextureHolder.load(ID.PLAYER_SWORD,	"/sprites/player/sword_hand.png");
-		TextureHolder.load(ID.PLAYER_AXE,	"/sprites/player/axe_hand.png");
-		TextureHolder.load(ID.PLAYER_WAND,	"/sprites/player/wand_hand.png");
+		TextureHolder.load(ID.PLAYER_SWORD,		"/sprites/player/sword_hand.png");
+		TextureHolder.load(ID.PLAYER_AXE,		"/sprites/player/axe_hand.png");
+		TextureHolder.load(ID.PLAYER_WAND,		"/sprites/player/wand_hand.png");
+		
+		TextureHolder.load(ID.GUI_EMPTY_SLOT,	"/gui/empty-slot.png");
+		TextureHolder.load(ID.GUI_SELECTED_SLOT,"/gui/selected-slot.png");
+		TextureHolder.load(ID.GUI_HEALTH_BAR,   "/gui/health-bar.png");
 	}
 	
 	private void initGameObjects() {
@@ -104,6 +113,10 @@ public class Raycaster {
 		rayprojector = new Rayprojector(this);
 	}
 	
+	private void initGui() {
+		gui = new Gui(this);
+	}
+	
 	public void handleInput(double elapsed) {
 		player.handleInput(elapsed);
 	}
@@ -117,8 +130,8 @@ public class Raycaster {
 	
 	public void render(Graphics g) {
 		g.drawImage(screen, 0, 0, main.getWidth(), main.getHeight(), null);
-		
 		player.render(g);
+		gui.render(g);
 		
 		//DEBUG INFO
 		g.setColor(Color.GRAY);

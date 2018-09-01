@@ -8,7 +8,7 @@ import com.youtube.pseudo3d.util.Vector2i;
 
 public class Rayprojector {
 
-	private Raycaster raycaster;
+	private GameLogic raycaster;
 
 	private Vector2d rayDirection;
 	private Vector2i positionOnMap;
@@ -37,7 +37,7 @@ public class Rayprojector {
 	private int objectsOrder[];
 	private double objectsDistance[];
 
-	public Rayprojector(Raycaster raycaster) {
+	public Rayprojector(GameLogic raycaster) {
 		this.raycaster = raycaster;
 
 		initRayprojectorFields();
@@ -100,10 +100,10 @@ public class Rayprojector {
 
 			for (int y = drawStart; y < drawEnd; y++) {
 				int d = y * 256 - raycaster.getScreen().getHeight() * 128 + projectedLineHeight * 128;
-				rayPositionOnTexture.y = ((d * Raycaster.TEST_MAP_TEXTURE_HEIGHT) / projectedLineHeight) / 256;
+				rayPositionOnTexture.y = ((d * GameLogic.TEST_MAP_TEXTURE_HEIGHT) / projectedLineHeight) / 256;
 
-				if (rayPositionOnTexture.x <= Raycaster.TEST_MAP_TEXTURE_WIDTH
-						&& rayPositionOnTexture.y <= Raycaster.TEST_MAP_TEXTURE_HEIGHT)
+				if (rayPositionOnTexture.x <= GameLogic.TEST_MAP_TEXTURE_WIDTH
+						&& rayPositionOnTexture.y <= GameLogic.TEST_MAP_TEXTURE_HEIGHT)
 					raycaster.getScreen().setRGB(x, y,
 							properWallColor(tileColor, rayPositionOnTexture.x, rayPositionOnTexture.y, side));
 				else
@@ -228,11 +228,11 @@ public class Rayprojector {
 	}
 
 	private void calculateRayPositionOnTexture(boolean side) {
-		rayPositionOnTexture.x = (int) (wallOnScreen.x * (double) (Raycaster.TEST_MAP_TEXTURE_WIDTH));
+		rayPositionOnTexture.x = (int) (wallOnScreen.x * (double) (GameLogic.TEST_MAP_TEXTURE_WIDTH));
 		if (!side && rayDirection.x > 0)
-			rayPositionOnTexture.x = Raycaster.TEST_MAP_TEXTURE_WIDTH - rayPositionOnTexture.x - 1;
+			rayPositionOnTexture.x = GameLogic.TEST_MAP_TEXTURE_WIDTH - rayPositionOnTexture.x - 1;
 		if (side && rayDirection.y < 0)
-			rayPositionOnTexture.x = Raycaster.TEST_MAP_TEXTURE_WIDTH - rayPositionOnTexture.x - 1;
+			rayPositionOnTexture.x = GameLogic.TEST_MAP_TEXTURE_WIDTH - rayPositionOnTexture.x - 1;
 	}
 
 	private void projectFloor(boolean side, int x) {
@@ -266,8 +266,8 @@ public class Rayprojector {
 					weight * floorWall.y + (1.0 - weight) * raycaster.getPlayer().getPosition().y);
 
 			Vector2i floorTexture = new Vector2i(
-					(int) (currentFloor.x * Raycaster.TEST_MAP_TEXTURE_WIDTH) % Raycaster.TEST_MAP_TEXTURE_WIDTH,
-					(int) (currentFloor.y * Raycaster.TEST_MAP_TEXTURE_HEIGHT) % Raycaster.TEST_MAP_TEXTURE_HEIGHT);
+					(int) (currentFloor.x * GameLogic.TEST_MAP_TEXTURE_WIDTH) % GameLogic.TEST_MAP_TEXTURE_WIDTH,
+					(int) (currentFloor.y * GameLogic.TEST_MAP_TEXTURE_HEIGHT) % GameLogic.TEST_MAP_TEXTURE_HEIGHT);
 
 			int floorColor = (TextureHolder.get(ID.COBBLESTONE).getRGB(floorTexture.x, floorTexture.y) & 0xfefefe) >> 1;
 			int ceilingColor = (TextureHolder.get(ID.WOOD).getRGB(floorTexture.x, floorTexture.y) & 0xfefefe) >> 1;
@@ -329,7 +329,7 @@ public class Rayprojector {
 				drawEndX = raycaster.getScreen().getWidth() - 1;
 
 			for (int stripe = drawStartX; stripe < drawEndX; stripe++) {
-				int texX = (int) (256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * Raycaster.TEST_MAP_TEXTURE_WIDTH
+				int texX = (int) (256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * GameLogic.TEST_MAP_TEXTURE_WIDTH
 						/ spriteWidth) / 256;
 
 				if (transform.y > 0 && stripe > 0 && stripe < raycaster.getScreen().getWidth()
@@ -339,9 +339,9 @@ public class Rayprojector {
 					{
 						int d = (y) * 256 - raycaster.getScreen().getHeight() * 128 + spriteHeight * 128;
 						
-						int texY = ((d * Raycaster.TEST_MAP_TEXTURE_HEIGHT) / spriteHeight) / 256;
+						int texY = ((d * GameLogic.TEST_MAP_TEXTURE_HEIGHT) / spriteHeight) / 256;
 
-						int color = TextureHolder.get(raycaster.getGameObjects().get(objectsOrder[i]).getTexture()).getRGB(texX, texY);
+						int color = TextureHolder.get(raycaster.getGameObjects().get(objectsOrder[i]).getTexture()).getRGB(Math.abs(texX), Math.abs(texY));
 
 						if (spriteHeight < 300 / raycaster.getPlayer().getEmittedLight())
 							color = MathUtil.shadeColor(color, 400 / (spriteHeight * raycaster.getPlayer().getEmittedLight()));
