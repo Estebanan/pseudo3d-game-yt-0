@@ -1,18 +1,21 @@
-package com.youtube.pseudo3d.engine.objects;
+package com.youtube.pseudo3d.engine.objects.still;
 
 import com.youtube.pseudo3d.engine.GameLogic;
+import com.youtube.pseudo3d.engine.objects.GameObject;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
 import com.youtube.pseudo3d.util.Vector2d;
 
-public class Pillar extends GameObject{
+public class Barrel extends GameObject{
 
-	public Pillar(GameLogic raycaster, Vector2d position) {
+	public Barrel(GameLogic raycaster, Vector2d position) {
 		super(raycaster, position);
-
-		texture = ID.PILLAR;
+		
+		texture = ID.BARREL;
 	}
+
 	@Override
 	public void update(double elapsed) {
 		
 	}
+
 }

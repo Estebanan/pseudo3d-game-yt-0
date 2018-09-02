@@ -5,14 +5,15 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import com.youtube.pseudo3d.engine.objects.AxeCollect;
-import com.youtube.pseudo3d.engine.objects.Barrel;
 import com.youtube.pseudo3d.engine.objects.GameObject;
-import com.youtube.pseudo3d.engine.objects.LatternCollect;
-import com.youtube.pseudo3d.engine.objects.Pillar;
-import com.youtube.pseudo3d.engine.objects.Spider;
-import com.youtube.pseudo3d.engine.objects.SwordCollect;
-import com.youtube.pseudo3d.engine.objects.WandCollect;
+import com.youtube.pseudo3d.engine.objects.collect.AxeCollect;
+import com.youtube.pseudo3d.engine.objects.collect.LatternCollect;
+import com.youtube.pseudo3d.engine.objects.collect.SwordCollect;
+import com.youtube.pseudo3d.engine.objects.collect.WandCollect;
+import com.youtube.pseudo3d.engine.objects.missle.WandMissle;
+import com.youtube.pseudo3d.engine.objects.still.Barrel;
+import com.youtube.pseudo3d.engine.objects.still.Pillar;
+import com.youtube.pseudo3d.engine.objects.still.Spider;
 import com.youtube.pseudo3d.gui.Gui;
 import com.youtube.pseudo3d.main.Main;
 import com.youtube.pseudo3d.resource.TextureHolder;
@@ -150,6 +151,7 @@ public class GameLogic {
 		gui.update(elapsed);
 		
 		updateGameObjects(elapsed);
+		updateWallCollisions();
 		
 		updatePickupLattern();
 		updatePickupSword();
@@ -160,6 +162,18 @@ public class GameLogic {
 	private void updateGameObjects(double elapsed) {
 		for(int i=0; i<gameObjects.size(); i++)
 			gameObjects.get(i).update(elapsed);
+	}
+	
+	private void updateWallCollisions() {
+		for(int i=0; i<gameObjects.size(); i++)
+			if(gameObjects.get(i) instanceof WandMissle
+					&& TextureHolder.get(ID.TEST_MAP).getRGB((int) (gameObjects.get(i).getPosition().x),
+							(int) (gameObjects.get(i).getPosition().y)) != 0xff000000) {
+				gameObjects.remove(i);
+				i--;
+			}
+		
+		System.out.println(gameObjects.size());
 	}
 	
 	private void updatePickupLattern() {

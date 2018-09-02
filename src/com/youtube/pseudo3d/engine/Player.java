@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
-import com.youtube.pseudo3d.engine.objects.WandMissle;
+import com.youtube.pseudo3d.engine.objects.missle.WandMissle;
 import com.youtube.pseudo3d.input.InputHandler;
 import com.youtube.pseudo3d.resource.Animator;
 import com.youtube.pseudo3d.resource.TextureHolder;
@@ -240,8 +240,8 @@ public class Player {
 		int duration = 10;
 		updateAnimation(wandAnimator, duration);
 			
-		if((time / duration) % (wandAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) {
-			raycaster.getGameObjects().add(new WandMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y)));
+		if((time / duration) % (wandAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
+			raycaster.getGameObjects().add(new WandMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 100.0));
 			attackDelay = 0;
 		}
 
