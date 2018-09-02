@@ -6,11 +6,12 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import com.youtube.pseudo3d.engine.objects.GameObject;
+import com.youtube.pseudo3d.engine.objects.MovableObject;
 import com.youtube.pseudo3d.engine.objects.collect.AxeCollect;
 import com.youtube.pseudo3d.engine.objects.collect.LatternCollect;
 import com.youtube.pseudo3d.engine.objects.collect.SwordCollect;
 import com.youtube.pseudo3d.engine.objects.collect.WandCollect;
-import com.youtube.pseudo3d.engine.objects.missle.WandMissle;
+import com.youtube.pseudo3d.engine.objects.missle.SwordMissle;
 import com.youtube.pseudo3d.engine.objects.still.Barrel;
 import com.youtube.pseudo3d.engine.objects.still.Pillar;
 import com.youtube.pseudo3d.engine.objects.still.Spider;
@@ -19,6 +20,7 @@ import com.youtube.pseudo3d.main.Main;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
 import com.youtube.pseudo3d.util.Constants;
+import com.youtube.pseudo3d.util.MathUtil;
 import com.youtube.pseudo3d.util.Vector2d;
 
 public class GameLogic {
@@ -67,6 +69,7 @@ public class GameLogic {
 		TextureHolder.load(ID.SPIDER, 			"/sprites/spider.png");
 		
 		TextureHolder.load(ID.WAND_MISSLE,  	"/sprites/missle/wand-missle.png");
+		TextureHolder.load(ID.SWORD_MISSLE,  	"/sprites/missle/sword-missle.png");
 		
 		TextureHolder.load(ID.LATTERN_COLLECT,  "/sprites/collect/lattern_collect.png");
 		TextureHolder.load(ID.SWORD_COLLECT,  	"/sprites/collect/sword_collect.png");
@@ -153,6 +156,7 @@ public class GameLogic {
 		
 		updateGameObjects(elapsed);
 		updateWallCollisions();
+		updateCloseDistanceMisslesDisapear();
 		
 		updatePickupLattern();
 		updatePickupSword();
@@ -167,9 +171,20 @@ public class GameLogic {
 	
 	private void updateWallCollisions() {
 		for(int i=0; i<gameObjects.size(); i++)
-			if(gameObjects.get(i) instanceof WandMissle
+			if(gameObjects.get(i) instanceof MovableObject
 					&& TextureHolder.get(ID.TEST_MAP).getRGB((int) (gameObjects.get(i).getPosition().x),
 							(int) (gameObjects.get(i).getPosition().y)) != 0xff000000) {
+				
+				gameObjects.remove(i);
+				i--;
+			}
+	}
+	
+	private void updateCloseDistanceMisslesDisapear() {
+		for(int i=0; i<gameObjects.size(); i++)
+			if(gameObjects.get(i) instanceof SwordMissle
+					&& MathUtil.pythagoreanDistance(player.getPosition(), gameObjects.get(i).getPosition()) > 1.5) {
+					
 				gameObjects.remove(i);
 				i--;
 			}

@@ -47,4 +47,8 @@ public class MathUtil {
 		array[j] = temp;
 	}
 	
+	public static double pythagoreanDistance(Vector2d a, Vector2d b) {
+		return Math.sqrt((b.y-a.y)*(b.y-a.y) + (b.x-a.x)*(b.x-a.x));
+	}
+	
 }

@@ -23,6 +23,7 @@ public class TextureHolder {
 		BARREL,
 		
 		WAND_MISSLE,
+		SWORD_MISSLE,
 		
 		LATTERN_COLLECT,
 		SWORD_COLLECT,

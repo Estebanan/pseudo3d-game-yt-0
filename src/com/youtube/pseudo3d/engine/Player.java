@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
+import com.youtube.pseudo3d.engine.objects.missle.SwordMissle;
 import com.youtube.pseudo3d.engine.objects.missle.WandMissle;
 import com.youtube.pseudo3d.input.InputHandler;
 import com.youtube.pseudo3d.resource.Animator;
@@ -244,7 +245,7 @@ public class Player {
 			
 		if((time / duration) % (swordAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
 			attackDelay = 0;
-			//TODO: attack
+			raycaster.getGameObjects().add(new SwordMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 100.0));
 		}
 
 	}
