@@ -41,6 +41,7 @@ public class Player {
 	public int time = 0;
 	
 	private Animator wandAnimator;	
+	private Animator swordAnimator;	
 	private boolean attack = false;
 	private double attackDelay = 0;
 	
@@ -76,7 +77,7 @@ public class Player {
 	
 	private void initAnimators() {
 		wandAnimator = new Animator(TextureHolder.get(ID.PLAYER_WAND_ATTACK), 64, 128, 6);
-
+		swordAnimator = new Animator(TextureHolder.get(ID.PLAYER_SWORD_ATTACK), 64, 64, 6);
 	}
 
 	public void handleInput(double elapsed) {
@@ -226,6 +227,7 @@ public class Player {
 			case LATTERN:
 				break;
 			case SWORD:
+				updateAttackSword();
 				break;
 			case AXE:
 				break;
@@ -234,6 +236,17 @@ public class Player {
 				break;
 			}
 		}
+	}
+	
+	private void updateAttackSword() {
+		int duration = 15;
+		updateAnimation(swordAnimator, duration);
+			
+		if((time / duration) % (swordAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
+			attackDelay = 0;
+			//TODO: attack
+		}
+
 	}
 	
 	private void updateAttackWand() {

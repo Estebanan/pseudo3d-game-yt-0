@@ -75,6 +75,7 @@ public class GameLogic {
 		
 		TextureHolder.load(ID.PLAYER_LATTERN,	"/player/lattern/lattern_hand.png");
 		TextureHolder.load(ID.PLAYER_SWORD,		"/player/sword/sword_hand.png");
+		TextureHolder.load(ID.PLAYER_SWORD_ATTACK,"/player/sword/sword_attack.png");
 		TextureHolder.load(ID.PLAYER_AXE,		"/player/axe/axe_hand.png");
 		TextureHolder.load(ID.PLAYER_WAND,		"/player/wand/wand_hand.png");
 		TextureHolder.load(ID.PLAYER_WAND_ATTACK,"/player/wand/wand_attack.png");
@@ -172,8 +173,6 @@ public class GameLogic {
 				gameObjects.remove(i);
 				i--;
 			}
-		
-		System.out.println(gameObjects.size());
 	}
 	
 	private void updatePickupLattern() {
