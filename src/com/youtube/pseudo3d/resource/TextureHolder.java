@@ -22,8 +22,9 @@ public class TextureHolder {
 		PILLAR,
 		BARREL,
 		
-		WAND_MISSLE,
 		SWORD_MISSLE,
+		AXE_MISSLE,
+		WAND_MISSLE,
 		
 		LATTERN_COLLECT,
 		SWORD_COLLECT,
@@ -34,6 +35,7 @@ public class TextureHolder {
 		PLAYER_SWORD,
 		PLAYER_SWORD_ATTACK,
 		PLAYER_AXE,
+		PLAYER_AXE_ATTACK,
 		PLAYER_WAND,
 		PLAYER_WAND_ATTACK,
 		

@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
+import com.youtube.pseudo3d.engine.objects.missle.AxeMissle;
 import com.youtube.pseudo3d.engine.objects.missle.SwordMissle;
 import com.youtube.pseudo3d.engine.objects.missle.WandMissle;
 import com.youtube.pseudo3d.input.InputHandler;
@@ -41,8 +42,9 @@ public class Player {
 	
 	public int time = 0;
 	
-	private Animator wandAnimator;	
 	private Animator swordAnimator;	
+	private Animator axeAnimator;
+	private Animator wandAnimator;		
 	private boolean attack = false;
 	private double attackDelay = 0;
 	
@@ -79,6 +81,7 @@ public class Player {
 	private void initAnimators() {
 		wandAnimator = new Animator(TextureHolder.get(ID.PLAYER_WAND_ATTACK), 64, 128, 6);
 		swordAnimator = new Animator(TextureHolder.get(ID.PLAYER_SWORD_ATTACK), 64, 64, 6);
+		axeAnimator = new Animator(TextureHolder.get(ID.PLAYER_AXE_ATTACK), 128, 128, 6);
 	}
 
 	public void handleInput(double elapsed) {
@@ -231,6 +234,7 @@ public class Player {
 				updateAttackSword();
 				break;
 			case AXE:
+				updateAttackAxe();
 				break;
 			case WAND:
 				updateAttackWand();
@@ -246,6 +250,17 @@ public class Player {
 		if((time / duration) % (swordAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
 			attackDelay = 0;
 			raycaster.getGameObjects().add(new SwordMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 100.0));
+		}
+
+	}
+	
+	private void updateAttackAxe() {
+		int duration = 10;
+		updateAnimation(axeAnimator, duration);
+			
+		if((time / duration) % (axeAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
+			attackDelay = 0;
+			raycaster.getGameObjects().add(new AxeMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 100.0));
 		}
 
 	}

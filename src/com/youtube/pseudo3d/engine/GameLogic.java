@@ -11,6 +11,7 @@ import com.youtube.pseudo3d.engine.objects.collect.AxeCollect;
 import com.youtube.pseudo3d.engine.objects.collect.LatternCollect;
 import com.youtube.pseudo3d.engine.objects.collect.SwordCollect;
 import com.youtube.pseudo3d.engine.objects.collect.WandCollect;
+import com.youtube.pseudo3d.engine.objects.missle.AxeMissle;
 import com.youtube.pseudo3d.engine.objects.missle.SwordMissle;
 import com.youtube.pseudo3d.engine.objects.still.Barrel;
 import com.youtube.pseudo3d.engine.objects.still.Pillar;
@@ -68,8 +69,9 @@ public class GameLogic {
 		TextureHolder.load(ID.PILLAR, 			"/sprites/pillar.png");
 		TextureHolder.load(ID.SPIDER, 			"/sprites/spider.png");
 		
-		TextureHolder.load(ID.WAND_MISSLE,  	"/sprites/missle/wand-missle.png");
 		TextureHolder.load(ID.SWORD_MISSLE,  	"/sprites/missle/sword-missle.png");
+		TextureHolder.load(ID.AXE_MISSLE,       "/sprites/missle/axe-missle.png");
+		TextureHolder.load(ID.WAND_MISSLE,  	"/sprites/missle/wand-missle.png");
 		
 		TextureHolder.load(ID.LATTERN_COLLECT,  "/sprites/collect/lattern_collect.png");
 		TextureHolder.load(ID.SWORD_COLLECT,  	"/sprites/collect/sword_collect.png");
@@ -80,6 +82,7 @@ public class GameLogic {
 		TextureHolder.load(ID.PLAYER_SWORD,		"/player/sword/sword_hand.png");
 		TextureHolder.load(ID.PLAYER_SWORD_ATTACK,"/player/sword/sword_attack.png");
 		TextureHolder.load(ID.PLAYER_AXE,		"/player/axe/axe_hand.png");
+		TextureHolder.load(ID.PLAYER_AXE_ATTACK,"/player/axe/axe_attack.png");
 		TextureHolder.load(ID.PLAYER_WAND,		"/player/wand/wand_hand.png");
 		TextureHolder.load(ID.PLAYER_WAND_ATTACK,"/player/wand/wand_attack.png");
 		
@@ -182,7 +185,7 @@ public class GameLogic {
 	
 	private void updateCloseDistanceMisslesDisapear() {
 		for(int i=0; i<gameObjects.size(); i++)
-			if(gameObjects.get(i) instanceof SwordMissle
+			if((gameObjects.get(i) instanceof SwordMissle || gameObjects.get(i) instanceof AxeMissle)
 					&& MathUtil.pythagoreanDistance(player.getPosition(), gameObjects.get(i).getPosition()) > 1.5) {
 					
 				gameObjects.remove(i);
