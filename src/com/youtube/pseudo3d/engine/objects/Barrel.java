@@ -12,4 +12,9 @@ public class Barrel extends GameObject{
 		texture = ID.BARREL;
 	}
 
+	@Override
+	public void update(double elapsed) {
+		
+	}
+
 }

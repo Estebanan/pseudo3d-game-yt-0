@@ -11,5 +11,8 @@ public class Pillar extends GameObject{
 
 		texture = ID.PILLAR;
 	}
-
+	@Override
+	public void update(double elapsed) {
+		
+	}
 }

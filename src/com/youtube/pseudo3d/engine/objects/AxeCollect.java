@@ -12,4 +12,9 @@ public class AxeCollect extends GameObject{
 		texture = ID.AXE_COLLECT;
 	}
 
+	@Override
+	public void update(double elapsed) {
+		
+	}
+
 }

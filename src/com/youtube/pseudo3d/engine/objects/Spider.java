@@ -11,5 +11,8 @@ public class Spider extends GameObject{
 
 		texture = ID.SPIDER;
 	}
-
+	@Override
+	public void update(double elapsed) {
+		
+	}
 }

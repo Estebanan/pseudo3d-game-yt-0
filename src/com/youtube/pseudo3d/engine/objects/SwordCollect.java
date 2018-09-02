@@ -11,5 +11,8 @@ public class SwordCollect extends GameObject{
 
 		texture = ID.SWORD_COLLECT;
 	}
-
+	@Override
+	public void update(double elapsed) {
+		
+	}
 }

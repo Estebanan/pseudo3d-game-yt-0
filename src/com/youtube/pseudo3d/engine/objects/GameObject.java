@@ -16,6 +16,8 @@ public abstract class GameObject {
 		this.position = position;
 	}
 	
+	public abstract void update(double elapsed);
+	
 	public Vector2d getPosition() {
 		return position;
 	}

@@ -11,4 +11,9 @@ public class LatternCollect extends GameObject{
 		
 		texture = ID.LATTERN_COLLECT;
 	}
+
+	@Override
+	public void update(double elapsed) {
+		
+	}
 }

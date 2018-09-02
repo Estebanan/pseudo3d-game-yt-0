@@ -64,6 +64,9 @@ public class GameLogic {
 		TextureHolder.load(ID.BARREL, 			"/sprites/barrel.png");
 		TextureHolder.load(ID.PILLAR, 			"/sprites/pillar.png");
 		TextureHolder.load(ID.SPIDER, 			"/sprites/spider.png");
+		
+		TextureHolder.load(ID.WAND_MISSLE,  	"/sprites/missle/wand-missle.png");
+		
 		TextureHolder.load(ID.LATTERN_COLLECT,  "/sprites/collect/lattern_collect.png");
 		TextureHolder.load(ID.SWORD_COLLECT,  	"/sprites/collect/sword_collect.png");
 		TextureHolder.load(ID.AXE_COLLECT,  	"/sprites/collect/axe_collect.png");
@@ -146,10 +149,17 @@ public class GameLogic {
 		player.update(elapsed);
 		gui.update(elapsed);
 		
+		updateGameObjects(elapsed);
+		
 		updatePickupLattern();
 		updatePickupSword();
 		updatePickupAxe();
 		updatePickupWand();
+	}
+	
+	private void updateGameObjects(double elapsed) {
+		for(int i=0; i<gameObjects.size(); i++)
+			gameObjects.get(i).update(elapsed);
 	}
 	
 	private void updatePickupLattern() {

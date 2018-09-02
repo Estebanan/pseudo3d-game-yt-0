@@ -21,6 +21,9 @@ public class TextureHolder {
 		SPIDER,
 		PILLAR,
 		BARREL,
+		
+		WAND_MISSLE,
+		
 		LATTERN_COLLECT,
 		SWORD_COLLECT,
 		AXE_COLLECT,

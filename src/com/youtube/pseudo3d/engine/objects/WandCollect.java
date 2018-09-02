@@ -11,5 +11,9 @@ public class WandCollect extends GameObject{
 		
 		texture = ID.WAND_COLLECT;
 	}
-
+	
+	@Override
+	public void update(double elapsed) {
+		
+	}
 }

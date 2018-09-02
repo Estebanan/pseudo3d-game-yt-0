@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
+import com.youtube.pseudo3d.engine.objects.WandMissle;
 import com.youtube.pseudo3d.input.InputHandler;
 import com.youtube.pseudo3d.resource.Animator;
 import com.youtube.pseudo3d.resource.TextureHolder;
@@ -39,8 +40,10 @@ public class Player {
 	
 	public int time = 0;
 	
-	private Animator wandAnimator;
+	private Animator wandAnimator;	
 	private boolean attack = false;
+	private double attackDelay = 0;
+	
 	
 	public Player(GameLogic raycaster) {
 		this.raycaster = raycaster;
@@ -214,7 +217,8 @@ public class Player {
 	}
 	
 	private void updateAttackAction() {
-		if(attack)
+		if(attack) {
+			attackDelay++;
 			switch(Items.holding) {
 			default:
 			case HAND:
@@ -229,10 +233,22 @@ public class Player {
 				updateAttackWand();
 				break;
 			}
+		}
 	}
 	
 	private void updateAttackWand() {
-		currentTexture = wandAnimator.getCurrentFrame()[(time / 10) % wandAnimator.getCurrentFrame().length];
+		int duration = 10;
+		updateAnimation(wandAnimator, duration);
+			
+		if((time / duration) % (wandAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) {
+			raycaster.getGameObjects().add(new WandMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y)));
+			attackDelay = 0;
+		}
+
+	}
+	
+	private void updateAnimation(Animator animator, int duration) {
+		currentTexture = animator.getCurrentFrame()[(time / duration) % animator.getCurrentFrame().length];
 	}
 	
 	public void render(Graphics g) {		
