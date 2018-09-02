@@ -30,6 +30,7 @@ public class TextureHolder {
 		PLAYER_SWORD,
 		PLAYER_AXE,
 		PLAYER_WAND,
+		PLAYER_WAND_ATTACK,
 		
 		GUI_EMPTY_SLOT,
 		GUI_SELECTED_SLOT,

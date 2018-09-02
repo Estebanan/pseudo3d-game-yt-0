@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import com.youtube.pseudo3d.input.InputHandler;
+import com.youtube.pseudo3d.resource.Animator;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
 import com.youtube.pseudo3d.util.Vector2d;
@@ -38,10 +39,14 @@ public class Player {
 	
 	public int time = 0;
 	
+	private Animator wandAnimator;
+	private boolean attack = false;
+	
 	public Player(GameLogic raycaster) {
 		this.raycaster = raycaster;
 
 		initInitialFields();
+		initAnimators();
 	}
 
 	private void initInitialFields() {
@@ -62,12 +67,18 @@ public class Player {
 		direction = new Vector2d(-1, 0);
 
 		spriteScale = new Vector2d(.44, .73);
-		
+				
 		rotate(Math.PI / 2);
+	}
+	
+	private void initAnimators() {
+		wandAnimator = new Animator(TextureHolder.get(ID.PLAYER_WAND_ATTACK), 64, 128, 6);
+
 	}
 
 	public void handleInput(double elapsed) {
 		handleInputHoldingItem();
+		handleInputAttack();
 		handleInputMovement(elapsed);
 		handleInputSprinting(elapsed);
 	}
@@ -83,6 +94,13 @@ public class Player {
 			Items.holding = Items.Holding.AXE;
 		if(InputHandler.isKeyPressed(KeyEvent.VK_5) && Items.unlocked.get(Items.Holding.WAND))
 			Items.holding = Items.Holding.WAND;
+	}
+	
+	private void handleInputAttack() {
+		if(InputHandler.isKeyPressed(KeyEvent.VK_SPACE))
+			attack = true;
+		else
+			attack = false;
 	}
 	
 	private void handleInputMovement(double elapsed) {
@@ -142,6 +160,7 @@ public class Player {
 
 		updateCurrentTexture();
 		updateEmittedLight();
+		updateAttackAction();
 	}
 	
 	private void updateCurrentTexture() {
@@ -192,6 +211,28 @@ public class Player {
 			emittedLight = 2.0;
 			break;
 		}
+	}
+	
+	private void updateAttackAction() {
+		if(attack)
+			switch(Items.holding) {
+			default:
+			case HAND:
+				break;
+			case LATTERN:
+				break;
+			case SWORD:
+				break;
+			case AXE:
+				break;
+			case WAND:
+				updateAttackWand();
+				break;
+			}
+	}
+	
+	private void updateAttackWand() {
+		currentTexture = wandAnimator.getCurrentFrame()[(time / 10) % wandAnimator.getCurrentFrame().length];
 	}
 	
 	public void render(Graphics g) {		

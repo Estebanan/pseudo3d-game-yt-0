@@ -69,10 +69,11 @@ public class GameLogic {
 		TextureHolder.load(ID.AXE_COLLECT,  	"/sprites/collect/axe_collect.png");
 		TextureHolder.load(ID.WAND_COLLECT,  	"/sprites/collect/wand_collect.png");
 		
-		TextureHolder.load(ID.PLAYER_LATTERN,	"/sprites/player/lattern_hand.png");
-		TextureHolder.load(ID.PLAYER_SWORD,		"/sprites/player/sword_hand.png");
-		TextureHolder.load(ID.PLAYER_AXE,		"/sprites/player/axe_hand.png");
-		TextureHolder.load(ID.PLAYER_WAND,		"/sprites/player/wand_hand.png");
+		TextureHolder.load(ID.PLAYER_LATTERN,	"/player/lattern/lattern_hand.png");
+		TextureHolder.load(ID.PLAYER_SWORD,		"/player/sword/sword_hand.png");
+		TextureHolder.load(ID.PLAYER_AXE,		"/player/axe/axe_hand.png");
+		TextureHolder.load(ID.PLAYER_WAND,		"/player/wand/wand_hand.png");
+		TextureHolder.load(ID.PLAYER_WAND_ATTACK,"/player/wand/wand_attack.png");
 		
 		TextureHolder.load(ID.GUI_EMPTY_SLOT,	"/gui/empty-slot.png");
 		TextureHolder.load(ID.GUI_SELECTED_SLOT,"/gui/selected-slot.png");
