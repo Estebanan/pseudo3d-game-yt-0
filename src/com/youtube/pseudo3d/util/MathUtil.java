@@ -51,4 +51,10 @@ public class MathUtil {
 		return Math.sqrt((b.y-a.y)*(b.y-a.y) + (b.x-a.x)*(b.x-a.x));
 	}
 	
+	public static double randomWithRange(double min, double max)
+	{
+	   double range = (max - min) + 1;     
+	   return (double)(Math.random() * range) + min;
+	}
+	
 }

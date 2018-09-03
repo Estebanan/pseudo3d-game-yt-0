@@ -1,15 +1,18 @@
 package com.youtube.pseudo3d.engine.objects.missle;
 
 import com.youtube.pseudo3d.engine.GameLogic;
-import com.youtube.pseudo3d.engine.objects.MovableObject;
+import com.youtube.pseudo3d.engine.objects.MovingObject;
+import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
 import com.youtube.pseudo3d.util.Vector2d;
 
-public class SwordMissle extends MovableObject{
+public class SwordMissle extends MovingObject implements Missle{
 
+	public static int DAMAGE = 50;
+	
 	public SwordMissle(GameLogic raycaster, Vector2d position, Vector2d direction, double actualMovementSpeed) {
 		super(raycaster, position, direction, actualMovementSpeed);
-		texture = ID.SWORD_MISSLE;
+		texture =  TextureHolder.get(ID.SWORD_MISSLE);
 	}
 	
 	@Override

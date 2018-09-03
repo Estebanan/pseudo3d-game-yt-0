@@ -1,7 +1,8 @@
 package com.youtube.pseudo3d.engine.objects;
 
+import java.awt.image.BufferedImage;
+
 import com.youtube.pseudo3d.engine.GameLogic;
-import com.youtube.pseudo3d.resource.TextureHolder.ID;
 import com.youtube.pseudo3d.util.Vector2d;
 
 public abstract class GameObject {
@@ -9,7 +10,10 @@ public abstract class GameObject {
 	protected Vector2d position;
 	protected GameLogic raycaster;
 	
-	protected ID texture;
+	protected BufferedImage texture;
+	
+	public boolean dead;
+	public int health;
 	
 	public GameObject(GameLogic raycaster, Vector2d position) {
 		this.raycaster = raycaster;
@@ -22,7 +26,7 @@ public abstract class GameObject {
 		return position;
 	}
 	
-	public ID getTexture() {
+	public BufferedImage getTexture() {
 		return texture;
 	}
 }

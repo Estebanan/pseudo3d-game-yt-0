@@ -341,7 +341,7 @@ public class Rayprojector {
 						
 						int texY = ((d * GameLogic.TEST_MAP_TEXTURE_HEIGHT) / spriteHeight) / 256;
 
-						int color = TextureHolder.get(raycaster.getGameObjects().get(objectsOrder[i]).getTexture()).getRGB(Math.abs(texX), Math.abs(texY));
+						int color = raycaster.getGameObjects().get(objectsOrder[i]).getTexture().getRGB(Math.abs(texX), Math.abs(texY));
 
 						if (spriteHeight < 300 / raycaster.getPlayer().getEmittedLight())
 							color = MathUtil.shadeColor(color, 400 / (spriteHeight * raycaster.getPlayer().getEmittedLight()));

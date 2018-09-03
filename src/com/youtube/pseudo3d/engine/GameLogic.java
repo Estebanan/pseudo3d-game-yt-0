@@ -6,13 +6,16 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import com.youtube.pseudo3d.engine.objects.GameObject;
-import com.youtube.pseudo3d.engine.objects.MovableObject;
 import com.youtube.pseudo3d.engine.objects.collect.AxeCollect;
 import com.youtube.pseudo3d.engine.objects.collect.LatternCollect;
 import com.youtube.pseudo3d.engine.objects.collect.SwordCollect;
 import com.youtube.pseudo3d.engine.objects.collect.WandCollect;
+import com.youtube.pseudo3d.engine.objects.enemy.Bat;
+import com.youtube.pseudo3d.engine.objects.enemy.Enemy;
 import com.youtube.pseudo3d.engine.objects.missle.AxeMissle;
+import com.youtube.pseudo3d.engine.objects.missle.Missle;
 import com.youtube.pseudo3d.engine.objects.missle.SwordMissle;
+import com.youtube.pseudo3d.engine.objects.missle.WandMissle;
 import com.youtube.pseudo3d.engine.objects.still.Barrel;
 import com.youtube.pseudo3d.engine.objects.still.Pillar;
 import com.youtube.pseudo3d.engine.objects.still.Spider;
@@ -41,6 +44,8 @@ public class GameLogic {
 	
 	private Gui gui;
 	
+	public int time = 0;
+	
 	public GameLogic(Main main) {
 		this.main = main;
 		initTextures();
@@ -55,7 +60,10 @@ public class GameLogic {
 	}
 	
 	private void generateTextures() {
+		//MAPS
 		TextureHolder.load(ID.TEST_MAP, 		"/maps/test_map.png");
+		
+		//WALLS
 		TextureHolder.load(ID.EMBLEM, 			"/tiles/emblem.png");
 		TextureHolder.load(ID.BRICK_0, 			"/tiles/brick_0.png");
 		TextureHolder.load(ID.BRICK_1, 			"/tiles/brick_1.png");
@@ -65,19 +73,28 @@ public class GameLogic {
 		TextureHolder.load(ID.WOOD, 			"/tiles/wood.png");
 		TextureHolder.load(ID.COBBLESTONE, 		"/tiles/cobblestone.png");
 		
+		//STILL SPRITES
 		TextureHolder.load(ID.BARREL, 			"/sprites/barrel.png");
 		TextureHolder.load(ID.PILLAR, 			"/sprites/pillar.png");
 		TextureHolder.load(ID.SPIDER, 			"/sprites/spider.png");
 		
+		//MISSLES
 		TextureHolder.load(ID.SWORD_MISSLE,  	"/sprites/missle/sword-missle.png");
 		TextureHolder.load(ID.AXE_MISSLE,       "/sprites/missle/axe-missle.png");
 		TextureHolder.load(ID.WAND_MISSLE,  	"/sprites/missle/wand-missle.png");
 		
+		//COLLECT
 		TextureHolder.load(ID.LATTERN_COLLECT,  "/sprites/collect/lattern_collect.png");
 		TextureHolder.load(ID.SWORD_COLLECT,  	"/sprites/collect/sword_collect.png");
 		TextureHolder.load(ID.AXE_COLLECT,  	"/sprites/collect/axe_collect.png");
 		TextureHolder.load(ID.WAND_COLLECT,  	"/sprites/collect/wand_collect.png");
 		
+		//ENEMIES
+		TextureHolder.load(ID.ENEMY_BAT,		"/sprites/enemy/bat/bat.png");
+		TextureHolder.load(ID.ENEMY_BAT_DYING,	"/sprites/enemy/bat/bat-dying.png");
+		TextureHolder.load(ID.ENEMY_BAT_CORPSE,	"/sprites/enemy/bat/bat-corpse.png");
+		
+		//PLAYER
 		TextureHolder.load(ID.PLAYER_LATTERN,	"/player/lattern/lattern_hand.png");
 		TextureHolder.load(ID.PLAYER_SWORD,		"/player/sword/sword_hand.png");
 		TextureHolder.load(ID.PLAYER_SWORD_ATTACK,"/player/sword/sword_attack.png");
@@ -86,6 +103,7 @@ public class GameLogic {
 		TextureHolder.load(ID.PLAYER_WAND,		"/player/wand/wand_hand.png");
 		TextureHolder.load(ID.PLAYER_WAND_ATTACK,"/player/wand/wand_attack.png");
 		
+		//GUI
 		TextureHolder.load(ID.GUI_EMPTY_SLOT,	"/gui/empty-slot.png");
 		TextureHolder.load(ID.GUI_SELECTED_SLOT,"/gui/selected-slot.png");
 		TextureHolder.load(ID.GUI_HEALTH_BAR,   "/gui/health-bar.png");
@@ -130,6 +148,9 @@ public class GameLogic {
 		gameObjects.add(new SwordCollect(this, new Vector2d(17.5, 17.5)));
 		gameObjects.add(new AxeCollect(this, new Vector2d(16.5, 16.5)));
 		gameObjects.add(new WandCollect(this, new Vector2d(15.5, 15.5)));
+		
+		for(int i=0; i<5; i++)
+			gameObjects.add(new Bat(this, new Vector2d(7.0, 12.0)));
 	}
 	
 	private void initScreen() {
@@ -151,6 +172,7 @@ public class GameLogic {
 	}
 	
 	public void update(double elapsed) {
+		time += (elapsed * 1e3);		
 		// UPDATE SCREEN SIZE DEPENDING ON WINDOW SIZE
 		screen = new BufferedImage(Constants.RESOLUTION_WIDTH, Constants.RESOLUTION_HEIGHT, BufferedImage.TYPE_INT_RGB);
 		rayprojector.projectRays();
@@ -159,6 +181,10 @@ public class GameLogic {
 		
 		updateGameObjects(elapsed);
 		updateWallCollisions();
+		
+		updateDamagingEnemies();
+		updateEnemiesDeath();
+		
 		updateCloseDistanceMisslesDisapear();
 		
 		updatePickupLattern();
@@ -174,7 +200,7 @@ public class GameLogic {
 	
 	private void updateWallCollisions() {
 		for(int i=0; i<gameObjects.size(); i++)
-			if(gameObjects.get(i) instanceof MovableObject
+			if(gameObjects.get(i) instanceof Missle
 					&& TextureHolder.get(ID.TEST_MAP).getRGB((int) (gameObjects.get(i).getPosition().x),
 							(int) (gameObjects.get(i).getPosition().y)) != 0xff000000) {
 				
@@ -183,11 +209,42 @@ public class GameLogic {
 			}
 	}
 	
+	private void updateDamagingEnemies() {
+		for(int i=0; i<gameObjects.size(); i++)
+			for(int j=0; j<gameObjects.size(); j++)
+				if(gameObjects.get(i) instanceof Enemy
+						&& gameObjects.get(j) instanceof Missle
+						&& Math.floor(gameObjects.get(i).getPosition().x) == Math.floor(gameObjects.get(j).getPosition().x)
+						&& Math.floor(gameObjects.get(i).getPosition().y) == Math.floor(gameObjects.get(j).getPosition().y)) {
+					
+					if(gameObjects.get(j) instanceof SwordMissle)
+						gameObjects.get(i).health -= SwordMissle.DAMAGE;
+					
+					else if(gameObjects.get(j) instanceof AxeMissle)
+						gameObjects.get(i).health -= AxeMissle.DAMAGE;
+					
+					else if(gameObjects.get(j) instanceof WandMissle)
+						gameObjects.get(i).health -= WandMissle.DAMAGE;
+					
+					gameObjects.remove(j);
+					j--;
+				}
+	}
+	
+	private void updateEnemiesDeath() {
+		for(int i=0; i<gameObjects.size(); i++) {
+			if(gameObjects.get(i) instanceof Enemy
+					&& gameObjects.get(i).dead) {
+				gameObjects.remove(i);
+				i--;
+			}
+		}
+	}
+	
 	private void updateCloseDistanceMisslesDisapear() {
 		for(int i=0; i<gameObjects.size(); i++)
 			if((gameObjects.get(i) instanceof SwordMissle || gameObjects.get(i) instanceof AxeMissle)
-					&& MathUtil.pythagoreanDistance(player.getPosition(), gameObjects.get(i).getPosition()) > 1.5) {
-					
+					&& MathUtil.pythagoreanDistance(player.getPosition(), gameObjects.get(i).getPosition()) > 1.5) {						
 				gameObjects.remove(i);
 				i--;
 			}

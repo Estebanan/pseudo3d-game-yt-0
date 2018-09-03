@@ -1,4 +1,4 @@
-package com.youtube.pseudo3d.engine.objects.collect;
+package com.youtube.pseudo3d.engine.objects.enemy;
 
 import com.youtube.pseudo3d.engine.GameLogic;
 import com.youtube.pseudo3d.engine.objects.GameObject;
@@ -6,17 +6,16 @@ import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
 import com.youtube.pseudo3d.util.Vector2d;
 
-public class AxeCollect extends GameObject{
+public class BatCorpse extends GameObject{
 
-	public AxeCollect(GameLogic raycaster, Vector2d position) {
+	public BatCorpse(GameLogic raycaster, Vector2d position) {
 		super(raycaster, position);
-
-		texture = TextureHolder.get(ID.AXE_COLLECT);
+		
+		texture = TextureHolder.get(ID.ENEMY_BAT_CORPSE);
 	}
 
 	@Override
-	public void update(double elapsed) {
-		
+	public void update(double elapsed) {		
 	}
 
 }

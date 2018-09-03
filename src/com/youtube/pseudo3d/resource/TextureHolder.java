@@ -8,7 +8,10 @@ import com.youtube.pseudo3d.util.ImageHandler;
 public class TextureHolder {
 
 	public static enum ID{
+		//MAPS
 		TEST_MAP,
+		
+		//WALLS
 		BLUESTONE,
 		COBBLESTONE,
 		EMBLEM,
@@ -18,19 +21,28 @@ public class TextureHolder {
 		PURPLESTONE,
 		WOOD,
 		
+		//STILL SPRITES
 		SPIDER,
 		PILLAR,
 		BARREL,
 		
+		//MISSLES
 		SWORD_MISSLE,
 		AXE_MISSLE,
 		WAND_MISSLE,
 		
+		//COLLECT
 		LATTERN_COLLECT,
 		SWORD_COLLECT,
 		AXE_COLLECT,
 		WAND_COLLECT,
 		
+		//ENEMIES
+		ENEMY_BAT,
+		ENEMY_BAT_DYING,
+		ENEMY_BAT_CORPSE,
+		
+		//PLAYER
 		PLAYER_LATTERN,
 		PLAYER_SWORD,
 		PLAYER_SWORD_ATTACK,
@@ -39,6 +51,7 @@ public class TextureHolder {
 		PLAYER_WAND,
 		PLAYER_WAND_ATTACK,
 		
+		//GUI
 		GUI_EMPTY_SLOT,
 		GUI_SELECTED_SLOT,
 		GUI_HEALTH_BAR,

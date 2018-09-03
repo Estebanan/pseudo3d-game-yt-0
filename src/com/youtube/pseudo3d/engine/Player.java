@@ -39,9 +39,7 @@ public class Player {
 	private double emittedLight;
 	
 	private Vector2d spriteScale;
-	
-	public int time = 0;
-	
+		
 	private Animator swordAnimator;	
 	private Animator axeAnimator;
 	private Animator wandAnimator;		
@@ -164,8 +162,6 @@ public class Player {
 	}
 	
 	public void update(double elapsed) {
-		time += (elapsed * 1e3);
-
 		updateCurrentTexture();
 		updateEmittedLight();
 		updateAttackAction();
@@ -247,7 +243,7 @@ public class Player {
 		int duration = 15;
 		updateAnimation(swordAnimator, duration);
 			
-		if((time / duration) % (swordAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
+		if((raycaster.time / duration) % (swordAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
 			attackDelay = 0;
 			raycaster.getGameObjects().add(new SwordMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 100.0));
 		}
@@ -258,7 +254,7 @@ public class Player {
 		int duration = 10;
 		updateAnimation(axeAnimator, duration);
 			
-		if((time / duration) % (axeAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
+		if((raycaster.time / duration) % (axeAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
 			attackDelay = 0;
 			raycaster.getGameObjects().add(new AxeMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 100.0));
 		}
@@ -269,7 +265,7 @@ public class Player {
 		int duration = 10;
 		updateAnimation(wandAnimator, duration);
 			
-		if((time / duration) % (wandAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
+		if((raycaster.time / duration) % (wandAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
 			raycaster.getGameObjects().add(new WandMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 100.0));
 			attackDelay = 0;
 		}
@@ -277,7 +273,7 @@ public class Player {
 	}
 	
 	private void updateAnimation(Animator animator, int duration) {
-		currentTexture = animator.getCurrentFrame()[(time / duration) % animator.getCurrentFrame().length];
+		currentTexture = animator.getCurrentFrame()[(raycaster.time / duration) % animator.getCurrentFrame().length];
 	}
 	
 	public void render(Graphics g) {		
