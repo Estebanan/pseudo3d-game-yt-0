@@ -27,13 +27,20 @@ public abstract class ConstantlyMovingObject extends GameObject{
 	@Override
 	public void update(double elapsed) {
 		double moveSpeed = actualMovementSpeed * elapsed;
-
 		move(moveSpeed);
 	}
 	
 	protected void move(double delta) {
 		position.x += direction.y * delta;
 		position.y += direction.x * delta;
+	}
+	
+	protected void moveX(double delta) {
+		position.x += delta;
+	}
+	
+	protected void moveY(double delta) {
+		position.y += delta;
 	}
 
 }

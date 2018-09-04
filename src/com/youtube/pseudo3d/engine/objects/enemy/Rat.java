@@ -17,6 +17,8 @@ public class Rat extends FollowingObject implements Enemy{
 	private Animator moveAnimator;
 	private Animator deathAnimator;
 		
+	private int deathTimer = 0;
+	
 	public Rat(GameLogic raycaster, Vector2d position, double reactDistance) {
 		super(raycaster, position, reactDistance);
 		
@@ -35,11 +37,12 @@ public class Rat extends FollowingObject implements Enemy{
 			dying = true;
 		
 		int duration = 10;
-		int deathDuration = 30;
+		int deathDuration = 3;
 		
 		if(dying) {
-			texture = deathAnimator.getCurrentFrame()[(raycaster.time / deathDuration) % deathAnimator.getCurrentFrame().length];
-			if((raycaster.time / deathDuration) % (deathAnimator.getCurrentFrame().length) == 5) {
+			deathTimer++;
+			texture = deathAnimator.getCurrentFrame()[(deathTimer / deathDuration) % deathAnimator.getCurrentFrame().length];
+			if((deathTimer / deathDuration) % (deathAnimator.getCurrentFrame().length) == 5) {
 				dead = true;	
 				raycaster.getGameObjects().add(new RatCorpse(raycaster, position));
 			}

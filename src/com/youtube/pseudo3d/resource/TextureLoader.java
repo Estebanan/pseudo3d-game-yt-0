@@ -28,6 +28,8 @@ public class TextureLoader {
 		TextureHolder.load(ID.AXE_MISSLE,       "/sprites/missle/axe-missle.png");
 		TextureHolder.load(ID.WAND_MISSLE,  	"/sprites/missle/wand-missle.png");
 		
+		TextureHolder.load(ID.ENEMY_GREEN_MISSLE,"/sprites/missle/enemy-green-missle.png");
+		
 		//COLLECT
 		TextureHolder.load(ID.LATTERN_COLLECT,  "/sprites/collect/lattern_collect.png");
 		TextureHolder.load(ID.SWORD_COLLECT,  	"/sprites/collect/sword_collect.png");
@@ -44,6 +46,11 @@ public class TextureLoader {
 		TextureHolder.load(ID.ENEMY_RAT_DYING,	"/sprites/enemy/rat/rat-dying.png");
 		TextureHolder.load(ID.ENEMY_RAT_CORPSE,	"/sprites/enemy/rat/rat-corpse.png");
 
+		TextureHolder.load(ID.ENEMY_MAGE,		"/sprites/enemy/mage/mage.png");
+		TextureHolder.load(ID.ENEMY_MAGE_ATTACK,"/sprites/enemy/mage/mage-attack.png");
+		TextureHolder.load(ID.ENEMY_MAGE_DYING,	"/sprites/enemy/mage/mage-death.png");
+		TextureHolder.load(ID.ENEMY_MAGE_CORPSE,"/sprites/enemy/mage/mage-corpse.png");
+		
 		//PLAYER
 		TextureHolder.load(ID.PLAYER_LATTERN,	"/player/lattern/lattern_hand.png");
 		TextureHolder.load(ID.PLAYER_SWORD,		"/player/sword/sword_hand.png");

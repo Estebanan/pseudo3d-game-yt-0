@@ -8,9 +8,12 @@ import com.youtube.pseudo3d.resource.TextureHolder.ID;
 import com.youtube.pseudo3d.util.Vector2d;
 
 public class Bat extends RandomlyMovingObject implements Enemy{
+	
 	private Animator animator;
 	private Animator deathAnimator;
 		
+	private int deathTimer = 0;
+
 	public Bat(GameLogic raycaster, Vector2d position) {
 		super(raycaster, position);
 		animator = new Animator(TextureHolder.get(ID.ENEMY_BAT), 64, 64, 6);
@@ -27,10 +30,11 @@ public class Bat extends RandomlyMovingObject implements Enemy{
 			dying = true;
 		
 		int duration = 10;
-		int deathDuration = 20;
+		int deathDuration = 3;
 		if(dying) {
-			texture = deathAnimator.getCurrentFrame()[(raycaster.time / deathDuration) % deathAnimator.getCurrentFrame().length];
-			if((raycaster.time / deathDuration) % (deathAnimator.getCurrentFrame().length) == 5) {
+			deathTimer++;
+			texture = deathAnimator.getCurrentFrame()[(deathTimer / deathDuration) % deathAnimator.getCurrentFrame().length];
+			if((deathTimer / deathDuration) % (deathAnimator.getCurrentFrame().length) == 5) {
 				dead = true;			
 				raycaster.getGameObjects().add(new BatCorpse(raycaster, position));
 			}

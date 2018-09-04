@@ -12,8 +12,11 @@ import com.youtube.pseudo3d.engine.objects.collect.SwordCollect;
 import com.youtube.pseudo3d.engine.objects.collect.WandCollect;
 import com.youtube.pseudo3d.engine.objects.enemy.Bat;
 import com.youtube.pseudo3d.engine.objects.enemy.Enemy;
+import com.youtube.pseudo3d.engine.objects.enemy.Mage;
 import com.youtube.pseudo3d.engine.objects.enemy.Rat;
 import com.youtube.pseudo3d.engine.objects.missle.AxeMissle;
+import com.youtube.pseudo3d.engine.objects.missle.EnemyMissle;
+import com.youtube.pseudo3d.engine.objects.missle.GreenEnemyMissle;
 import com.youtube.pseudo3d.engine.objects.missle.Missle;
 import com.youtube.pseudo3d.engine.objects.missle.SwordMissle;
 import com.youtube.pseudo3d.engine.objects.missle.WandMissle;
@@ -105,6 +108,11 @@ public class GameLogic {
 		gameObjects.add(new Rat(this, new Vector2d(20.5, 10.5), 5));
 		gameObjects.add(new Rat(this, new Vector2d(14.5, 2.5), 4));
 		gameObjects.add(new Rat(this, new Vector2d(14.5, 19.5), 5));
+		
+		gameObjects.add(new Mage(this, new Vector2d(7.5, 16.5)));
+		gameObjects.add(new Mage(this, new Vector2d(17.5, 2.5)));
+		gameObjects.add(new Mage(this, new Vector2d(2.5, 16.5)));
+
 	}
 	
 	private void initScreen() {
@@ -136,6 +144,8 @@ public class GameLogic {
 		updateGameObjects(elapsed);
 		updateWallCollisions();
 		
+		updateDamagingPlayerByMissles();
+		
 		updateDamagingEnemies();
 		updateEnemiesDeath();
 		
@@ -154,9 +164,23 @@ public class GameLogic {
 	
 	private void updateWallCollisions() {
 		for(int i=0; i<gameObjects.size(); i++)
-			if(gameObjects.get(i) instanceof Missle
+			if((gameObjects.get(i) instanceof Missle || gameObjects.get(i) instanceof EnemyMissle)
 					&& TextureHolder.get(ID.TEST_MAP).getRGB((int) (gameObjects.get(i).getPosition().x),
 							(int) (gameObjects.get(i).getPosition().y)) != 0xff000000) {
+				
+				gameObjects.remove(i);
+				i--;
+			}
+	}
+	
+	private void updateDamagingPlayerByMissles() {
+		for(int i=0; i<gameObjects.size(); i++)
+			if(gameObjects.get(i) instanceof EnemyMissle
+					&& Math.floor(gameObjects.get(i).getPosition().x) == Math.floor(player.getPosition().x)
+					&& Math.floor(gameObjects.get(i).getPosition().y) == Math.floor(player.getPosition().y)) {
+				
+				if(gameObjects.get(i) instanceof GreenEnemyMissle)
+					Player.HEALTH -= GreenEnemyMissle.DAMAGE;
 				
 				gameObjects.remove(i);
 				i--;
