@@ -12,7 +12,9 @@ public abstract class GameObject {
 	
 	protected BufferedImage texture;
 	
+	public boolean dying;
 	public boolean dead;
+	public boolean moving;
 	public int health;
 	
 	public GameObject(GameLogic raycaster, Vector2d position) {

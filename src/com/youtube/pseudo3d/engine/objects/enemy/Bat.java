@@ -1,18 +1,16 @@
 package com.youtube.pseudo3d.engine.objects.enemy;
 
 import com.youtube.pseudo3d.engine.GameLogic;
-import com.youtube.pseudo3d.engine.objects.RandomMovingObject;
+import com.youtube.pseudo3d.engine.objects.RandomlyMovingObject;
 import com.youtube.pseudo3d.resource.Animator;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
 import com.youtube.pseudo3d.util.Vector2d;
 
-public class Bat extends RandomMovingObject implements Enemy{
+public class Bat extends RandomlyMovingObject implements Enemy{
 	private Animator animator;
 	private Animator deathAnimator;
-	
-	private boolean dying;
-	
+		
 	public Bat(GameLogic raycaster, Vector2d position) {
 		super(raycaster, position);
 		animator = new Animator(TextureHolder.get(ID.ENEMY_BAT), 64, 64, 6);

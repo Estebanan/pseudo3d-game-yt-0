@@ -6,12 +6,12 @@ import com.youtube.pseudo3d.resource.TextureHolder.ID;
 import com.youtube.pseudo3d.util.MathUtil;
 import com.youtube.pseudo3d.util.Vector2d;
 
-public abstract class RandomMovingObject extends GameObject{
+public abstract class RandomlyMovingObject extends GameObject{
 
 	protected Vector2d direction;
 	protected double moveSpeed = .0;	
 	
-	public RandomMovingObject(GameLogic raycaster, Vector2d position) {
+	public RandomlyMovingObject(GameLogic raycaster, Vector2d position) {
 		super(raycaster, position);
 		
 		direction = new Vector2d(.0, .0);
@@ -23,6 +23,8 @@ public abstract class RandomMovingObject extends GameObject{
 			direction.x = MathUtil.randomWithRange(-2D, 2D);
 			direction.y = MathUtil.randomWithRange(-2D, 2D);
 			moveSpeed = MathUtil.randomWithRange(-10D, 10D) * elapsed;
+			
+			moving = true;
 		}
 		
 		move(moveSpeed);

@@ -1,0 +1,60 @@
+package com.youtube.pseudo3d.engine.objects.enemy;
+
+import com.youtube.pseudo3d.engine.GameLogic;
+import com.youtube.pseudo3d.engine.Player;
+import com.youtube.pseudo3d.engine.objects.FollowingObject;
+import com.youtube.pseudo3d.resource.Animator;
+import com.youtube.pseudo3d.resource.TextureHolder;
+import com.youtube.pseudo3d.resource.TextureHolder.ID;
+import com.youtube.pseudo3d.util.MathUtil;
+import com.youtube.pseudo3d.util.Vector2d;
+
+public class Rat extends FollowingObject implements Enemy{
+
+	public static int DAMAGE = 10;
+	
+	private Animator animator;
+	private Animator moveAnimator;
+	private Animator deathAnimator;
+		
+	public Rat(GameLogic raycaster, Vector2d position, double reactDistance) {
+		super(raycaster, position, reactDistance);
+		
+		animator = new Animator(TextureHolder.get(ID.ENEMY_RAT), 64, 64, 6);
+		moveAnimator = new Animator(TextureHolder.get(ID.ENEMY_RAT_MOVING), 64, 64, 6);
+		deathAnimator = new Animator(TextureHolder.get(ID.ENEMY_RAT_DYING), 64, 64, 6);
+		
+		health = 100;
+	}
+	
+	@Override
+	public void update(double elapsed) {
+		super.update(elapsed);
+		
+		if(health <= 0)
+			dying = true;
+		
+		int duration = 10;
+		int deathDuration = 30;
+		
+		if(dying) {
+			texture = deathAnimator.getCurrentFrame()[(raycaster.time / deathDuration) % deathAnimator.getCurrentFrame().length];
+			if((raycaster.time / deathDuration) % (deathAnimator.getCurrentFrame().length) == 5) {
+				dead = true;	
+				raycaster.getGameObjects().add(new RatCorpse(raycaster, position));
+			}
+		}
+		else {	
+			if(moving) 
+				texture = moveAnimator.getCurrentFrame()[(raycaster.time / duration) % moveAnimator.getCurrentFrame().length];
+			else
+				texture = animator.getCurrentFrame()[(raycaster.time / duration) % animator.getCurrentFrame().length];
+		
+		
+			if(MathUtil.pythagoreanDistance(raycaster.getPlayer().getPosition(), position) <= 1.6
+					&& raycaster.time % 60 == 0)
+				Player.HEALTH -= DAMAGE;
+		}
+	}
+	
+}

@@ -1,12 +1,12 @@
 package com.youtube.pseudo3d.engine.objects.missle;
 
 import com.youtube.pseudo3d.engine.GameLogic;
-import com.youtube.pseudo3d.engine.objects.MovingObject;
+import com.youtube.pseudo3d.engine.objects.ConstantlyMovingObject;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
 import com.youtube.pseudo3d.util.Vector2d;
 
-public class WandMissle extends MovingObject implements Missle{
+public class WandMissle extends ConstantlyMovingObject implements Missle{
 	
 	public static int DAMAGE = 40;
 

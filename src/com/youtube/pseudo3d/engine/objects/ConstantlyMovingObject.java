@@ -3,22 +3,22 @@ package com.youtube.pseudo3d.engine.objects;
 import com.youtube.pseudo3d.engine.GameLogic;
 import com.youtube.pseudo3d.util.Vector2d;
 
-public abstract class MovingObject extends GameObject{
+public abstract class ConstantlyMovingObject extends GameObject{
 
 	protected Vector2d direction;
 	
 	protected double actualMovementSpeed;
 	
-	public MovingObject(GameLogic raycaster, Vector2d position) {
+	public ConstantlyMovingObject(GameLogic raycaster, Vector2d position) {
 		super(raycaster, position);
 	}
 	
-	public MovingObject(GameLogic raycaster, Vector2d position, Vector2d direction) {
+	public ConstantlyMovingObject(GameLogic raycaster, Vector2d position, Vector2d direction) {
 		super(raycaster, position);
 		this.direction = direction;
 	}
 	
-	public MovingObject(GameLogic raycaster, Vector2d position, Vector2d direction, double actualMovementSpeed) {
+	public ConstantlyMovingObject(GameLogic raycaster, Vector2d position, Vector2d direction, double actualMovementSpeed) {
 		super(raycaster, position);
 		this.direction = direction;
 		this.actualMovementSpeed = actualMovementSpeed;
