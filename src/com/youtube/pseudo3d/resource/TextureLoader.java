@@ -46,6 +46,11 @@ public class TextureLoader {
 		TextureHolder.load(ID.ENEMY_RAT_DYING,	"/sprites/enemy/rat/rat-dying.png");
 		TextureHolder.load(ID.ENEMY_RAT_CORPSE,	"/sprites/enemy/rat/rat-corpse.png");
 
+		TextureHolder.load(ID.ENEMY_ZOMBIE,		"/sprites/enemy/zombie/zombie.png");
+		TextureHolder.load(ID.ENEMY_ZOMBIE_MOVING,"/sprites/enemy/zombie/zombie-moving.png");
+		TextureHolder.load(ID.ENEMY_ZOMBIE_DYING,"/sprites/enemy/zombie/zombie-dying.png");
+		TextureHolder.load(ID.ENEMY_ZOMBIE_CORPSE,"/sprites/enemy/zombie/zombie-corpse.png");
+		
 		TextureHolder.load(ID.ENEMY_MAGE,		"/sprites/enemy/mage/mage.png");
 		TextureHolder.load(ID.ENEMY_MAGE_ATTACK,"/sprites/enemy/mage/mage-attack.png");
 		TextureHolder.load(ID.ENEMY_MAGE_DYING,	"/sprites/enemy/mage/mage-death.png");

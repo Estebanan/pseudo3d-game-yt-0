@@ -14,6 +14,7 @@ import com.youtube.pseudo3d.engine.objects.enemy.Bat;
 import com.youtube.pseudo3d.engine.objects.enemy.Enemy;
 import com.youtube.pseudo3d.engine.objects.enemy.Mage;
 import com.youtube.pseudo3d.engine.objects.enemy.Rat;
+import com.youtube.pseudo3d.engine.objects.enemy.Zombie;
 import com.youtube.pseudo3d.engine.objects.missle.AxeMissle;
 import com.youtube.pseudo3d.engine.objects.missle.EnemyMissle;
 import com.youtube.pseudo3d.engine.objects.missle.GreenEnemyMissle;
@@ -104,6 +105,8 @@ public class GameLogic {
 		for(int i=0; i<5; i++)
 			gameObjects.add(new Bat(this, new Vector2d(7.0, 12.0)));
 			
+		gameObjects.add(new Zombie(this, new Vector2d(7.0, 12.0), 8));
+		
 		gameObjects.add(new Rat(this, new Vector2d(6.5, 16.5), 5));
 		gameObjects.add(new Rat(this, new Vector2d(20.5, 10.5), 5));
 		gameObjects.add(new Rat(this, new Vector2d(14.5, 2.5), 4));

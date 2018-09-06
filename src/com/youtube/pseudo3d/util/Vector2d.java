@@ -10,4 +10,17 @@ public class Vector2d {
 		this.x = x;
 		this.y = y;
 	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if(!(object instanceof Vector2d))
+			return false;
+
+		Vector2d vector = (Vector2d) object;
+		if(vector.x == this.x
+				&& vector.y == this.y)
+			return true;
+		
+		return false;
+	}
 }

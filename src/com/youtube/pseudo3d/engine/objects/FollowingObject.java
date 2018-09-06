@@ -39,6 +39,7 @@ public abstract class FollowingObject extends GameObject{
 	}
 	
 	public void moveY(double delta) {
+		// ONLY MOVE IF THE CURRENT TILE IS 0XFF000000 - BLACK
 		if (TextureHolder.get(ID.TEST_MAP).getRGB((int) (position.x),
 				(int) (position.y + delta)) == 0xff000000)
 			position.y += delta;

@@ -56,5 +56,4 @@ public class MathUtil {
 	   double range = (max - min) + 1;     
 	   return (double)(Math.random() * range) + min;
 	}
-	
 }
