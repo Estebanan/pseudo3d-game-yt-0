@@ -105,11 +105,11 @@ public class GameLogic {
 		for(int i=0; i<5; i++)
 			gameObjects.add(new Bat(this, new Vector2d(7.0, 12.0)));
 			
-		gameObjects.add(new Zombie(this, new Vector2d(7.0, 12.0), 8));
+		gameObjects.add(new Zombie(this, new Vector2d(7.5, 12.5), 8));
+		gameObjects.add(new Zombie(this, new Vector2d(14.5, 2.5), 10));
 		
 		gameObjects.add(new Rat(this, new Vector2d(6.5, 16.5), 5));
 		gameObjects.add(new Rat(this, new Vector2d(20.5, 10.5), 5));
-		gameObjects.add(new Rat(this, new Vector2d(14.5, 2.5), 4));
 		gameObjects.add(new Rat(this, new Vector2d(14.5, 19.5), 5));
 		
 		gameObjects.add(new Mage(this, new Vector2d(7.5, 16.5)));

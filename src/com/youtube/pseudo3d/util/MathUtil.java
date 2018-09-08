@@ -66,16 +66,7 @@ public class MathUtil {
 	   return (double)(Math.random() * range) + min;
 	}
 	
-	public static Comparator<Node> nodeSorter = new Comparator<Node>() {
-		public int compare(Node n0, Node n1) {
-			if(n1.fCost < n0.fCost)
-				return 1;
-			if(n1.fCost > n0.fCost)
-				return -1;
-			return 0;
-		}
-	};
-	
+	@SuppressWarnings("unlikely-arg-type")
 	public static List<Node> findPath(Vector2i start, Vector2i goal){
 		List<Node> openList = new ArrayList<Node>();
 		List<Node> closedList = new ArrayList<Node>();
@@ -83,7 +74,17 @@ public class MathUtil {
 		Node current = new Node(start, null, 0, pythagoreanDistance(start, goal));
 		openList.add(current);
 		while(openList.size() > 0) {
-			Collections.sort(openList, nodeSorter);
+			
+			Collections.sort(openList, new Comparator<Node>() {
+				public int compare(Node n0, Node n1) {
+					if(n1.fCost < n0.fCost)
+						return 1;
+					if(n1.fCost > n0.fCost)
+						return -1;
+					return 0;
+				}
+			});
+			
 			current = openList.get(0);
 			
 			if(current.position.equals(goal)) {
@@ -114,30 +115,23 @@ public class MathUtil {
 							|| y + yy <= 0 || y + yy >= TextureHolder.get(ID.TEST_MAP).getHeight())
 						continue;
 						
-					int at = TextureHolder.get(ID.TEST_MAP).getRGB(x + xx, y + yy);
-					if(at != 0xff000000)
+					int color = TextureHolder.get(ID.TEST_MAP).getRGB(x + xx, y + yy);
+					if(color != 0xff000000)
 						continue;
 					
-					Vector2i a = new Vector2i(x + xx, y + yy);
-					double gCost = current.gCost + pythagoreanDistance(current.position, a);
-					double hCost = pythagoreanDistance(a, goal);
+					Vector2i selectedVector = new Vector2i(x + xx, y + yy);
+					double gCost = current.gCost + pythagoreanDistance(current.position, selectedVector);
+					double hCost = pythagoreanDistance(selectedVector, goal);
 					
-					Node node = new Node(a, current, gCost, hCost);
-					if(vectorInList(closedList, a) && gCost >= node.gCost)
+					Node node = new Node(selectedVector, current, gCost, hCost);
+					if(closedList.contains(selectedVector) && gCost >= node.gCost)
 						continue;
-					if(!vectorInList(openList, a) || gCost < node.gCost)
+					if(!openList.contains(selectedVector) || gCost < node.gCost)
 						openList.add(node);
 				}
 		}
 		
 		closedList.clear();
 		return null;
-	}
-
-	private static boolean vectorInList(List<Node> list, Vector2i vector) {
-		for(Node n : list)
-			if(n.position.equals(vector))
-				return true;
-		return false;
 	}
 }

@@ -10,7 +10,7 @@ import com.youtube.pseudo3d.util.Node;
 import com.youtube.pseudo3d.util.Vector2d;
 import com.youtube.pseudo3d.util.Vector2i;
 
-public class PathfindingObject extends GameObject{
+public abstract class PathfindingObject extends GameObject{
 
 	protected double moveSpeed = .0;
 	protected double reactDistance;
@@ -27,28 +27,26 @@ public class PathfindingObject extends GameObject{
 		if(MathUtil.pythagoreanDistance(raycaster.getPlayer().getPosition(), position) < reactDistance
 				&& MathUtil.pythagoreanDistance(raycaster.getPlayer().getPosition(), position) > 1) {
 			moving = true;			
-			moveSpeed = 5D * elapsed;
+			moveSpeed = 10D * elapsed;
 
 			Vector2i start = new Vector2i((int)position.x, (int)position.y);
 			Vector2i goal = new Vector2i((int)raycaster.getPlayer().getPosition().x, (int)raycaster.getPlayer().getPosition().y);
 			
-			if(raycaster.time % 10 == 0)
+			if(raycaster.time % 5 == 0)
 				path = MathUtil.findPath(start, goal);
 			
-			if(path != null) {
-				if(path.size() > 0) {
+			if(path != null && path.size() > 0) {
 					Vector2i move = path.get(path.size() - 1).position;
 					
-					if(position.x > move.x)
+					if(position.x > move.x + .5)
 						moveX(-moveSpeed);
-					if(position.x < move.x)
+					if(position.x < move.x + .5)
 						moveX(moveSpeed);
 					
-					if(position.y > move.y)
+					if(position.y > move.y + .5)
 						moveY(-moveSpeed);
-					if(position.y < move.y)
+					if(position.y < move.y + .5)
 						moveY(moveSpeed);
-				}
 			}
 			
 		} else
