@@ -2,14 +2,14 @@ package com.youtube.pseudo3d.engine.objects.enemy;
 
 import com.youtube.pseudo3d.engine.GameLogic;
 import com.youtube.pseudo3d.engine.Player;
-import com.youtube.pseudo3d.engine.objects.FollowingObject;
+import com.youtube.pseudo3d.engine.objects.PathfindingObject;
 import com.youtube.pseudo3d.resource.Animator;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
 import com.youtube.pseudo3d.util.MathUtil;
 import com.youtube.pseudo3d.util.Vector2d;
 
-public class Zombie extends FollowingObject implements Enemy{
+public class Zombie extends PathfindingObject implements Enemy{
 
 	public static int DAMAGE = 20;
 	
@@ -35,7 +35,7 @@ public class Zombie extends FollowingObject implements Enemy{
 			dying = true;
 		
 		int duration = 10;
-		int deathDuration = 3;
+		int deathDuration = 6;
 		
 		if(dying) {
 			deathTimer++;
