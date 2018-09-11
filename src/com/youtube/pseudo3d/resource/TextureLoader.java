@@ -7,8 +7,11 @@ public class TextureLoader {
 	public TextureLoader() {
 		//MAPS
 		TextureHolder.load(ID.TEST_MAP, 		"/maps/test_map.png");
+		TextureHolder.load(ID.LEVEL_0, 			"/maps/level_0.png");
+		TextureHolder.load(ID.LEVEL_1, 			"/maps/level_1.png");
 		
 		//WALLS
+		TextureHolder.load(ID.SKY, 				"/tiles/sky.png");
 		TextureHolder.load(ID.EMBLEM, 			"/tiles/emblem.png");
 		TextureHolder.load(ID.BRICK_0, 			"/tiles/brick_0.png");
 		TextureHolder.load(ID.BRICK_1, 			"/tiles/brick_1.png");
@@ -17,13 +20,25 @@ public class TextureLoader {
 		TextureHolder.load(ID.MOSSYSTONE, 		"/tiles/mossystone.png");
 		TextureHolder.load(ID.WOOD, 			"/tiles/wood.png");
 		TextureHolder.load(ID.COBBLESTONE, 		"/tiles/cobblestone.png");
+		TextureHolder.load(ID.BUSH, 			"/tiles/bush.png");
+		TextureHolder.load(ID.GRASS, 			"/tiles/grass.png");
+		TextureHolder.load(ID.ROTTEN_WOOD, 		"/tiles/rotten-wood.png");
 		
 		//STILL SPRITES
 		TextureHolder.load(ID.BARREL, 			"/sprites/barrel.png");
 		TextureHolder.load(ID.PILLAR, 			"/sprites/pillar.png");
 		TextureHolder.load(ID.SPIDER, 			"/sprites/spider.png");
-		
+		TextureHolder.load(ID.BLUE_FLOWER, 		"/sprites/blue-flower.png");
+		TextureHolder.load(ID.GRASS_0, 			"/sprites/grass_0.png");
+		TextureHolder.load(ID.GRASS_BUSH, 		"/sprites/grass-bush.png");
+		TextureHolder.load(ID.BIG_BUSH, 		"/sprites/big-bush.png");
+		TextureHolder.load(ID.GRASS_STALKS, 	"/sprites/grass-stalks.png");
+		TextureHolder.load(ID.ROSE, 			"/sprites/rose.png");
+		TextureHolder.load(ID.YELLOW_FLOWER, 	"/sprites/yellow-flower.png");
+		TextureHolder.load(ID.PORTAL, 			"/sprites/portal.png");
+
 		//MISSLES
+		TextureHolder.load(ID.PUNCH_MISSLE,  	"/sprites/missle/punch-missle.png");
 		TextureHolder.load(ID.SWORD_MISSLE,  	"/sprites/missle/sword-missle.png");
 		TextureHolder.load(ID.AXE_MISSLE,       "/sprites/missle/axe-missle.png");
 		TextureHolder.load(ID.WAND_MISSLE,  	"/sprites/missle/wand-missle.png");
@@ -35,6 +50,7 @@ public class TextureLoader {
 		TextureHolder.load(ID.SWORD_COLLECT,  	"/sprites/collect/sword_collect.png");
 		TextureHolder.load(ID.AXE_COLLECT,  	"/sprites/collect/axe_collect.png");
 		TextureHolder.load(ID.WAND_COLLECT,  	"/sprites/collect/wand_collect.png");
+		TextureHolder.load(ID.HEALTH_POTION_COLLECT,"/sprites/collect/health-potion.png");
 		
 		//ENEMIES
 		TextureHolder.load(ID.ENEMY_BAT,		"/sprites/enemy/bat/bat.png");
@@ -57,6 +73,7 @@ public class TextureLoader {
 		TextureHolder.load(ID.ENEMY_MAGE_CORPSE,"/sprites/enemy/mage/mage-corpse.png");
 		
 		//PLAYER
+		TextureHolder.load(ID.PLAYER_HAND_ATTACK,"/player/hand/hand-fight.png");
 		TextureHolder.load(ID.PLAYER_LATTERN,	"/player/lattern/lattern_hand.png");
 		TextureHolder.load(ID.PLAYER_SWORD,		"/player/sword/sword_hand.png");
 		TextureHolder.load(ID.PLAYER_SWORD_ATTACK,"/player/sword/sword_attack.png");

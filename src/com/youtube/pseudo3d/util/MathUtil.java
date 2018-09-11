@@ -6,8 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.youtube.pseudo3d.resource.TextureHolder;
-import com.youtube.pseudo3d.resource.TextureHolder.ID;
+import com.youtube.pseudo3d.engine.level.Level;
 
 public class MathUtil {
 
@@ -67,7 +66,7 @@ public class MathUtil {
 	}
 	
 	@SuppressWarnings("unlikely-arg-type")
-	public static List<Node> findPath(Vector2i start, Vector2i goal){
+	public static List<Node> findPath(Level currentLevel, Vector2i start, Vector2i goal){
 		List<Node> openList = new ArrayList<Node>();
 		List<Node> closedList = new ArrayList<Node>();
 		
@@ -111,11 +110,11 @@ public class MathUtil {
 					int xx = current.position.x;
 					int yy = current.position.y;
 					
-					if(x + xx <= 0 || x + xx >= TextureHolder.get(ID.TEST_MAP).getWidth()
-							|| y + yy <= 0 || y + yy >= TextureHolder.get(ID.TEST_MAP).getHeight())
+					if(x + xx <= 0 || x + xx >= currentLevel.getMap().getWidth()
+							|| y + yy <= 0 || y + yy >= currentLevel.getMap().getHeight())
 						continue;
 						
-					int color = TextureHolder.get(ID.TEST_MAP).getRGB(x + xx, y + yy);
+					int color = currentLevel.getMap().getRGB(x + xx, y + yy);
 					if(color != 0xff000000)
 						continue;
 					

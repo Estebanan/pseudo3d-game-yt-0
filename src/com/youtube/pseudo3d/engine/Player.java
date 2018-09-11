@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import com.youtube.pseudo3d.engine.objects.missle.AxeMissle;
+import com.youtube.pseudo3d.engine.objects.missle.PunchMissle;
 import com.youtube.pseudo3d.engine.objects.missle.SwordMissle;
 import com.youtube.pseudo3d.engine.objects.missle.WandMissle;
 import com.youtube.pseudo3d.input.InputHandler;
@@ -40,6 +41,7 @@ public class Player {
 	
 	private Vector2d spriteScale;
 		
+	private Animator handAnimator;	
 	private Animator swordAnimator;	
 	private Animator axeAnimator;
 	private Animator wandAnimator;		
@@ -68,15 +70,15 @@ public class Player {
 		actualFov = initialFov;
 		fovAcceleration = .01;
 
-		position = new Vector2d(22, 22);
+		position = new Vector2d(0, 0);
 		direction = new Vector2d(-1, 0);
 
 		spriteScale = new Vector2d(.44, .73);
-				
-		rotate(Math.PI / 2);
+	
 	}
 	
 	private void initAnimators() {
+		handAnimator = new Animator(TextureHolder.get(ID.PLAYER_HAND_ATTACK), 128, 128, 6);
 		wandAnimator = new Animator(TextureHolder.get(ID.PLAYER_WAND_ATTACK), 64, 128, 6);
 		swordAnimator = new Animator(TextureHolder.get(ID.PLAYER_SWORD_ATTACK), 64, 64, 6);
 		axeAnimator = new Animator(TextureHolder.get(ID.PLAYER_AXE_ATTACK), 128, 128, 6);
@@ -144,10 +146,10 @@ public class Player {
 
 	public void move(double delta) {
 		// ONLY MOVE IF THE CURRENT TILE IS 0XFF000000 - BLACK
-		if (TextureHolder.get(ID.TEST_MAP).getRGB((int) (position.x + direction.y * delta),
+		if (raycaster.getCurrentLevel().getMap().getRGB((int) (position.x + direction.y * delta),
 				(int) (position.y)) == 0xff000000)
 			position.x += direction.y * delta;
-		if (TextureHolder.get(ID.TEST_MAP).getRGB((int) (position.x),
+		if (raycaster.getCurrentLevel().getMap().getRGB((int) (position.x),
 				(int) (position.y + direction.x * delta)) == 0xff000000)
 			position.y += direction.x * delta;
 	}
@@ -170,19 +172,23 @@ public class Player {
 	private void updateCurrentTexture() {
 		switch(Items.holding) {
 		default:
-		case HAND:
+		case HAND:{
 			currentTexture = null;
-			break;
+			spriteScale.x = 1.3;
+			spriteScale.y = 1.6;
+		}
+		break;
 		case LATTERN:{
 			currentTexture = TextureHolder.get(ID.PLAYER_LATTERN);
-			spriteScale.x = .44;
-			spriteScale.y = .73;
+			spriteScale.x = .48;
+			spriteScale.y = 0.89;
+			
 		}
 			break;
 		case SWORD:{
 			currentTexture = TextureHolder.get(ID.PLAYER_SWORD);
-			spriteScale.x = .44;
-			spriteScale.y = .73;
+			spriteScale.x = .55;
+			spriteScale.y = 0.96;
 		}
 			break;
 		case AXE:{
@@ -223,6 +229,7 @@ public class Player {
 			switch(Items.holding) {
 			default:
 			case HAND:
+				updateAttackHand();
 				break;
 			case LATTERN:
 				break;
@@ -239,13 +246,26 @@ public class Player {
 		}
 	}
 	
+	private void updateAttackHand() {
+		int duration = 15;
+		updateAnimation(handAnimator, duration);
+			
+		if(((raycaster.time / duration) % (handAnimator.getCurrentFrame().length) == 3 //3 IS THE MIDDLE ANIMATION FRAME
+				|| (raycaster.time / duration) % (handAnimator.getCurrentFrame().length) == 5) //5 IS THE END ANIMATION FRAME
+				&& attackDelay > 5) {
+			attackDelay = 0;
+			raycaster.getCurrentLevel().getGameObjects().add(new PunchMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 50.0));
+		}
+
+	}
+	
 	private void updateAttackSword() {
 		int duration = 15;
 		updateAnimation(swordAnimator, duration);
 			
 		if((raycaster.time / duration) % (swordAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
 			attackDelay = 0;
-			raycaster.getGameObjects().add(new SwordMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 100.0));
+			raycaster.getCurrentLevel().getGameObjects().add(new SwordMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 70.0));
 		}
 
 	}
@@ -256,7 +276,7 @@ public class Player {
 			
 		if((raycaster.time / duration) % (axeAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
 			attackDelay = 0;
-			raycaster.getGameObjects().add(new AxeMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 100.0));
+			raycaster.getCurrentLevel().getGameObjects().add(new AxeMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 100.0));
 		}
 
 	}
@@ -266,7 +286,7 @@ public class Player {
 		updateAnimation(wandAnimator, duration);
 			
 		if((raycaster.time / duration) % (wandAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
-			raycaster.getGameObjects().add(new WandMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 100.0));
+			raycaster.getCurrentLevel().getGameObjects().add(new WandMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 100.0));
 			attackDelay = 0;
 		}
 

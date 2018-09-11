@@ -1,5 +1,7 @@
 package com.youtube.pseudo3d.engine;
 
+import com.youtube.pseudo3d.engine.level.Level_0;
+import com.youtube.pseudo3d.engine.level.Level_1;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
 import com.youtube.pseudo3d.util.MathUtil;
@@ -57,6 +59,7 @@ public class Rayprojector {
 	}
 
 	public void projectRays() {
+		
 		updateInitialGameObjectValues();
 
 		for (int x = 0; x < raycaster.getScreen().getWidth(); x++) {
@@ -89,21 +92,21 @@ public class Rayprojector {
 			projectedLineHeight = (int) (raycaster.getScreen().getHeight() / rayLength);
 
 			// CALCULATE LOWEST AND HIGHEST PIXEL TO FILL IN CURRENT STRIPE
-			drawStart = (-projectedLineHeight / 2 + raycaster.getScreen().getHeight() / 2);
+			drawStart = -projectedLineHeight / 2 + raycaster.getScreen().getHeight() / 2;
 			drawEnd = (projectedLineHeight / 2 + raycaster.getScreen().getHeight() / 2);
 			handleDrawingOutOfBounds();
 
-			int tileColor = TextureHolder.get(ID.TEST_MAP).getRGB(positionOnMap.x, positionOnMap.y);
+			int tileColor = raycaster.getCurrentLevel().getMap().getRGB(positionOnMap.x, positionOnMap.y);
 
 			calculateWallPositionOnScreen(side);
 			calculateRayPositionOnTexture(side);
 
 			for (int y = drawStart; y < drawEnd; y++) {
 				int d = y * 256 - raycaster.getScreen().getHeight() * 128 + projectedLineHeight * 128;
-				rayPositionOnTexture.y = ((d * GameLogic.TEST_MAP_TEXTURE_HEIGHT) / projectedLineHeight) / 256;
-
-				if (rayPositionOnTexture.x <= GameLogic.TEST_MAP_TEXTURE_WIDTH
-						&& rayPositionOnTexture.y <= GameLogic.TEST_MAP_TEXTURE_HEIGHT)
+				rayPositionOnTexture.y = ((d * GameLogic.TEXTURE_HEIGHT) / projectedLineHeight) / 256;
+				
+				if (rayPositionOnTexture.x <= GameLogic.TEXTURE_WIDTH
+						&& rayPositionOnTexture.y <= GameLogic.TEXTURE_HEIGHT)
 					raycaster.getScreen().setRGB(x, y,
 							properWallColor(tileColor, rayPositionOnTexture.x, rayPositionOnTexture.y, side));
 				else
@@ -120,34 +123,46 @@ public class Rayprojector {
 
 	private void updateInitialGameObjectValues() {
 		zBuffer = new double[raycaster.getScreen().getWidth()];
-		objectsOrder = new int[raycaster.getGameObjects().size()];
-		objectsDistance = new double[raycaster.getGameObjects().size()];
+		objectsOrder = new int[raycaster.getCurrentLevel().getGameObjects().size()];
+		objectsDistance = new double[raycaster.getCurrentLevel().getGameObjects().size()];
 	}
 
 	public int properWallColor(int tileColor, int texX, int texY, boolean side) {
 		int color = 0;
 
 		switch (tileColor) {
-		case 0xffff0000:
-			color = TextureHolder.get(ID.BRICK_0).getRGB(Math.abs(texX), Math.abs(texY));
-			break;
-		case 0xff00ff00:
-			color = TextureHolder.get(ID.BRICK_1).getRGB(Math.abs(texX), Math.abs(texY));
-			break;
 		case 0xff0000ff:
 			color = TextureHolder.get(ID.BLUESTONE).getRGB(Math.abs(texX), Math.abs(texY));
 			break;
-		case 0xffff00ff:
+		case 0xff2c2c2c:
+			color = TextureHolder.get(ID.BRICK_0).getRGB(Math.abs(texX), Math.abs(texY));
+			break;
+		case 0xffff0000:
+			color = TextureHolder.get(ID.BRICK_1).getRGB(Math.abs(texX), Math.abs(texY));
+			break;
+		case 0xff878079:
 			color = TextureHolder.get(ID.COBBLESTONE).getRGB(Math.abs(texX), Math.abs(texY));
 			break;
-		case 0xffffff00:
+		case 0xffd45b1d:
+			color = TextureHolder.get(ID.EMBLEM).getRGB(Math.abs(texX), Math.abs(texY));
+			break;
+		case 0xff00ff00:
+			color = TextureHolder.get(ID.BUSH).getRGB(Math.abs(texX), Math.abs(texY));
+			break;
+		case 0xff254f18:
+			color = TextureHolder.get(ID.GRASS).getRGB(Math.abs(texX), Math.abs(texY));
+			break;
+		case 0xff657b39:
+			color = TextureHolder.get(ID.MOSSYSTONE).getRGB(Math.abs(texX), Math.abs(texY));
+			break;
+		case 0xff533242:
 			color = TextureHolder.get(ID.PURPLESTONE).getRGB(Math.abs(texX), Math.abs(texY));
 			break;
-		case 0xff00ffff:
-			color = TextureHolder.get(ID.WOOD).getRGB(Math.abs(texX), Math.abs(texY));
+		case 0xff6b5945:
+			color = TextureHolder.get(ID.ROTTEN_WOOD).getRGB(Math.abs(texX), Math.abs(texY));
 			break;
-		case 0xffabcdef:
-			color = TextureHolder.get(ID.EMBLEM).getRGB(Math.abs(texX), Math.abs(texY));
+		case 0xff645343:
+			color = TextureHolder.get(ID.WOOD).getRGB(Math.abs(texX), Math.abs(texY));
 			break;
 		default:
 			color = TextureHolder.get(ID.MOSSYSTONE).getRGB(Math.abs(texX), Math.abs(texY));
@@ -203,7 +218,7 @@ public class Rayprojector {
 	}
 
 	private boolean performedDDAHit() {
-		return (TextureHolder.get(ID.TEST_MAP).getRGB(positionOnMap.x, positionOnMap.y) != 0xff000000);
+		return (raycaster.getCurrentLevel().getMap().getRGB(positionOnMap.x, positionOnMap.y) != 0xff000000);
 	}
 
 	private double calculatedRayLength(boolean side) {
@@ -224,15 +239,14 @@ public class Rayprojector {
 		else
 			wallOnScreen.x = raycaster.getPlayer().getPosition().x + rayLength * rayDirection.x;
 		wallOnScreen.x -= Math.floor(wallOnScreen.x);
-
 	}
 
 	private void calculateRayPositionOnTexture(boolean side) {
-		rayPositionOnTexture.x = (int) (wallOnScreen.x * (double) (GameLogic.TEST_MAP_TEXTURE_WIDTH));
+		rayPositionOnTexture.x = (int) (wallOnScreen.x * (double) (GameLogic.TEXTURE_WIDTH));
 		if (!side && rayDirection.x > 0)
-			rayPositionOnTexture.x = GameLogic.TEST_MAP_TEXTURE_WIDTH - rayPositionOnTexture.x - 1;
+			rayPositionOnTexture.x = GameLogic.TEXTURE_WIDTH - rayPositionOnTexture.x - 1;
 		if (side && rayDirection.y < 0)
-			rayPositionOnTexture.x = GameLogic.TEST_MAP_TEXTURE_WIDTH - rayPositionOnTexture.x - 1;
+			rayPositionOnTexture.x = GameLogic.TEXTURE_WIDTH - rayPositionOnTexture.x - 1;		
 	}
 
 	private void projectFloor(boolean side, int x) {
@@ -249,7 +263,7 @@ public class Rayprojector {
 			floorWall.x = positionOnMap.x + wallOnScreen.x;
 			floorWall.y = positionOnMap.y + 1.0;
 		}
-
+		
 		wallDistance = rayLength;
 		playerDistance = .0;
 
@@ -266,37 +280,42 @@ public class Rayprojector {
 					weight * floorWall.y + (1.0 - weight) * raycaster.getPlayer().getPosition().y);
 
 			Vector2i floorTexture = new Vector2i(
-					(int) (currentFloor.x * GameLogic.TEST_MAP_TEXTURE_WIDTH) % GameLogic.TEST_MAP_TEXTURE_WIDTH,
-					(int) (currentFloor.y * GameLogic.TEST_MAP_TEXTURE_HEIGHT) % GameLogic.TEST_MAP_TEXTURE_HEIGHT);
+					(int) (currentFloor.x * GameLogic.TEXTURE_WIDTH) % GameLogic.TEXTURE_WIDTH,
+					(int) (currentFloor.y * GameLogic.TEXTURE_HEIGHT) % GameLogic.TEXTURE_HEIGHT);
 
-			int floorColor = (TextureHolder.get(ID.COBBLESTONE).getRGB(floorTexture.x, floorTexture.y) & 0xfefefe) >> 1;
-			int ceilingColor = (TextureHolder.get(ID.WOOD).getRGB(floorTexture.x, floorTexture.y) & 0xfefefe) >> 1;
-
+			int floorColor = (raycaster.getCurrentLevel().getFloor().getRGB(floorTexture.x, floorTexture.y) & 0xfefefe) >> 1;
+			int ceilingColor = (raycaster.getCurrentLevel().getCeiling().getRGB(floorTexture.x, floorTexture.y) & 0xfefefe) >> 1;
+		
 			// SHADE COLORS
 			if(currentDistance > raycaster.getPlayer().getEmittedLight()) {
 				floorColor = MathUtil.shadeColor(floorColor, currentDistance / raycaster.getPlayer().getEmittedLight());
 				ceilingColor = MathUtil.shadeColor(ceilingColor, currentDistance / raycaster.getPlayer().getEmittedLight());
 			}
-
+			
 			raycaster.getScreen().setRGB(x, y, floorColor);
-			raycaster.getScreen().setRGB(x, raycaster.getScreen().getHeight() - y, ceilingColor);
+			
+			if(!(raycaster.getCurrentLevel() instanceof Level_0 || raycaster.getCurrentLevel() instanceof Level_1))
+				raycaster.getScreen().setRGB(x, raycaster.getScreen().getHeight() - y, ceilingColor);
+			else
+				raycaster.getScreen().setRGB(x, raycaster.getScreen().getHeight() - y, 0xff020203);
+
 		}
 	}
 
 	private void projectSprites() {
-		for (int i = 0; i < raycaster.getGameObjects().size(); i++) {
+		for (int i = 0; i < raycaster.getCurrentLevel().getGameObjects().size(); i++) {
 			objectsOrder[i] = i;
-			objectsDistance[i] = ((raycaster.getPlayer().getPosition().x - raycaster.getGameObjects().get(i).getPosition().x)
-					* (raycaster.getPlayer().getPosition().x - raycaster.getGameObjects().get(i).getPosition().x)
-					+ (raycaster.getPlayer().getPosition().y - raycaster.getGameObjects().get(i).getPosition().y)
-							* (raycaster.getPlayer().getPosition().y - raycaster.getGameObjects().get(i).getPosition().y));
+			objectsDistance[i] = ((raycaster.getPlayer().getPosition().x - raycaster.getCurrentLevel().getGameObjects().get(i).getPosition().x)
+					* (raycaster.getPlayer().getPosition().x - raycaster.getCurrentLevel().getGameObjects().get(i).getPosition().x)
+					+ (raycaster.getPlayer().getPosition().y - raycaster.getCurrentLevel().getGameObjects().get(i).getPosition().y)
+							* (raycaster.getPlayer().getPosition().y - raycaster.getCurrentLevel().getGameObjects().get(i).getPosition().y));
 		}
 
-		MathUtil.combSort(objectsOrder, objectsDistance, raycaster.getGameObjects().size());
+		MathUtil.combSort(objectsOrder, objectsDistance, raycaster.getCurrentLevel().getGameObjects().size());
 
-		for (int i = 0; i < raycaster.getGameObjects().size(); i++) {
-			spritePosition = new Vector2d(raycaster.getGameObjects().get(objectsOrder[i]).getPosition().y - raycaster.getPlayer().getPosition().y,
-					raycaster.getGameObjects().get(objectsOrder[i]).getPosition().x - raycaster.getPlayer().getPosition().x);
+		for (int i = 0; i < raycaster.getCurrentLevel().getGameObjects().size(); i++) {
+			spritePosition = new Vector2d(raycaster.getCurrentLevel().getGameObjects().get(objectsOrder[i]).getPosition().y - raycaster.getPlayer().getPosition().y,
+					raycaster.getCurrentLevel().getGameObjects().get(objectsOrder[i]).getPosition().x - raycaster.getPlayer().getPosition().x);
 
 			double invDet = 1.0 / (raycaster.getCamera().getPlane().x / raycaster.getPlayer().getActualFov()
 					* raycaster.getPlayer().getDirection().y
@@ -329,7 +348,7 @@ public class Rayprojector {
 				drawEndX = raycaster.getScreen().getWidth() - 1;
 
 			for (int stripe = drawStartX; stripe < drawEndX; stripe++) {
-				int texX = (int) (256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * GameLogic.TEST_MAP_TEXTURE_WIDTH
+				int texX = (int) (256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * GameLogic.TEXTURE_WIDTH
 						/ spriteWidth) / 256;
 
 				if (transform.y > 0 && stripe > 0 && stripe < raycaster.getScreen().getWidth()
@@ -339,9 +358,9 @@ public class Rayprojector {
 					{
 						int d = (y) * 256 - raycaster.getScreen().getHeight() * 128 + spriteHeight * 128;
 						
-						int texY = ((d * GameLogic.TEST_MAP_TEXTURE_HEIGHT) / spriteHeight) / 256;
+						int texY = ((d * GameLogic.TEXTURE_HEIGHT) / spriteHeight) / 256;
 
-						int color = raycaster.getGameObjects().get(objectsOrder[i]).getTexture().getRGB(Math.abs(texX), Math.abs(texY));
+						int color = raycaster.getCurrentLevel().getGameObjects().get(objectsOrder[i]).getTexture().getRGB(Math.abs(texX), Math.abs(texY));
 
 						if (spriteHeight < 300 / raycaster.getPlayer().getEmittedLight())
 							color = MathUtil.shadeColor(color, 400 / (spriteHeight * raycaster.getPlayer().getEmittedLight()));

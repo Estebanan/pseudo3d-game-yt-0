@@ -3,8 +3,6 @@ package com.youtube.pseudo3d.engine.objects;
 import java.util.List;
 
 import com.youtube.pseudo3d.engine.GameLogic;
-import com.youtube.pseudo3d.resource.TextureHolder;
-import com.youtube.pseudo3d.resource.TextureHolder.ID;
 import com.youtube.pseudo3d.util.MathUtil;
 import com.youtube.pseudo3d.util.Node;
 import com.youtube.pseudo3d.util.Vector2d;
@@ -33,7 +31,7 @@ public abstract class PathfindingObject extends GameObject{
 			Vector2i goal = new Vector2i((int)raycaster.getPlayer().getPosition().x, (int)raycaster.getPlayer().getPosition().y);
 			
 			if(raycaster.time % 5 == 0)
-				path = MathUtil.findPath(start, goal);
+				path = MathUtil.findPath(raycaster.getCurrentLevel(), start, goal);
 			
 			if(path != null && path.size() > 0) {
 					Vector2i move = path.get(path.size() - 1).position;
@@ -55,14 +53,14 @@ public abstract class PathfindingObject extends GameObject{
 	
 	public void moveX(double delta) {
 		// ONLY MOVE IF THE CURRENT TILE IS 0XFF000000 - BLACK
-		if (TextureHolder.get(ID.TEST_MAP).getRGB((int) (position.x + delta),
+		if (raycaster.getCurrentLevel().getMap().getRGB((int) (position.x + delta),
 				(int) (position.y)) == 0xff000000)
 			position.x += delta;
 	}
 	
 	public void moveY(double delta) {
 		// ONLY MOVE IF THE CURRENT TILE IS 0XFF000000 - BLACK
-		if (TextureHolder.get(ID.TEST_MAP).getRGB((int) (position.x),
+		if (raycaster.getCurrentLevel().getMap().getRGB((int) (position.x),
 				(int) (position.y + delta)) == 0xff000000)
 			position.y += delta;
 	}

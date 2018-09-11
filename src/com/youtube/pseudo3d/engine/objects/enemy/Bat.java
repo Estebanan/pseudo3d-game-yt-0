@@ -19,7 +19,7 @@ public class Bat extends RandomlyMovingObject implements Enemy{
 		animator = new Animator(TextureHolder.get(ID.ENEMY_BAT), 64, 64, 6);
 		deathAnimator = new Animator(TextureHolder.get(ID.ENEMY_BAT_DYING), 64, 64, 6);
 		
-		health = 100;
+		health = 20;
 	}
 	
 	@Override
@@ -36,7 +36,7 @@ public class Bat extends RandomlyMovingObject implements Enemy{
 			texture = deathAnimator.getCurrentFrame()[(deathTimer / deathDuration) % deathAnimator.getCurrentFrame().length];
 			if((deathTimer / deathDuration) % (deathAnimator.getCurrentFrame().length) == 5) {
 				dead = true;			
-				raycaster.getGameObjects().add(new BatCorpse(raycaster, position));
+				raycaster.getCurrentLevel().getGameObjects().add(new BatCorpse(raycaster, position));
 			}
 		}
 		else

@@ -44,7 +44,7 @@ public class Rat extends FollowingObject implements Enemy{
 			texture = deathAnimator.getCurrentFrame()[(deathTimer / deathDuration) % deathAnimator.getCurrentFrame().length];
 			if((deathTimer / deathDuration) % (deathAnimator.getCurrentFrame().length) == 5) {
 				dead = true;	
-				raycaster.getGameObjects().add(new RatCorpse(raycaster, position));
+				raycaster.getCurrentLevel().getGameObjects().add(new RatCorpse(raycaster, position));
 			}
 		}
 		else {	
@@ -55,7 +55,7 @@ public class Rat extends FollowingObject implements Enemy{
 		
 		
 			if(MathUtil.pythagoreanDistance(raycaster.getPlayer().getPosition(), position) <= 1.6
-					&& raycaster.time % 60 == 0)
+					&& raycaster.time % 30 == 0)
 				Player.HEALTH -= DAMAGE;
 		}
 	}

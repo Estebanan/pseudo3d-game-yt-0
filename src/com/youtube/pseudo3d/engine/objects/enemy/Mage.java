@@ -44,14 +44,14 @@ public class Mage extends GameObject implements Enemy{
 			if((deathTimer / deathDuration) % (deathAnimator.getCurrentFrame().length) == 5) {
 				dead = true;
 				
-				raycaster.getGameObjects().add(new MageCorpse(raycaster, position));
+				raycaster.getCurrentLevel().getGameObjects().add(new MageCorpse(raycaster, position));
 			}
 		}else {
 			if(MathUtil.pythagoreanDistance(raycaster.getPlayer().getPosition(), position) <= 7) {
 				texture = fightAnimator.getCurrentFrame()[(raycaster.time / duration) % fightAnimator.getCurrentFrame().length];
 
 				if((raycaster.time / duration) % (fightAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) {
-						raycaster.getGameObjects().add(new GreenEnemyMissle(raycaster, new Vector2d(position.x, position.y)));
+						raycaster.getCurrentLevel().getGameObjects().add(new GreenEnemyMissle(raycaster, new Vector2d(position.x, position.y)));
 						attackDelay = 0;
 				}
 			}else {

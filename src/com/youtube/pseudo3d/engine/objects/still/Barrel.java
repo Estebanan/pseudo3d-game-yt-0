@@ -9,6 +9,7 @@ import com.youtube.pseudo3d.util.Vector2d;
 public class Barrel extends GameObject{
 
 	public Barrel(GameLogic raycaster, Vector2d position) {
+
 		super(raycaster, position);
 		
 		texture =  TextureHolder.get(ID.BARREL);

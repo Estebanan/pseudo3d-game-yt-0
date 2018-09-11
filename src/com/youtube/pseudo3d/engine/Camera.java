@@ -8,7 +8,6 @@ public class Camera {
 	
 	public Camera() {
 		plane = new Vector2d(0, 0.8);
-
 	}
 
 	public Vector2d getPlane() {

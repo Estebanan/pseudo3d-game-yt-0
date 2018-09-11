@@ -10,8 +10,11 @@ public class TextureHolder {
 	public static enum ID{
 		//MAPS
 		TEST_MAP,
+		LEVEL_0,
+		LEVEL_1,
 		
 		//WALLS
+		SKY,
 		BLUESTONE,
 		COBBLESTONE,
 		EMBLEM,
@@ -20,13 +23,25 @@ public class TextureHolder {
 		MOSSYSTONE,
 		PURPLESTONE,
 		WOOD,
+		BUSH,
+		GRASS,
+		ROTTEN_WOOD,
 		
 		//STILL SPRITES
 		SPIDER,
 		PILLAR,
 		BARREL,
-		
+		BLUE_FLOWER,
+		GRASS_0,
+		GRASS_BUSH,
+		BIG_BUSH,
+		GRASS_STALKS,
+		ROSE,
+		YELLOW_FLOWER,
+		PORTAL,
+
 		//MISSLES
+		PUNCH_MISSLE,
 		SWORD_MISSLE,
 		AXE_MISSLE,
 		WAND_MISSLE,
@@ -38,6 +53,7 @@ public class TextureHolder {
 		SWORD_COLLECT,
 		AXE_COLLECT,
 		WAND_COLLECT,
+		HEALTH_POTION_COLLECT,
 		
 		//ENEMIES
 		ENEMY_BAT,
@@ -60,6 +76,7 @@ public class TextureHolder {
 		ENEMY_MAGE_CORPSE,
 
 		//PLAYER
+		PLAYER_HAND_ATTACK,
 		PLAYER_LATTERN,
 		PLAYER_SWORD,
 		PLAYER_SWORD_ATTACK,

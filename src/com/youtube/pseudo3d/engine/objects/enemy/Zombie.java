@@ -11,7 +11,7 @@ import com.youtube.pseudo3d.util.Vector2d;
 
 public class Zombie extends PathfindingObject implements Enemy{
 
-	public static int DAMAGE = 20;
+	public static int DAMAGE = 30;
 	
 	private Animator moveAnimator;
 	private Animator deathAnimator;
@@ -24,7 +24,7 @@ public class Zombie extends PathfindingObject implements Enemy{
 		moveAnimator = new Animator(TextureHolder.get(ID.ENEMY_ZOMBIE_MOVING), 64, 64, 6);
 		deathAnimator = new Animator(TextureHolder.get(ID.ENEMY_ZOMBIE_DYING), 64, 64, 6);		
 	
-		health = 300;
+		health = 400;
 	}
 	
 	@Override
@@ -42,7 +42,7 @@ public class Zombie extends PathfindingObject implements Enemy{
 			texture = deathAnimator.getCurrentFrame()[(deathTimer / deathDuration) % deathAnimator.getCurrentFrame().length];
 			if((deathTimer / deathDuration) % (deathAnimator.getCurrentFrame().length) == 5) {
 				dead = true;	
-				raycaster.getGameObjects().add(new ZombieCorpse(raycaster, position));
+				raycaster.getCurrentLevel().getGameObjects().add(new ZombieCorpse(raycaster, position));
 			}
 		}
 		else {	
