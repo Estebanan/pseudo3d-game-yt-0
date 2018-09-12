@@ -15,10 +15,10 @@ public class Items {
 	public static HashMap<Holding, Boolean> unlocked = new HashMap<Holding, Boolean>();
 	static {
 		unlocked.put(Holding.HAND, true);
-		unlocked.put(Holding.LATTERN, false);
-		unlocked.put(Holding.SWORD, false);
-		unlocked.put(Holding.AXE, false);
-		unlocked.put(Holding.WAND, false);
+		unlocked.put(Holding.LATTERN, true);
+		unlocked.put(Holding.SWORD, true);
+		unlocked.put(Holding.AXE, true);
+		unlocked.put(Holding.WAND, true);
 	}
 	
 	public static Holding holding = Holding.HAND;

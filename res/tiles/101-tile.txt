@@ -9,3 +9,4 @@
 0xff533242 - purplestone.png
 0xff6b5945 - rotten-wood.png
 0xff645343 - wood.png
+0xff3b1c26 - red-door.png

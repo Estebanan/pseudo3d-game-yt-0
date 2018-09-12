@@ -7,25 +7,37 @@ import java.awt.image.BufferedImage;
 import com.youtube.pseudo3d.engine.level.Level;
 import com.youtube.pseudo3d.engine.level.Level_0;
 import com.youtube.pseudo3d.engine.level.Level_1;
+import com.youtube.pseudo3d.engine.level.Level_2;
 import com.youtube.pseudo3d.engine.objects.collect.AxeCollect;
 import com.youtube.pseudo3d.engine.objects.collect.HealthPotionCollect;
 import com.youtube.pseudo3d.engine.objects.collect.LatternCollect;
 import com.youtube.pseudo3d.engine.objects.collect.SwordCollect;
 import com.youtube.pseudo3d.engine.objects.collect.WandCollect;
 import com.youtube.pseudo3d.engine.objects.enemy.Enemy;
+import com.youtube.pseudo3d.engine.objects.enemy.Thanos;
+import com.youtube.pseudo3d.engine.objects.enemy.Thanos.State;
+import com.youtube.pseudo3d.engine.objects.lever.BlueLever;
+import com.youtube.pseudo3d.engine.objects.lever.RedLever;
 import com.youtube.pseudo3d.engine.objects.missle.AxeMissle;
+import com.youtube.pseudo3d.engine.objects.missle.BlueEnemyMissle;
 import com.youtube.pseudo3d.engine.objects.missle.EnemyMissle;
 import com.youtube.pseudo3d.engine.objects.missle.GreenEnemyMissle;
 import com.youtube.pseudo3d.engine.objects.missle.Missle;
+import com.youtube.pseudo3d.engine.objects.missle.OrangeEnemyMissle;
 import com.youtube.pseudo3d.engine.objects.missle.PunchMissle;
+import com.youtube.pseudo3d.engine.objects.missle.PurpleEnemyMissle;
+import com.youtube.pseudo3d.engine.objects.missle.RedEnemyMissle;
 import com.youtube.pseudo3d.engine.objects.missle.SwordMissle;
+import com.youtube.pseudo3d.engine.objects.missle.ThanosCar;
 import com.youtube.pseudo3d.engine.objects.missle.WandMissle;
+import com.youtube.pseudo3d.engine.objects.missle.YellowEnemyMissle;
 import com.youtube.pseudo3d.engine.objects.still.Portal;
 import com.youtube.pseudo3d.gui.Gui;
 import com.youtube.pseudo3d.main.Main;
 import com.youtube.pseudo3d.resource.TextureLoader;
 import com.youtube.pseudo3d.util.Constants;
 import com.youtube.pseudo3d.util.MathUtil;
+import com.youtube.pseudo3d.util.Vector2d;
 
 public class GameLogic {
 
@@ -84,7 +96,7 @@ public class GameLogic {
 		player.handleInput(elapsed);
 	}
 	
-	public void update(double elapsed) {
+	public void update(double elapsed) {		
 		time += (elapsed * 1e3);		
 		// UPDATE SCREEN SIZE DEPENDING ON WINDOW SIZE
 		screen = new BufferedImage(Constants.RESOLUTION_WIDTH, Constants.RESOLUTION_HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -108,7 +120,10 @@ public class GameLogic {
 		updatePickupWand();
 		updatePickupHealth();
 		
+		updateSwitchingLever();
 		updateEnteringPortal();
+		
+		updateThanosFight();
 	}
 	
 	private void updateGameObjects(double elapsed) {		
@@ -133,8 +148,21 @@ public class GameLogic {
 					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().x) == Math.floor(player.getPosition().x)
 					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().y) == Math.floor(player.getPosition().y)) {
 				
+				
+				if(currentLevel.getGameObjects().get(i) instanceof BlueEnemyMissle)
+					Player.HEALTH -= BlueEnemyMissle.DAMAGE;
+				if(currentLevel.getGameObjects().get(i) instanceof OrangeEnemyMissle)
+					Player.HEALTH -= OrangeEnemyMissle.DAMAGE;
+				if(currentLevel.getGameObjects().get(i) instanceof RedEnemyMissle)
+					Player.HEALTH -= RedEnemyMissle.DAMAGE;
 				if(currentLevel.getGameObjects().get(i) instanceof GreenEnemyMissle)
 					Player.HEALTH -= GreenEnemyMissle.DAMAGE;
+				if(currentLevel.getGameObjects().get(i) instanceof PurpleEnemyMissle)
+					Player.HEALTH -= PurpleEnemyMissle.DAMAGE;
+				if(currentLevel.getGameObjects().get(i) instanceof YellowEnemyMissle)
+					Player.HEALTH -= YellowEnemyMissle.DAMAGE;
+				if(currentLevel.getGameObjects().get(i) instanceof ThanosCar)
+					Player.HEALTH -= ThanosCar.DAMAGE;
 				
 				currentLevel.getGameObjects().remove(i);
 				i--;
@@ -176,7 +204,7 @@ public class GameLogic {
 		}
 	}
 	
-	private void updateCloseDistanceMisslesDisapear() {
+	private void updateCloseDistanceMisslesDisapear() {		
 		for(int i=0; i<currentLevel.getGameObjects().size(); i++) {
 			if((currentLevel.getGameObjects().get(i) instanceof PunchMissle)
 					&& MathUtil.pythagoreanDistance(player.getPosition(), currentLevel.getGameObjects().get(i).getPosition()) > 1.0) {						
@@ -257,6 +285,35 @@ public class GameLogic {
 			}
 	}
 	
+	private void updateSwitchingLever() {
+		for(int i=0; i<currentLevel.getGameObjects().size(); i++) {
+			if(currentLevel.getGameObjects().get(i) instanceof RedLever
+					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().x) == Math.floor(player.getPosition().x)
+					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().y) == Math.floor(player.getPosition().y)) {
+			
+				((RedLever) currentLevel.getGameObjects().get(i)).on = true;
+				
+				for(int x=0; x<currentLevel.getMap().getWidth(); x++)
+					for(int y=0; y<currentLevel.getMap().getHeight(); y++)
+						if(currentLevel.getMap().getRGB(x, y) == 0xff3b1c26)
+							currentLevel.getMap().setRGB(x, y, 0xff000000);
+			}
+			
+			
+			if(currentLevel.getGameObjects().get(i) instanceof BlueLever
+					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().x) == Math.floor(player.getPosition().x)
+					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().y) == Math.floor(player.getPosition().y)) {
+		
+				((BlueLever) currentLevel.getGameObjects().get(i)).on = true;
+				
+				for(int x=0; x<currentLevel.getMap().getWidth(); x++)
+					for(int y=0; y<currentLevel.getMap().getHeight(); y++)
+						if(currentLevel.getMap().getRGB(x, y) == 0xff004889)
+							currentLevel.getMap().setRGB(x, y, 0xff000000);
+			}
+		}
+	}
+	
 	private void updateEnteringPortal() {
 		for(int i=0; i<currentLevel.getGameObjects().size(); i++)
 			if(currentLevel.getGameObjects().get(i) instanceof Portal
@@ -264,8 +321,6 @@ public class GameLogic {
 					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().y) == Math.floor(player.getPosition().y)) {
 			
 					increaseLevel();
-					currentLevel.getGameObjects().remove(i);
-					i--;
 			}
 	}
 	
@@ -279,7 +334,36 @@ public class GameLogic {
 		case 1:
 			currentLevel = new Level_1(this);
 			break;
+		case 2:
+			currentLevel = new Level_2(this);
+			break;
 		}
+	}
+	
+	private void updateThanosFight() {
+		if(currentLevel instanceof Level_2 
+				&& Math.floor(player.getPosition().x) == 3
+				&& Math.floor(player.getPosition().y) == 5) {
+			currentLevel.getMap().setRGB(3, 6, 0xff3b1c26);
+			
+			for(int i=0; i<currentLevel.getGameObjects().size(); i++) {
+				if(currentLevel.getGameObjects().get(i) instanceof Thanos && !Thanos.trigerred)
+					((Thanos)currentLevel.getGameObjects().get(i)).state = State.FIGHT;
+			}
+			
+			Thanos.trigerred = true;
+		}
+		
+		for(int i=0; i<currentLevel.getGameObjects().size(); i++) {
+			if(currentLevel.getGameObjects().get(i) instanceof Thanos
+					&& ((Thanos)currentLevel.getGameObjects().get(i)).state == State.FIGHT
+					&& time % 20 == 0) {
+				
+				currentLevel.getGameObjects().add(new ThanosCar(this, new Vector2d(13.5, 2.5),  new Vector2d(.0, -1.0), 50));
+				currentLevel.getGameObjects().add(new ThanosCar(this, new Vector2d(13.5, 5.5),  new Vector2d(.0, -1.0), 50));
+			}
+				
+		}	
 	}
 	
 	public void render(Graphics g) {

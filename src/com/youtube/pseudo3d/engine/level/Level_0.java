@@ -7,6 +7,8 @@ import com.youtube.pseudo3d.engine.objects.collect.SwordCollect;
 import com.youtube.pseudo3d.engine.objects.enemy.Bat;
 import com.youtube.pseudo3d.engine.objects.enemy.Mage;
 import com.youtube.pseudo3d.engine.objects.enemy.Rat;
+import com.youtube.pseudo3d.engine.objects.lever.BlueLever;
+import com.youtube.pseudo3d.engine.objects.lever.RedLever;
 import com.youtube.pseudo3d.engine.objects.still.BigBush;
 import com.youtube.pseudo3d.engine.objects.still.BlueFlower;
 import com.youtube.pseudo3d.engine.objects.still.GrassBush;
@@ -37,6 +39,8 @@ public class Level_0 extends Level{
 		gameObjects.clear();
 		
 		gameObjects.add(new Portal(gameLogic, new Vector2d(48.5, 49.5)));
+		gameObjects.add(new RedLever(gameLogic, new Vector2d(39.5, 88.5)));
+		gameObjects.add(new BlueLever(gameLogic, new Vector2d(37.5, 38.5)));
 		
 		gameObjects.add(new LatternCollect(gameLogic, new Vector2d(65.5, 82.5)));
 		gameObjects.add(new SwordCollect(gameLogic, new Vector2d(66.5, 96.5)));

@@ -9,6 +9,7 @@ public class TextureLoader {
 		TextureHolder.load(ID.TEST_MAP, 		"/maps/test_map.png");
 		TextureHolder.load(ID.LEVEL_0, 			"/maps/level_0.png");
 		TextureHolder.load(ID.LEVEL_1, 			"/maps/level_1.png");
+		TextureHolder.load(ID.LEVEL_2, 			"/maps/level_2.png");
 		
 		//WALLS
 		TextureHolder.load(ID.SKY, 				"/tiles/sky.png");
@@ -23,6 +24,8 @@ public class TextureLoader {
 		TextureHolder.load(ID.BUSH, 			"/tiles/bush.png");
 		TextureHolder.load(ID.GRASS, 			"/tiles/grass.png");
 		TextureHolder.load(ID.ROTTEN_WOOD, 		"/tiles/rotten-wood.png");
+		TextureHolder.load(ID.RED_DOOR, 		"/tiles/red-door.png");
+		TextureHolder.load(ID.BLUE_DOOR, 		"/tiles/blue-door.png");
 		
 		//STILL SPRITES
 		TextureHolder.load(ID.BARREL, 			"/sprites/barrel.png");
@@ -36,6 +39,13 @@ public class TextureLoader {
 		TextureHolder.load(ID.ROSE, 			"/sprites/rose.png");
 		TextureHolder.load(ID.YELLOW_FLOWER, 	"/sprites/yellow-flower.png");
 		TextureHolder.load(ID.PORTAL, 			"/sprites/portal.png");
+		TextureHolder.load(ID.THANOS_CAR, 		"/sprites/thanos-car.png");
+
+		//LEVERS
+		TextureHolder.load(ID.RED_LEVER_OFF, 	"/sprites/red-lever-off.png");
+		TextureHolder.load(ID.RED_LEVER_ON, 	"/sprites/red-lever-on.png");
+		TextureHolder.load(ID.BLUE_LEVER_OFF, 	"/sprites/blue-lever-off.png");
+		TextureHolder.load(ID.BLUE_LEVER_ON, 	"/sprites/blue-lever-on.png");
 
 		//MISSLES
 		TextureHolder.load(ID.PUNCH_MISSLE,  	"/sprites/missle/punch-missle.png");
@@ -43,7 +53,12 @@ public class TextureLoader {
 		TextureHolder.load(ID.AXE_MISSLE,       "/sprites/missle/axe-missle.png");
 		TextureHolder.load(ID.WAND_MISSLE,  	"/sprites/missle/wand-missle.png");
 		
+		TextureHolder.load(ID.ENEMY_BLUE_MISSLE,"/sprites/missle/enemy-blue-missle.png");
+		TextureHolder.load(ID.ENEMY_ORANGE_MISSLE,"/sprites/missle/enemy-orange-missle.png");
+		TextureHolder.load(ID.ENEMY_RED_MISSLE,"/sprites/missle/enemy-red-missle.png");
 		TextureHolder.load(ID.ENEMY_GREEN_MISSLE,"/sprites/missle/enemy-green-missle.png");
+		TextureHolder.load(ID.ENEMY_PURPLE_MISSLE,"/sprites/missle/enemy-purple-missle.png");
+		TextureHolder.load(ID.ENEMY_YELLOW_MISSLE,"/sprites/missle/enemy-yellow-missle.png");
 		
 		//COLLECT
 		TextureHolder.load(ID.LATTERN_COLLECT,  "/sprites/collect/lattern_collect.png");
@@ -71,6 +86,12 @@ public class TextureLoader {
 		TextureHolder.load(ID.ENEMY_MAGE_ATTACK,"/sprites/enemy/mage/mage-attack.png");
 		TextureHolder.load(ID.ENEMY_MAGE_DYING,	"/sprites/enemy/mage/mage-death.png");
 		TextureHolder.load(ID.ENEMY_MAGE_CORPSE,"/sprites/enemy/mage/mage-corpse.png");
+		
+		TextureHolder.load(ID.ENEMY_THANOS,		"/sprites/enemy/thanos/thanos.png");
+		TextureHolder.load(ID.ENEMY_THANOS_MOVING,"/sprites/enemy/thanos/thanos-moving.png");
+		TextureHolder.load(ID.ENEMY_THANOS_ATTACK,"/sprites/enemy/thanos/thanos-shooting.png");
+		TextureHolder.load(ID.ENEMY_THANOS_DYING,"/sprites/enemy/thanos/thanos-dying.png");
+
 		
 		//PLAYER
 		TextureHolder.load(ID.PLAYER_HAND_ATTACK,"/player/hand/hand-fight.png");

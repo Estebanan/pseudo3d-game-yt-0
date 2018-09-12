@@ -130,14 +130,16 @@ public class Player {
 	
 	private void handleInputSprinting(double elapsed) {
 		if (InputHandler.isKeyPressed(KeyEvent.VK_SHIFT)
-				&& (InputHandler.isKeyPressed(KeyEvent.VK_W) && actualMovementSpeed < 3.4 * initialMovementSpeed)) {
+				&& (InputHandler.isKeyPressed(KeyEvent.VK_W) && actualMovementSpeed < 3.4 * initialMovementSpeed)
+				&& !InputHandler.isKeyPressed(KeyEvent.VK_S)) {
 			actualMovementSpeed += movementAcceleration;
 		} else if (actualMovementSpeed > initialMovementSpeed) {
 			actualMovementSpeed -= movementAcceleration;
 		}
 
 		if (InputHandler.isKeyPressed(KeyEvent.VK_SHIFT)
-				&& (InputHandler.isKeyPressed(KeyEvent.VK_W) && actualFov < 2.0 * initialFov)) {
+				&& (InputHandler.isKeyPressed(KeyEvent.VK_W) && actualFov < 2.0 * initialFov)
+				&& !InputHandler.isKeyPressed(KeyEvent.VK_S)) {
 			actualFov += fovAcceleration;
 		} else if (actualFov > initialFov) {
 			actualFov -= 8 * fovAcceleration;
@@ -301,7 +303,7 @@ public class Player {
 				(int)(raycaster.getMain().getWidth() - 
 						spriteScale.x * raycaster.getMain().getWidth() + 50 + Math.cos(position.x * 2) * Math.cos(position.y * 2) * 10),
 				(int)(raycaster.getMain().getHeight() - 
-						spriteScale.y * raycaster.getMain().getHeight() + Math.sin(position.x) * Math.sin(position.y) * 50) + 100,
+						spriteScale.y * raycaster.getMain().getHeight() + Math.sin(position.x * 2.5) * Math.sin(position.y * 2.5) * 50) + 100,
 				(int)(spriteScale.x * raycaster.getMain().getWidth()),
 				(int)(spriteScale.y * raycaster.getMain().getHeight()),
 				null);

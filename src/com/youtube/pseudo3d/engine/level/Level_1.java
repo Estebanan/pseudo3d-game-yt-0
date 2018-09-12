@@ -11,6 +11,7 @@ import com.youtube.pseudo3d.engine.objects.still.BlueFlower;
 import com.youtube.pseudo3d.engine.objects.still.GrassBush;
 import com.youtube.pseudo3d.engine.objects.still.GrassStalks;
 import com.youtube.pseudo3d.engine.objects.still.Grass_0;
+import com.youtube.pseudo3d.engine.objects.still.Portal;
 import com.youtube.pseudo3d.engine.objects.still.Rose;
 import com.youtube.pseudo3d.engine.objects.still.YellowFlower;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
@@ -28,12 +29,13 @@ public class Level_1 extends Level{
 		
 		setSpawn(new Vector2d(16.5, 10.5));
 		
+		gameLogic.getPlayer().rotate(Math.PI);
+		
 		initGameObjects();
 	}
 	
-	private void initGameObjects() {
-		gameObjects.clear();
-		
+	private void initGameObjects() {		
+		gameObjects.add(new Portal(gameLogic, new Vector2d(26.5, 23.5)));
 		
 		gameObjects.add(new AxeCollect(gameLogic, new Vector2d(17.5, 21.5)));
 		gameObjects.add(new HealthPotionCollect(gameLogic, new Vector2d(11.5, 21.5)));
