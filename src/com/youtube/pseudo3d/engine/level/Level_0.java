@@ -44,6 +44,7 @@ public class Level_0 extends Level{
 		
 		gameObjects.add(new LatternCollect(gameLogic, new Vector2d(65.5, 82.5)));
 		gameObjects.add(new SwordCollect(gameLogic, new Vector2d(66.5, 96.5)));
+		gameObjects.add(new SwordCollect(gameLogic, new Vector2d(58.0, 95.5)));
 		
 		gameObjects.add(new HealthPotionCollect(gameLogic, new Vector2d(66.5, 85.5)));
 		gameObjects.add(new HealthPotionCollect(gameLogic, new Vector2d(88.5, 96.5)));

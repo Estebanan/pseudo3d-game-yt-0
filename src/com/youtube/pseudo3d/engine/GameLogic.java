@@ -1,9 +1,9 @@
 package com.youtube.pseudo3d.engine;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import com.youtube.pseudo3d.engine.Items.Holding;
 import com.youtube.pseudo3d.engine.level.Level;
 import com.youtube.pseudo3d.engine.level.Level_0;
 import com.youtube.pseudo3d.engine.level.Level_1;
@@ -33,6 +33,7 @@ import com.youtube.pseudo3d.engine.objects.missle.WandMissle;
 import com.youtube.pseudo3d.engine.objects.missle.YellowEnemyMissle;
 import com.youtube.pseudo3d.engine.objects.still.Portal;
 import com.youtube.pseudo3d.gui.Gui;
+import com.youtube.pseudo3d.gui.QuickText;
 import com.youtube.pseudo3d.main.Main;
 import com.youtube.pseudo3d.resource.TextureLoader;
 import com.youtube.pseudo3d.util.Constants;
@@ -97,12 +98,16 @@ public class GameLogic {
 	}
 	
 	public void update(double elapsed) {		
+		System.out.println(player.getPosition().x + " " + player.getPosition().y);
+		
 		time += (elapsed * 1e3);		
 		// UPDATE SCREEN SIZE DEPENDING ON WINDOW SIZE
 		screen = new BufferedImage(Constants.RESOLUTION_WIDTH, Constants.RESOLUTION_HEIGHT, BufferedImage.TYPE_INT_RGB);
 		rayprojector.projectRays();
 		player.update(elapsed);
 		gui.update(elapsed);
+		
+		updateDying();
 		
 		updateGameObjects(elapsed);
 		updateWallCollisions();
@@ -124,6 +129,21 @@ public class GameLogic {
 		updateEnteringPortal();
 		
 		updateThanosFight();
+	}
+	
+	private void updateDying() {
+		if(Player.HEALTH <= 0) {
+			Player.HEALTH = 100;
+			
+			QuickText.resetTimers();
+			
+			if(currentLevel instanceof Level_0)
+				currentLevel = new Level_0(this);
+			else if(currentLevel instanceof Level_1)
+				currentLevel = new Level_1(this);
+			else if(currentLevel instanceof Level_2)
+				currentLevel = new Level_2(this);
+		}
 	}
 	
 	private void updateGameObjects(double elapsed) {		
@@ -370,14 +390,78 @@ public class GameLogic {
 		g.drawImage(screen, 0, 0, main.getWidth(), main.getHeight(), null);
 		player.render(g);
 		gui.render(g);
+
+		renderQuickText(g);
+	}
+	
+	private void renderQuickText(Graphics g) {
+		if(currentLevel instanceof Level_0) {
+			if((player.getPosition().x != 49.0 || player.getPosition().y != 97.0)) {
+				QuickText.displayChapter1Text(this, g);
+				QuickText.displayChapter1NameText(this, g);
+			}
+			if(QuickText.timers[0] >= QuickText.DELAY)
+				QuickText.displayFindLatternText(this, g);
+			
+			if(QuickText.timers[2] >= QuickText.DELAY)
+				QuickText.displayFindSwordText(this, g);
+
+			if(Items.unlocked.get(Holding.LATTERN))
+				QuickText.displayFoundLatternText(this, g);
+			
+			if(Items.unlocked.get(Holding.SWORD))
+				QuickText.displayFoundSwordText(this, g);
+			
+			
+			//RED SECRET
+			if(Math.floor(player.getPosition().x) == 39
+					&& Math.floor(player.getPosition().y) == 88)
+				QuickText.displayRedDoorsOpen(this, g);
+			
+			if((Math.floor(player.getPosition().x) == 53 
+					|| Math.floor(player.getPosition().x) == 52
+					|| Math.floor(player.getPosition().x) == 54)
+					&& Math.floor(player.getPosition().y) == 90)
+				QuickText.displayRedSecretFound(this, g);
+			
+			//BLUE SECRET
+			if(Math.floor(player.getPosition().x) == 37
+					&& Math.floor(player.getPosition().y) == 38)
+				QuickText.displayBlueDoorsOpen(this, g);
+			
+			if((Math.floor(player.getPosition().y) == 35 
+					|| Math.floor(player.getPosition().y) == 36
+					|| Math.floor(player.getPosition().y) == 37
+					|| Math.floor(player.getPosition().y) == 38)
+					&& Math.floor(player.getPosition().x) == 55)
+				QuickText.displayBlueSecretFound(this, g);
+		}
 		
-		//DEBUG INFO
-		g.setColor(Color.GRAY);
-		g.drawString(
-				"x = " + Math.floor(player.getPosition().x) + 
-				", y = " + Math.floor(player.getPosition().y) +
-				", direction = (" + (player.getDirection().x) + ", " + (player.getDirection().y) + ")"
-				, 100, 20);
+		if(currentLevel instanceof Level_1) {
+			if((player.getPosition().x != 16.0 || player.getPosition().y != 10.0)) {
+				QuickText.displayChapter2Text(this, g);
+				QuickText.displayChapter2NameText(this, g);
+			}
+			
+			if(QuickText.timers[6] >= QuickText.DELAY && !Items.unlocked.get(Items.Holding.AXE))
+				QuickText.displayFindAxeText(this, g);
+			
+			if(Items.unlocked.get(Holding.AXE) && QuickText.timers[6] >= QuickText.DELAY)
+				QuickText.displayFoundAxeText(this, g);
+			
+			if((Math.floor(player.getPosition().x) == 17
+					|| Math.floor(player.getPosition().x) == 18
+					|| Math.floor(player.getPosition().x) == 19)
+					&& Math.floor(player.getPosition().y) == 15)
+				QuickText.displayThisWay(this, g);
+		}
+		
+		if(currentLevel instanceof Level_2) {
+			if((player.getPosition().x != 10.0 || player.getPosition().y != 11.0)) {
+				QuickText.displayChapter3Text(this, g);
+				QuickText.displayChapter3NameText(this, g);
+			}
+		}
 	}
 
 	public Main getMain() {

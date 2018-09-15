@@ -18,9 +18,7 @@ public class Main extends Canvas implements Runnable{
 	
 	private Window window;
 	private GameLogic raycaster;
-	
-	private double fps;
-	
+		
 	public Main() {
 		initCanvas();
 		initWindow();
@@ -65,7 +63,6 @@ public class Main extends Canvas implements Runnable{
 			while(lag >= Constants.MS_PER_UPDATE)
 				lag -= Constants.MS_PER_UPDATE;
 			
-			fps = (1/elapsed - lag)/Constants.MS_PER_UPDATE*10;
 			render();
 		}
 	}
@@ -90,10 +87,7 @@ public class Main extends Canvas implements Runnable{
 		g.clearRect(0, 0, getWidth(), getHeight());
 		
 		raycaster.render(g);
-		
-		// DEBUG INFO
-		g.drawString("FPS: " + Math.floor(fps), 10, 20);
-		
+
 		g.dispose();
 		bs.show();
 	}

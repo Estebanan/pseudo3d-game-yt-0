@@ -112,7 +112,10 @@ public class TextureHolder {
 		GUI_LATTERN_ICON,
 		GUI_SWORD_ICON,
 		GUI_AXE_ICON,
-		GUI_WAND_ICON
+		GUI_WAND_ICON,
+		GUI_BLOOD_20,
+		GUI_BLOOD_30,
+		GUI_COLORIZER
 	}
 
 	private static HashMap<ID, BufferedImage> textureMap = new HashMap<ID, BufferedImage>();

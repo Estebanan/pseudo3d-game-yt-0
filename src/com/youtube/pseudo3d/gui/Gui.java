@@ -14,15 +14,13 @@ public class Gui{
 
 	private GameLogic gameLogic;
 	
-	
 	private double slotScale = .08;
 	
 	public Gui(GameLogic gameLogic) {
 		this.gameLogic = gameLogic;
 	}
 	
-	public void update(double elapsed) {
-	}
+	public void update(double elapsed) {}
 	
 	public void render(Graphics g) {
 		int slotWidth = (int)(slotScale * gameLogic.getMain().getWidth() / 1.4);
@@ -63,6 +61,14 @@ public class Gui{
 	}
 	
 	private void renderHealth(Graphics g, int slotWidth, int slotHeight) {
+		if(Player.HEALTH <= 40)
+			g.drawImage(TextureHolder.get(ID.GUI_BLOOD_20), 0, 0, gameLogic.getMain().getWidth(), gameLogic.getMain().getHeight(), null);
+		
+		if(Player.HEALTH <= 30)
+			g.drawImage(TextureHolder.get(ID.GUI_BLOOD_30), 0, 0, gameLogic.getMain().getWidth(), gameLogic.getMain().getHeight(), null);
+		
+		g.drawImage(TextureHolder.get(ID.GUI_COLORIZER), 0, 0, gameLogic.getMain().getWidth(), gameLogic.getMain().getHeight(), null);
+		
 		g.setColor(new Color(111, 2, 2, 200));
 		g.fillRect((int) (gameLogic.getMain().getWidth() / 2.678), (int)(gameLogic.getMain().getHeight() - slotHeight) - slotHeight, 
 				(int)(Player.HEALTH * slotWidth * slotScale / 1.7), (int)(slotHeight * .6));
