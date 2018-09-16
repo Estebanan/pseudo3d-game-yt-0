@@ -3,6 +3,7 @@ package com.youtube.pseudo3d.engine.objects.enemy;
 import com.youtube.pseudo3d.engine.GameLogic;
 import com.youtube.pseudo3d.engine.Player;
 import com.youtube.pseudo3d.engine.objects.PathfindingObject;
+import com.youtube.pseudo3d.engine.objects.collect.GoldCollect;
 import com.youtube.pseudo3d.resource.Animator;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
@@ -43,6 +44,10 @@ public class Zombie extends PathfindingObject implements Enemy{
 			if((deathTimer / deathDuration) % (deathAnimator.getCurrentFrame().length) == 5) {
 				dead = true;	
 				raycaster.getCurrentLevel().getGameObjects().add(new ZombieCorpse(raycaster, position));
+				
+				for(int i=0; i<10; i++)
+					raycaster.getCurrentLevel().getGameObjects().add(new GoldCollect(raycaster, position));
+
 			}
 		}
 		else {	

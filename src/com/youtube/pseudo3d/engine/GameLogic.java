@@ -9,6 +9,7 @@ import com.youtube.pseudo3d.engine.level.Level_0;
 import com.youtube.pseudo3d.engine.level.Level_1;
 import com.youtube.pseudo3d.engine.level.Level_2;
 import com.youtube.pseudo3d.engine.objects.collect.AxeCollect;
+import com.youtube.pseudo3d.engine.objects.collect.GoldCollect;
 import com.youtube.pseudo3d.engine.objects.collect.HealthPotionCollect;
 import com.youtube.pseudo3d.engine.objects.collect.LatternCollect;
 import com.youtube.pseudo3d.engine.objects.collect.SwordCollect;
@@ -124,6 +125,7 @@ public class GameLogic {
 		updatePickupAxe();
 		updatePickupWand();
 		updatePickupHealth();
+		updatePickupGold();
 		
 		updateSwitchingLever();
 		updateEnteringPortal();
@@ -137,10 +139,15 @@ public class GameLogic {
 			
 			QuickText.resetTimers();
 			
-			if(currentLevel instanceof Level_0)
+			if(currentLevel instanceof Level_0) {
 				currentLevel = new Level_0(this);
-			else if(currentLevel instanceof Level_1)
+				Items.unlocked.put(Items.Holding.LATTERN, false);
+				Items.unlocked.put(Items.Holding.SWORD, false);
+			}
+			else if(currentLevel instanceof Level_1) {
 				currentLevel = new Level_1(this);
+				Items.unlocked.put(Items.Holding.AXE, false);
+			}
 			else if(currentLevel instanceof Level_2)
 				currentLevel = new Level_2(this);
 		}
@@ -219,7 +226,7 @@ public class GameLogic {
 			if(currentLevel.getGameObjects().get(i) instanceof Enemy
 					&& currentLevel.getGameObjects().get(i).dead) {
 				currentLevel.getGameObjects().remove(i);
-				i--;
+				i--;				
 			}
 		}
 	}
@@ -299,6 +306,19 @@ public class GameLogic {
 					Player.HEALTH += HealthPotionCollect.BONUS;
 				else if(Player.HEALTH >= 100 - HealthPotionCollect.BONUS)
 					Player.HEALTH = 100;
+				
+				currentLevel.getGameObjects().remove(i);
+				i--;
+			}
+	}
+	
+	private void updatePickupGold() {
+		for(int i=0; i<currentLevel.getGameObjects().size(); i++)
+			if(currentLevel.getGameObjects().get(i) instanceof GoldCollect
+					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().x) == Math.floor(player.getPosition().x)
+					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().y) == Math.floor(player.getPosition().y)) {
+
+				Player.COINS += 10;
 				
 				currentLevel.getGameObjects().remove(i);
 				i--;
@@ -387,7 +407,13 @@ public class GameLogic {
 	}
 	
 	public void render(Graphics g) {
-		g.drawImage(screen, 0, 0, main.getWidth(), main.getHeight(), null);
+		g.drawImage(screen, 
+				(int)(Math.cos(player.getPosition().x * 2) * Math.cos(player.getPosition().y * 2 * 10) - 100), 
+				(int)(Math.sin(player.getPosition().x * 2.5) * Math.sin(player.getPosition().y * 2.5) * 50 - 100), 
+				(int)(main.getWidth() + 200), 
+				(int)(main.getHeight() + 200), 
+				null);
+		
 		player.render(g);
 		gui.render(g);
 

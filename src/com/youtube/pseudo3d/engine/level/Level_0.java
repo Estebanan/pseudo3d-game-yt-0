@@ -1,6 +1,7 @@
 package com.youtube.pseudo3d.engine.level;
 
 import com.youtube.pseudo3d.engine.GameLogic;
+import com.youtube.pseudo3d.engine.objects.collect.GoldCollect;
 import com.youtube.pseudo3d.engine.objects.collect.HealthPotionCollect;
 import com.youtube.pseudo3d.engine.objects.collect.LatternCollect;
 import com.youtube.pseudo3d.engine.objects.collect.SwordCollect;
@@ -54,12 +55,37 @@ public class Level_0 extends Level{
 		gameObjects.add(new HealthPotionCollect(gameLogic, new Vector2d(86.5, 70.5)));
 		gameObjects.add(new HealthPotionCollect(gameLogic, new Vector2d(86.5, 72.5)));
 		
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(56.5, 88.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(59.5, 88.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(58.5, 89.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(55.5, 89.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(60.5, 96.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(55.5, 96.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(55.5, 92.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(60.5, 92.5)));
+		
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(64.5, 97.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(60.5, 83.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(60.5, 82.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(69.5, 81.5)));
+
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(46.5, 98.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(45.5, 95.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(39.5, 81.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(91.5, 96.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(79.5, 96.5)));
+
+		for(double y=26.5; y<=34.5; y++) {
+			gameObjects.add(new GoldCollect(gameLogic, new Vector2d(54.5, y)));
+			gameObjects.add(new GoldCollect(gameLogic, new Vector2d(56.5, y)));
+		}
+		
 		gameObjects.add(new BigBush(gameLogic, new Vector2d(45.5, 93.0)));
 		gameObjects.add(new BigBush(gameLogic, new Vector2d(39.5, 89.0)));
 		gameObjects.add(new BigBush(gameLogic, new Vector2d(45.5, 82.5)));
 		gameObjects.add(new BigBush(gameLogic, new Vector2d(45.5, 83.5)));
 		gameObjects.add(new BigBush(gameLogic, new Vector2d(51.5, 83.5)));
-		gameObjects.add(new BigBush(gameLogic, new Vector2d(51.5, 82.5)));
+		gameObjects.add(new BigBush(gameLogic, new Vector2d(51.5, 82.5)));		
 		
 		for(int i=0; i<120; i++) {
 			gameObjects.add(new Grass_0(gameLogic, new Vector2d(MathUtil.randomWithRange(1, map.getWidth() - 1), MathUtil.randomWithRange(1, map.getWidth() - 1))));

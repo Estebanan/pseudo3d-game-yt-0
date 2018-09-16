@@ -2,6 +2,7 @@ package com.youtube.pseudo3d.engine.level;
 
 import com.youtube.pseudo3d.engine.GameLogic;
 import com.youtube.pseudo3d.engine.objects.collect.AxeCollect;
+import com.youtube.pseudo3d.engine.objects.collect.GoldCollect;
 import com.youtube.pseudo3d.engine.objects.collect.HealthPotionCollect;
 import com.youtube.pseudo3d.engine.objects.enemy.Bat;
 import com.youtube.pseudo3d.engine.objects.enemy.Mage;
@@ -42,7 +43,32 @@ public class Level_1 extends Level{
 		gameObjects.add(new HealthPotionCollect(gameLogic, new Vector2d(21.5, 1.5)));
 		gameObjects.add(new HealthPotionCollect(gameLogic, new Vector2d(18.5, 1.5)));
 		gameObjects.add(new HealthPotionCollect(gameLogic, new Vector2d(15.5, 2.5)));
-		 
+		
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(21.5, 3.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(20.5, 5.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(30.5, 15.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(26.5, 9.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(26.5, 7.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(30.5, 1.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(24.5, 3.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(23.5, 2.5)));
+		
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(7.5, 7.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(1.5, 7.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(1.5, 1.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(7.5, 9.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(7.5, 10.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(1.5, 9.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(15.5, 27.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(9.5, 19.5)));
+		
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(16.5, 18.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(10.5, 27.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(29.5, 29.5)));
+		gameObjects.add(new GoldCollect(gameLogic, new Vector2d(29.5, 18.5)));
+
+
+		
 		for(int i=0; i<50; i++) {
 			gameObjects.add(new Grass_0(gameLogic, new Vector2d(MathUtil.randomWithRange(1, map.getWidth() - 1), MathUtil.randomWithRange(1, map.getWidth() - 1))));
 			gameObjects.add(new GrassBush(gameLogic, new Vector2d(MathUtil.randomWithRange(1, map.getWidth() - 1), MathUtil.randomWithRange(1, map.getWidth() - 1))));

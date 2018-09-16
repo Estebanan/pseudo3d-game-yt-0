@@ -17,6 +17,7 @@ import com.youtube.pseudo3d.util.Vector2d;
 public class Player {
 
 	public static int HEALTH = 100;
+	public static int COINS = 0;
 	
 	private BufferedImage currentTexture;
 	
@@ -214,13 +215,13 @@ public class Player {
 		case HAND:
 		case AXE:
 		case SWORD:
-			emittedLight = 0.5;
+			emittedLight = 0.8;
 			break;
 		case WAND:
-			emittedLight = 1.0;
+			emittedLight = 1.3;
 			break;
 		case LATTERN:
-			emittedLight = 2.0;
+			emittedLight = 3.3;
 			break;
 		}
 	}
@@ -301,9 +302,9 @@ public class Player {
 	public void render(Graphics g) {		
 		g.drawImage(currentTexture,
 				(int)(raycaster.getMain().getWidth() - 
-						spriteScale.x * raycaster.getMain().getWidth() + 50 + Math.cos(position.x * 2) * Math.cos(position.y * 2) * 10),
+						spriteScale.x * raycaster.getMain().getWidth() + 50 - Math.cos(position.x * 2) * Math.cos(position.y * 2) * 10),
 				(int)(raycaster.getMain().getHeight() - 
-						spriteScale.y * raycaster.getMain().getHeight() + Math.sin(position.x * 2.5) * Math.sin(position.y * 2.5) * 50) + 100,
+						spriteScale.y * raycaster.getMain().getHeight() - Math.sin(position.x * 2.5) * Math.sin(position.y * 2.5) * 50) + 100,
 				(int)(spriteScale.x * raycaster.getMain().getWidth()),
 				(int)(spriteScale.y * raycaster.getMain().getHeight()),
 				null);

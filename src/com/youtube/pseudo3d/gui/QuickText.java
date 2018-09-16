@@ -21,8 +21,8 @@ public class QuickText {
 			timers[i] = 0;
 	}
 	
-	private static Font mediumFont(GameLogic gameLogic) {
-		int fontSize = gameLogic.getMain().getWidth()*gameLogic.getMain().getHeight()/20000;
+	public static Font mediumFont(GameLogic gameLogic) {
+		int fontSize = gameLogic.getMain().getWidth()*gameLogic.getMain().getHeight()/30000;
 		return new Font("Aniron", Font.PLAIN, fontSize);
 	}
 	

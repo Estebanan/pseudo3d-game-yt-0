@@ -3,6 +3,7 @@ package com.youtube.pseudo3d.engine.objects.enemy;
 import com.youtube.pseudo3d.engine.GameLogic;
 import com.youtube.pseudo3d.engine.Player;
 import com.youtube.pseudo3d.engine.objects.FollowingObject;
+import com.youtube.pseudo3d.engine.objects.collect.GoldCollect;
 import com.youtube.pseudo3d.resource.Animator;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
@@ -45,6 +46,10 @@ public class Rat extends FollowingObject implements Enemy{
 			if((deathTimer / deathDuration) % (deathAnimator.getCurrentFrame().length) == 5) {
 				dead = true;	
 				raycaster.getCurrentLevel().getGameObjects().add(new RatCorpse(raycaster, position));
+				
+				for(int i=0; i<2; i++)
+					raycaster.getCurrentLevel().getGameObjects().add(new GoldCollect(raycaster, position));
+
 			}
 		}
 		else {	

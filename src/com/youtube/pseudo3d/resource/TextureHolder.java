@@ -69,6 +69,7 @@ public class TextureHolder {
 		AXE_COLLECT,
 		WAND_COLLECT,
 		HEALTH_POTION_COLLECT,
+		GOLD_COLLECT,
 		
 		//ENEMIES
 		ENEMY_BAT,
@@ -113,6 +114,7 @@ public class TextureHolder {
 		GUI_SWORD_ICON,
 		GUI_AXE_ICON,
 		GUI_WAND_ICON,
+		GUI_COINS,
 		GUI_BLOOD_20,
 		GUI_BLOOD_30,
 		GUI_COLORIZER

@@ -66,6 +66,7 @@ public class TextureLoader {
 		TextureHolder.load(ID.AXE_COLLECT,  	"/sprites/collect/axe_collect.png");
 		TextureHolder.load(ID.WAND_COLLECT,  	"/sprites/collect/wand_collect.png");
 		TextureHolder.load(ID.HEALTH_POTION_COLLECT,"/sprites/collect/health-potion.png");
+		TextureHolder.load(ID.GOLD_COLLECT,		"/sprites/collect/gold_collect.png");
 		
 		//ENEMIES
 		TextureHolder.load(ID.ENEMY_BAT,		"/sprites/enemy/bat/bat.png");
@@ -111,6 +112,7 @@ public class TextureLoader {
 		TextureHolder.load(ID.GUI_SWORD_ICON, 	"/gui/sword-icon.png");
 		TextureHolder.load(ID.GUI_AXE_ICON, 	"/gui/axe-icon.png");
 		TextureHolder.load(ID.GUI_WAND_ICON, 	"/gui/wand-icon.png");
+		TextureHolder.load(ID.GUI_COINS, 		"/gui/coins.png");
 		TextureHolder.load(ID.GUI_BLOOD_20, 	"/gui/blood-20-hp.png");
 		TextureHolder.load(ID.GUI_BLOOD_30, 	"/gui/blood-30-hp.png");
 		TextureHolder.load(ID.GUI_COLORIZER, 	"/gui/colorizer.png");

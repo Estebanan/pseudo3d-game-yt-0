@@ -3,6 +3,7 @@ package com.youtube.pseudo3d.engine.objects.enemy;
 import com.youtube.pseudo3d.engine.GameLogic;
 import com.youtube.pseudo3d.engine.Player;
 import com.youtube.pseudo3d.engine.objects.GameObject;
+import com.youtube.pseudo3d.engine.objects.collect.GoldCollect;
 import com.youtube.pseudo3d.engine.objects.missle.BlueEnemyMissle;
 import com.youtube.pseudo3d.engine.objects.missle.GreenEnemyMissle;
 import com.youtube.pseudo3d.engine.objects.missle.OrangeEnemyMissle;
@@ -69,6 +70,10 @@ public class Thanos extends GameObject implements Enemy{
 			if((deathTimer / deathDuration) % (deathAnimator.getCurrentFrame().length) == 5) {
 				dead = true;	
 				raycaster.getCurrentLevel().getGameObjects().add(new Portal(raycaster, position));
+				
+				for(int i=0; i<20; i++)
+					raycaster.getCurrentLevel().getGameObjects().add(new GoldCollect(raycaster, position));
+
 			}
 		} else {
 			//TRIGERRED LOGIC

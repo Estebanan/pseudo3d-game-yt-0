@@ -28,6 +28,7 @@ public class Gui{
 		
 		renderSlots(g, slotWidth, slotHeight);
 		renderHealth(g, slotWidth, slotHeight);
+		renderCoins(g, slotWidth, slotHeight);
 	}
 	
 	private void renderSlots(Graphics g, int slotWidth, int slotHeight) {
@@ -76,5 +77,18 @@ public class Gui{
 				(int) (gameLogic.getMain().getWidth() / 3.58), (int)(gameLogic.getMain().getHeight() - 1.2*slotHeight) - slotHeight, 
 				slotWidth * 8, slotHeight, 
 				null);
+	}
+	
+	private void renderCoins(Graphics g, int slotWidth, int slotHeight) {
+		g.drawImage(TextureHolder.get(ID.GUI_COINS), 
+				(int)(0.8*slotWidth), 
+				(int)(gameLogic.getMain().getHeight() - 2.4*slotHeight),
+				slotWidth * 2, slotHeight * 2,
+				null);
+		
+		g.setFont(QuickText.mediumFont(gameLogic));
+		g.setColor(new Color(111, 2, 2, 200));
+
+		g.drawString(Player.COINS + "", (int)(1.1*slotWidth), (int)(gameLogic.getMain().getHeight() - 0.8*slotHeight));
 	}
 }

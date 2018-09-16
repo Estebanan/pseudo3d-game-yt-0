@@ -2,6 +2,7 @@ package com.youtube.pseudo3d.engine.objects.enemy;
 
 import com.youtube.pseudo3d.engine.GameLogic;
 import com.youtube.pseudo3d.engine.objects.GameObject;
+import com.youtube.pseudo3d.engine.objects.collect.GoldCollect;
 import com.youtube.pseudo3d.engine.objects.missle.GreenEnemyMissle;
 import com.youtube.pseudo3d.resource.Animator;
 import com.youtube.pseudo3d.resource.TextureHolder;
@@ -45,6 +46,9 @@ public class Mage extends GameObject implements Enemy{
 				dead = true;
 				
 				raycaster.getCurrentLevel().getGameObjects().add(new MageCorpse(raycaster, position));
+				
+				for(int i=0; i<3; i++)
+					raycaster.getCurrentLevel().getGameObjects().add(new GoldCollect(raycaster, position));
 			}
 		}else {
 			if(MathUtil.pythagoreanDistance(raycaster.getPlayer().getPosition(), position) <= 7) {
