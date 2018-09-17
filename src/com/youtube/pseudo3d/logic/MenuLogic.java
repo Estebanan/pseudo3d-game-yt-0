@@ -77,7 +77,7 @@ public class MenuLogic extends Logic{
 		continueButton.render(g);
 		newGameButton.render(g);
 		aboutButton.render(g);
-		exitButton.render(g);
+		exitButton.render(g);		
 	}
 	
 	public Main getMain() {

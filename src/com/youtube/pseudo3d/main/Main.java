@@ -3,6 +3,7 @@ package com.youtube.pseudo3d.main;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 
 import com.youtube.pseudo3d.input.InputHandler;
@@ -98,6 +99,8 @@ public class Main extends Canvas implements Runnable{
 		
 		g.dispose();
 		bs.show();
+		
+		Toolkit.getDefaultToolkit().sync();
 	}
 	
 	public synchronized void start() {
