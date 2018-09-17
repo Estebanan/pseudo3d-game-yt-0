@@ -1,7 +1,7 @@
 package com.youtube.pseudo3d.engine.objects.still;
 
-import com.youtube.pseudo3d.engine.GameLogic;
 import com.youtube.pseudo3d.engine.objects.GameObject;
+import com.youtube.pseudo3d.logic.GameLogic;
 import com.youtube.pseudo3d.resource.Animator;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;

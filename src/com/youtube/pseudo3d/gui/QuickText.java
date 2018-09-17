@@ -5,7 +5,8 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 
-import com.youtube.pseudo3d.engine.GameLogic;
+import com.youtube.pseudo3d.logic.GameLogic;
+import com.youtube.pseudo3d.main.Main;
 
 public class QuickText {
 
@@ -21,28 +22,28 @@ public class QuickText {
 			timers[i] = 0;
 	}
 	
-	public static Font mediumFont(GameLogic gameLogic) {
-		int fontSize = gameLogic.getMain().getWidth()*gameLogic.getMain().getHeight()/30000;
+	public static Font mediumFont(Main main) {
+		int fontSize = main.getWidth()*main.getHeight()/30000;
 		return new Font("Aniron", Font.PLAIN, fontSize);
 	}
 	
 	private static void displayMediumTextOnTopMid(GameLogic gameLogic, Graphics g, Color color, String text) {
-		FontMetrics metrics = g.getFontMetrics(mediumFont(gameLogic));
+		FontMetrics metrics = g.getFontMetrics(mediumFont(gameLogic.getMain()));
 		int x = (gameLogic.getMain().getWidth() - metrics.stringWidth(text)) / 2;
 		int y = (10) + metrics.getAscent();
 			
 		g.setColor(color);
-		g.setFont(mediumFont(gameLogic));
+		g.setFont(mediumFont(gameLogic.getMain()));
 		g.drawString(text, x, y);
 	}
 	
 	private static void displayMediumTextOnMid(GameLogic gameLogic, Graphics g, Color color, String text) {
-		FontMetrics metrics = g.getFontMetrics(mediumFont(gameLogic));
+		FontMetrics metrics = g.getFontMetrics(mediumFont(gameLogic.getMain()));
 		int x = (gameLogic.getMain().getWidth() - metrics.stringWidth(text)) / 2;
 		int y = ((gameLogic.getMain().getHeight() - metrics.getHeight()) / 2) + metrics.getAscent();
 			
 		g.setColor(color);
-		g.setFont(mediumFont(gameLogic));
+		g.setFont(mediumFont(gameLogic.getMain()));
 		g.drawString(text, x, y);
 	}
 	

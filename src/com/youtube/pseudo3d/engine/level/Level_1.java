@@ -1,6 +1,5 @@
 package com.youtube.pseudo3d.engine.level;
 
-import com.youtube.pseudo3d.engine.GameLogic;
 import com.youtube.pseudo3d.engine.objects.collect.AxeCollect;
 import com.youtube.pseudo3d.engine.objects.collect.GoldCollect;
 import com.youtube.pseudo3d.engine.objects.collect.HealthPotionCollect;
@@ -15,6 +14,7 @@ import com.youtube.pseudo3d.engine.objects.still.Grass_0;
 import com.youtube.pseudo3d.engine.objects.still.Portal;
 import com.youtube.pseudo3d.engine.objects.still.Rose;
 import com.youtube.pseudo3d.engine.objects.still.YellowFlower;
+import com.youtube.pseudo3d.logic.GameLogic;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
 import com.youtube.pseudo3d.util.MathUtil;
 import com.youtube.pseudo3d.util.Vector2d;

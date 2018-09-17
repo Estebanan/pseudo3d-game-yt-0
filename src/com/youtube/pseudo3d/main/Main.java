@@ -5,8 +5,10 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
-import com.youtube.pseudo3d.engine.GameLogic;
 import com.youtube.pseudo3d.input.InputHandler;
+import com.youtube.pseudo3d.logic.Logic;
+import com.youtube.pseudo3d.logic.MenuLogic;
+import com.youtube.pseudo3d.resource.TextureLoader;
 import com.youtube.pseudo3d.util.Constants;
 
 public class Main extends Canvas implements Runnable{
@@ -17,13 +19,14 @@ public class Main extends Canvas implements Runnable{
 	private Thread thread;
 	
 	private Window window;
-	private GameLogic raycaster;
+	private Logic logic;
 		
 	public Main() {
 		initCanvas();
 		initWindow();
 		initInput();
-		initRaycaster();
+		initTextures();
+		initGameLogic();
 	}
 	
 	private void initCanvas() {
@@ -39,11 +42,18 @@ public class Main extends Canvas implements Runnable{
 	}
 	
 	private void initInput() {
-		addKeyListener(new InputHandler());
+		InputHandler input = new InputHandler();
+		addKeyListener(input);
+		addMouseListener(input);
+		addMouseMotionListener(input);
 	}
 	
-	private void initRaycaster() {
-		raycaster = new GameLogic(this);
+	private void initTextures() {
+		new TextureLoader();
+	}
+	
+	private void initGameLogic() {
+		logic = new MenuLogic(this);
 	}
 	
 	@Override
@@ -68,11 +78,11 @@ public class Main extends Canvas implements Runnable{
 	}
 	
 	public void handleInput(double elapsed) {
-		raycaster.handleInput(elapsed);
+		logic.handleInput(elapsed);
 	}
 	
 	public void update(double elapsed) {
-		raycaster.update(elapsed);
+		logic.update(elapsed);
 	}
 	
 	public void render() {
@@ -83,11 +93,9 @@ public class Main extends Canvas implements Runnable{
 		}
 		
 		Graphics g = bs.getDrawGraphics();
+				
+		logic.render(g);
 		
-		g.clearRect(0, 0, getWidth(), getHeight());
-		
-		raycaster.render(g);
-
 		g.dispose();
 		bs.show();
 	}
@@ -113,5 +121,13 @@ public class Main extends Canvas implements Runnable{
 	
 	public static void main(String[] args) {
 		new Main().start();
+	}
+	
+	public Logic getLogic() {
+		return logic;
+	}
+	
+	public void setLogic(Logic logic) {
+		this.logic = logic;
 	}
 }

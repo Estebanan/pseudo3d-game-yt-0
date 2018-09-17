@@ -1,9 +1,9 @@
 package com.youtube.pseudo3d.engine.objects.enemy;
 
-import com.youtube.pseudo3d.engine.GameLogic;
 import com.youtube.pseudo3d.engine.Player;
 import com.youtube.pseudo3d.engine.objects.PathfindingObject;
 import com.youtube.pseudo3d.engine.objects.collect.GoldCollect;
+import com.youtube.pseudo3d.logic.GameLogic;
 import com.youtube.pseudo3d.resource.Animator;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;

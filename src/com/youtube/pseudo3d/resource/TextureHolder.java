@@ -117,7 +117,14 @@ public class TextureHolder {
 		GUI_COINS,
 		GUI_BLOOD_20,
 		GUI_BLOOD_30,
-		GUI_COLORIZER
+		GUI_COLORIZER,
+		
+		//MENU
+		MENU_LOGO,
+		MENU_BUTTON_INACTIVE,
+		MENU_BUTTON_DEFAULT,
+		MENU_BUTTON_HOVER,
+		MENU_BACKGROUND
 	}
 
 	private static HashMap<ID, BufferedImage> textureMap = new HashMap<ID, BufferedImage>();

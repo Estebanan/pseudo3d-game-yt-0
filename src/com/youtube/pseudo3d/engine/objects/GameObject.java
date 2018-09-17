@@ -2,7 +2,7 @@ package com.youtube.pseudo3d.engine.objects;
 
 import java.awt.image.BufferedImage;
 
-import com.youtube.pseudo3d.engine.GameLogic;
+import com.youtube.pseudo3d.logic.GameLogic;
 import com.youtube.pseudo3d.util.Vector2d;
 
 public abstract class GameObject {

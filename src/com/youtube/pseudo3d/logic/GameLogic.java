@@ -1,9 +1,13 @@
-package com.youtube.pseudo3d.engine;
+package com.youtube.pseudo3d.logic;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import com.youtube.pseudo3d.engine.Camera;
+import com.youtube.pseudo3d.engine.Items;
 import com.youtube.pseudo3d.engine.Items.Holding;
+import com.youtube.pseudo3d.engine.Player;
+import com.youtube.pseudo3d.engine.Rayprojector;
 import com.youtube.pseudo3d.engine.level.Level;
 import com.youtube.pseudo3d.engine.level.Level_0;
 import com.youtube.pseudo3d.engine.level.Level_1;
@@ -36,12 +40,11 @@ import com.youtube.pseudo3d.engine.objects.still.Portal;
 import com.youtube.pseudo3d.gui.Gui;
 import com.youtube.pseudo3d.gui.QuickText;
 import com.youtube.pseudo3d.main.Main;
-import com.youtube.pseudo3d.resource.TextureLoader;
 import com.youtube.pseudo3d.util.Constants;
 import com.youtube.pseudo3d.util.MathUtil;
 import com.youtube.pseudo3d.util.Vector2d;
 
-public class GameLogic {
+public class GameLogic extends Logic{
 
 	public static final int TEXTURE_WIDTH = 64;
 	public static final int TEXTURE_HEIGHT = 64;
@@ -51,9 +54,7 @@ public class GameLogic {
 	private Rayprojector rayprojector;
 	
 	private BufferedImage screen;
-	
-	private Main main;
-	
+		
 	private Gui gui;
 	
 	public int time = 0;
@@ -62,18 +63,12 @@ public class GameLogic {
 	private int levelNumber = 0;
 		
 	public GameLogic(Main main) {
-		this.main = main;
-		initTextures();
+		super(main);
 		initScreen();
 		initRaycastingFields();
 		initLevels();
 		initGui();
 	}
-	
-	private void initTextures() {
-		new TextureLoader();
-	}
-	
 
 	private void initScreen() {
 		screen = new BufferedImage(Constants.RESOLUTION_WIDTH, Constants.RESOLUTION_HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -98,8 +93,9 @@ public class GameLogic {
 		player.handleInput(elapsed);
 	}
 	
+	@Override
 	public void update(double elapsed) {		
-		System.out.println(player.getPosition().x + " " + player.getPosition().y);
+		//System.out.println(player.getPosition().x + " " + player.getPosition().y);
 		
 		time += (elapsed * 1e3);		
 		// UPDATE SCREEN SIZE DEPENDING ON WINDOW SIZE
@@ -406,10 +402,11 @@ public class GameLogic {
 		}	
 	}
 	
+	@Override
 	public void render(Graphics g) {
 		g.drawImage(screen, 
 				(int)(Math.cos(player.getPosition().x * 2) * Math.cos(player.getPosition().y * 2 * 10) - 100), 
-				(int)(Math.sin(player.getPosition().x * 2.5) * Math.sin(player.getPosition().y * 2.5) * 50 - 100), 
+				(int)(Math.sin(player.getPosition().x * 2.5) * Math.sin(player.getPosition().y * 2.5) * 20 - 100), 
 				(int)(main.getWidth() + 200), 
 				(int)(main.getHeight() + 200), 
 				null);

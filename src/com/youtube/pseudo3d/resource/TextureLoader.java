@@ -116,5 +116,12 @@ public class TextureLoader {
 		TextureHolder.load(ID.GUI_BLOOD_20, 	"/gui/blood-20-hp.png");
 		TextureHolder.load(ID.GUI_BLOOD_30, 	"/gui/blood-30-hp.png");
 		TextureHolder.load(ID.GUI_COLORIZER, 	"/gui/colorizer.png");
+		
+		//MENU
+		TextureHolder.load(ID.MENU_LOGO, 		"/menu/logo.png");
+		TextureHolder.load(ID.MENU_BUTTON_INACTIVE,"/menu/buttonStock1d.png");
+		TextureHolder.load(ID.MENU_BUTTON_DEFAULT,"/menu/buttonStock1.png");
+		TextureHolder.load(ID.MENU_BUTTON_HOVER, "/menu/buttonStock1h.png");
+		TextureHolder.load(ID.MENU_BACKGROUND, 	"/menu/background.png");
 	}
 }

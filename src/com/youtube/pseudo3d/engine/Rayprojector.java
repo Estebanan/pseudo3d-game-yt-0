@@ -2,6 +2,7 @@ package com.youtube.pseudo3d.engine;
 
 import com.youtube.pseudo3d.engine.level.Level_0;
 import com.youtube.pseudo3d.engine.level.Level_1;
+import com.youtube.pseudo3d.logic.GameLogic;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
 import com.youtube.pseudo3d.util.MathUtil;

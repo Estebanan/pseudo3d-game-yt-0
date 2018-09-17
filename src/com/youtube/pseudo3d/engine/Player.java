@@ -9,6 +9,7 @@ import com.youtube.pseudo3d.engine.objects.missle.PunchMissle;
 import com.youtube.pseudo3d.engine.objects.missle.SwordMissle;
 import com.youtube.pseudo3d.engine.objects.missle.WandMissle;
 import com.youtube.pseudo3d.input.InputHandler;
+import com.youtube.pseudo3d.logic.GameLogic;
 import com.youtube.pseudo3d.resource.Animator;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;

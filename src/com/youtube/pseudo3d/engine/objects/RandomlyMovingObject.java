@@ -1,6 +1,6 @@
 package com.youtube.pseudo3d.engine.objects;
 
-import com.youtube.pseudo3d.engine.GameLogic;
+import com.youtube.pseudo3d.logic.GameLogic;
 import com.youtube.pseudo3d.util.MathUtil;
 import com.youtube.pseudo3d.util.Vector2d;
 

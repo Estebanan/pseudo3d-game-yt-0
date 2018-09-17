@@ -3,10 +3,10 @@ package com.youtube.pseudo3d.gui;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import com.youtube.pseudo3d.engine.GameLogic;
 import com.youtube.pseudo3d.engine.Items;
 import com.youtube.pseudo3d.engine.Player;
 import com.youtube.pseudo3d.engine.Items.Holding;
+import com.youtube.pseudo3d.logic.GameLogic;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
 
@@ -86,7 +86,7 @@ public class Gui{
 				slotWidth * 2, slotHeight * 2,
 				null);
 		
-		g.setFont(QuickText.mediumFont(gameLogic));
+		g.setFont(QuickText.mediumFont(gameLogic.getMain()));
 		g.setColor(new Color(111, 2, 2, 200));
 
 		g.drawString(Player.COINS + "", (int)(1.1*slotWidth), (int)(gameLogic.getMain().getHeight() - 0.8*slotHeight));

@@ -4,7 +4,7 @@ public class Constants {
 
 	public static final double MS_PER_UPDATE = 60D;
 	
-	public static final String TITLE = "Pseudo3D";
+	public static final String TITLE = "2 DARK 4 U";
 	
 	public static final int WINDOW_WIDTH = 1080;
 	public static final int WINDOW_HEIGHT = 610;
