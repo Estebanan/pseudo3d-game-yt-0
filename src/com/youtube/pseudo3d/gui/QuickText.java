@@ -163,7 +163,7 @@ public class QuickText {
 	
 	public static void displayRedDoorsOpen(GameLogic gameLogic, Graphics g) {
 		String text = "RED SECRET LEVER";
-		displayMediumTextOnTopMid(gameLogic, g, new Color(192, 57, 43), text);	
+		displayMediumTextOnMid(gameLogic, g, new Color(192, 57, 43), text);	
 	}
 	
 	public static void displayBlueSecretFound(GameLogic gameLogic, Graphics g) {
@@ -173,12 +173,12 @@ public class QuickText {
 	
 	public static void displayBlueDoorsOpen(GameLogic gameLogic, Graphics g) {
 		String text = "BLUE SECRET LEVER";
-		displayMediumTextOnTopMid(gameLogic, g, new Color(41, 128, 185), text);	
+		displayMediumTextOnMid(gameLogic, g, new Color(41, 128, 185), text);	
 	}
 	
 	public static void displayThisWay(GameLogic gameLogic, Graphics g) {
 		String text = "THIS WAY";
-		displayMediumTextOnTopMid(gameLogic, g, new Color(44, 62, 80), text);	
+		displayMediumTextOnMid(gameLogic, g, new Color(44, 62, 80), text);	
 	}
 	
 }

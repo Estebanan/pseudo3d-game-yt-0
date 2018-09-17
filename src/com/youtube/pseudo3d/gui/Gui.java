@@ -89,6 +89,6 @@ public class Gui{
 		g.setFont(QuickText.mediumFont(gameLogic.getMain()));
 		g.setColor(new Color(111, 2, 2, 200));
 
-		g.drawString(Player.COINS + "", (int)(1.1*slotWidth), (int)(gameLogic.getMain().getHeight() - 0.8*slotHeight));
+		g.drawString(Player.COINS + "", (int)(1.4*slotWidth), (int)(gameLogic.getMain().getHeight() - 0.7*slotHeight));
 	}
 }
