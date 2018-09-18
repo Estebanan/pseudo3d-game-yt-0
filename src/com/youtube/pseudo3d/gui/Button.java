@@ -17,7 +17,7 @@ public class Button {
 	public boolean pressed = false;
 			
 	private Vector2i position;
-	private Vector2i size;
+	public Vector2i size;
 	private String text;
 	
 	private BufferedImage texture;

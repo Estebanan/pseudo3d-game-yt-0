@@ -4,6 +4,9 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
+import com.youtube.pseudo3d.engine.level.Level_0;
+import com.youtube.pseudo3d.engine.level.Level_1;
+import com.youtube.pseudo3d.engine.level.Level_2;
 import com.youtube.pseudo3d.engine.objects.missle.AxeMissle;
 import com.youtube.pseudo3d.engine.objects.missle.PunchMissle;
 import com.youtube.pseudo3d.engine.objects.missle.SwordMissle;
@@ -11,8 +14,10 @@ import com.youtube.pseudo3d.engine.objects.missle.WandMissle;
 import com.youtube.pseudo3d.input.InputHandler;
 import com.youtube.pseudo3d.logic.GameLogic;
 import com.youtube.pseudo3d.resource.Animator;
+import com.youtube.pseudo3d.resource.AudioPaths;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
+import com.youtube.pseudo3d.util.AudioHandler;
 import com.youtube.pseudo3d.util.Vector2d;
 
 public class Player {
@@ -25,7 +30,7 @@ public class Player {
 	private Vector2d position;
 	private Vector2d direction;
 
-	private GameLogic raycaster;
+	private GameLogic gameLogic;
 	
 	private double initialFov;
 	private double actualFov;
@@ -49,10 +54,13 @@ public class Player {
 	private Animator wandAnimator;		
 	private boolean attack = false;
 	private double attackDelay = 0;
-	
+		
+	private int playerTimer = 0;
+	private boolean moving = false;
+	private boolean sprinting = false;
 	
 	public Player(GameLogic raycaster) {
-		this.raycaster = raycaster;
+		this.gameLogic = raycaster;
 
 		initInitialFields();
 		initAnimators();
@@ -117,17 +125,32 @@ public class Player {
 		double moveSpeed = actualMovementSpeed * elapsed;
 		double rotationSpeed = actualRotationSpeed * elapsed;
 
-		if (InputHandler.isKeyPressed(KeyEvent.VK_W))
+		if (InputHandler.isKeyPressed(KeyEvent.VK_W)) {
 			move(moveSpeed);
+			moving = true;
+		}
 
-		if (InputHandler.isKeyPressed(KeyEvent.VK_S))
+		if (InputHandler.isKeyPressed(KeyEvent.VK_S)) {
 			move(-moveSpeed);
+			moving = true;
+		}
 
-		if (InputHandler.isKeyPressed(KeyEvent.VK_D))
+		if (InputHandler.isKeyPressed(KeyEvent.VK_D)) {
 			rotate(-rotationSpeed);
-
-		if (InputHandler.isKeyPressed(KeyEvent.VK_A))
+			moving = true;
+		}
+		
+		if (InputHandler.isKeyPressed(KeyEvent.VK_A)) {
 			rotate(rotationSpeed);
+			moving = true;
+		}
+		
+		if(!InputHandler.isKeyPressed(KeyEvent.VK_W)
+				&& !InputHandler.isKeyPressed(KeyEvent.VK_S)
+				&& !InputHandler.isKeyPressed(KeyEvent.VK_D)
+				&& !InputHandler.isKeyPressed(KeyEvent.VK_A))
+			moving = false;
+
 	}
 	
 	private void handleInputSprinting(double elapsed) {
@@ -135,8 +158,10 @@ public class Player {
 				&& (InputHandler.isKeyPressed(KeyEvent.VK_W) && actualMovementSpeed < 3.4 * initialMovementSpeed)
 				&& !InputHandler.isKeyPressed(KeyEvent.VK_S)) {
 			actualMovementSpeed += movementAcceleration;
+			sprinting = true;
 		} else if (actualMovementSpeed > initialMovementSpeed) {
 			actualMovementSpeed -= movementAcceleration;
+			sprinting = false;
 		}
 
 		if (InputHandler.isKeyPressed(KeyEvent.VK_SHIFT)
@@ -150,10 +175,10 @@ public class Player {
 
 	public void move(double delta) {
 		// ONLY MOVE IF THE CURRENT TILE IS 0XFF000000 - BLACK
-		if (raycaster.getCurrentLevel().getMap().getRGB((int) (position.x + direction.y * delta),
+		if (gameLogic.getCurrentLevel().getMap().getRGB((int) (position.x + direction.y * delta),
 				(int) (position.y)) == 0xff000000)
 			position.x += direction.y * delta;
-		if (raycaster.getCurrentLevel().getMap().getRGB((int) (position.x),
+		if (gameLogic.getCurrentLevel().getMap().getRGB((int) (position.x),
 				(int) (position.y + direction.x * delta)) == 0xff000000)
 			position.y += direction.x * delta;
 	}
@@ -162,15 +187,34 @@ public class Player {
 		double oldDirX = direction.x;
 		direction.x = direction.x * Math.cos(angle) - direction.y * Math.sin(angle);
 		direction.y = oldDirX * Math.sin(angle) + direction.y * Math.cos(angle);
-		double oldPlaneX = raycaster.getCamera().getPlane().x;
-		raycaster.getCamera().getPlane().x = raycaster.getCamera().getPlane().x * Math.cos(angle) - raycaster.getCamera().getPlane().y * Math.sin(angle);
-		raycaster.getCamera().getPlane().y = oldPlaneX * Math.sin(angle) + raycaster.getCamera().getPlane().y * Math.cos(angle);
+		double oldPlaneX = gameLogic.getCamera().getPlane().x;
+		gameLogic.getCamera().getPlane().x = gameLogic.getCamera().getPlane().x * Math.cos(angle) - gameLogic.getCamera().getPlane().y * Math.sin(angle);
+		gameLogic.getCamera().getPlane().y = oldPlaneX * Math.sin(angle) + gameLogic.getCamera().getPlane().y * Math.cos(angle);
 	}
 	
 	public void update(double elapsed) {
+		playerTimer++;
+				
+		updateSoundOnWalking();
 		updateCurrentTexture();
 		updateEmittedLight();
 		updateAttackAction();
+	}
+	
+	private void updateSoundOnWalking() {
+		if(gameLogic.getCurrentLevel() instanceof Level_0 || gameLogic.getCurrentLevel() instanceof Level_1) {
+			if(moving && playerTimer % 24 == 1) 
+				AudioHandler.playAudio(AudioPaths.FOOTSTEPS).start();
+			if(sprinting && playerTimer % 20 == 1)
+				AudioHandler.playAudio(AudioPaths.FOOTSTEPS).start();
+			
+		} else if(gameLogic.getCurrentLevel() instanceof Level_2) {
+			if(moving && playerTimer % 16 == 1) 
+				AudioHandler.playAudio(AudioPaths.WOOD_FOOTSTEPS).start();
+			if(sprinting && playerTimer % 12 == 1)
+				AudioHandler.playAudio(AudioPaths.WOOD_FOOTSTEPS).start();
+		}
+
 	}
 	
 	private void updateCurrentTexture() {
@@ -254,11 +298,13 @@ public class Player {
 		int duration = 15;
 		updateAnimation(handAnimator, duration);
 			
-		if(((raycaster.time / duration) % (handAnimator.getCurrentFrame().length) == 3 //3 IS THE MIDDLE ANIMATION FRAME
-				|| (raycaster.time / duration) % (handAnimator.getCurrentFrame().length) == 5) //5 IS THE END ANIMATION FRAME
+		if(((gameLogic.time / duration) % (handAnimator.getCurrentFrame().length) == 3 //3 IS THE MIDDLE ANIMATION FRAME
+				|| (gameLogic.time / duration) % (handAnimator.getCurrentFrame().length) == 5) //5 IS THE END ANIMATION FRAME
 				&& attackDelay > 5) {
 			attackDelay = 0;
-			raycaster.getCurrentLevel().getGameObjects().add(new PunchMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 50.0));
+			gameLogic.getCurrentLevel().getGameObjects().add(new PunchMissle(gameLogic, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 50.0));
+		
+			AudioHandler.playAudio(AudioPaths.PUNCH).start();
 		}
 
 	}
@@ -266,10 +312,12 @@ public class Player {
 	private void updateAttackSword() {
 		int duration = 15;
 		updateAnimation(swordAnimator, duration);
-			
-		if((raycaster.time / duration) % (swordAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
+		
+		if((gameLogic.time / duration) % (swordAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
 			attackDelay = 0;
-			raycaster.getCurrentLevel().getGameObjects().add(new SwordMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 70.0));
+			gameLogic.getCurrentLevel().getGameObjects().add(new SwordMissle(gameLogic, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 70.0));
+		
+			AudioHandler.playAudio(AudioPaths.SWORD_SWING).start();
 		}
 
 	}
@@ -278,9 +326,9 @@ public class Player {
 		int duration = 10;
 		updateAnimation(axeAnimator, duration);
 			
-		if((raycaster.time / duration) % (axeAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
+		if((gameLogic.time / duration) % (axeAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
 			attackDelay = 0;
-			raycaster.getCurrentLevel().getGameObjects().add(new AxeMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 100.0));
+			gameLogic.getCurrentLevel().getGameObjects().add(new AxeMissle(gameLogic, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 100.0));
 		}
 
 	}
@@ -289,25 +337,25 @@ public class Player {
 		int duration = 10;
 		updateAnimation(wandAnimator, duration);
 			
-		if((raycaster.time / duration) % (wandAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
-			raycaster.getCurrentLevel().getGameObjects().add(new WandMissle(raycaster, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 100.0));
+		if((gameLogic.time / duration) % (wandAnimator.getCurrentFrame().length) == 3 && attackDelay > 10) { //3 IS THE MIDDLE ANIMATION FRAME
+			gameLogic.getCurrentLevel().getGameObjects().add(new WandMissle(gameLogic, new Vector2d(position.x, position.y), new Vector2d(direction.x, direction.y), 100.0));
 			attackDelay = 0;
 		}
 
 	}
 	
 	private void updateAnimation(Animator animator, int duration) {
-		currentTexture = animator.getCurrentFrame()[(raycaster.time / duration) % animator.getCurrentFrame().length];
+		currentTexture = animator.getCurrentFrame()[(gameLogic.time / duration) % animator.getCurrentFrame().length];
 	}
 	
 	public void render(Graphics g) {		
 		g.drawImage(currentTexture,
-				(int)(raycaster.getMain().getWidth() - 
-						spriteScale.x * raycaster.getMain().getWidth() + 50 - Math.cos(position.x * 2) * Math.cos(position.y * 2) * 10),
-				(int)(raycaster.getMain().getHeight() - 
-						spriteScale.y * raycaster.getMain().getHeight() - Math.sin(position.x * 2.5) * Math.sin(position.y * 2.5) * 50) + 100,
-				(int)(spriteScale.x * raycaster.getMain().getWidth()),
-				(int)(spriteScale.y * raycaster.getMain().getHeight()),
+				(int)(gameLogic.getMain().getWidth() - 
+						spriteScale.x * gameLogic.getMain().getWidth() + 50 - Math.cos(position.x * 2) * Math.cos(position.y * 2) * 10),
+				(int)(gameLogic.getMain().getHeight() - 
+						spriteScale.y * gameLogic.getMain().getHeight() - Math.sin(position.x * 2.5) * Math.sin(position.y * 2.5) * 50) + 100,
+				(int)(spriteScale.x * gameLogic.getMain().getWidth()),
+				(int)(spriteScale.y * gameLogic.getMain().getHeight()),
 				null);
 	}
 

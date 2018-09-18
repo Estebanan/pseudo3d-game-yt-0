@@ -2,8 +2,10 @@ package com.youtube.pseudo3d.engine.objects.missle;
 
 import com.youtube.pseudo3d.engine.objects.ConstantlyMovingObject;
 import com.youtube.pseudo3d.logic.GameLogic;
+import com.youtube.pseudo3d.resource.AudioPaths;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
+import com.youtube.pseudo3d.util.AudioHandler;
 import com.youtube.pseudo3d.util.Vector2d;
 
 public class BlueEnemyMissle extends ConstantlyMovingObject implements EnemyMissle{
@@ -21,6 +23,8 @@ public class BlueEnemyMissle extends ConstantlyMovingObject implements EnemyMiss
 		my = (raycaster.getPlayer().getPosition().y - position.y) * moveSpeed;
 
 		texture = TextureHolder.get(ID.ENEMY_BLUE_MISSLE);
+		AudioHandler.playAudio(AudioPaths.WAND_ZIP).start();
+
 	}
 	
 	@Override

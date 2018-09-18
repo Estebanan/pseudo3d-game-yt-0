@@ -5,8 +5,10 @@ import com.youtube.pseudo3d.engine.objects.PathfindingObject;
 import com.youtube.pseudo3d.engine.objects.collect.GoldCollect;
 import com.youtube.pseudo3d.logic.GameLogic;
 import com.youtube.pseudo3d.resource.Animator;
+import com.youtube.pseudo3d.resource.AudioPaths;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
+import com.youtube.pseudo3d.util.AudioHandler;
 import com.youtube.pseudo3d.util.MathUtil;
 import com.youtube.pseudo3d.util.Vector2d;
 
@@ -58,8 +60,10 @@ public class Zombie extends PathfindingObject implements Enemy{
 		
 		
 			if(MathUtil.pythagoreanDistance(raycaster.getPlayer().getPosition(), position) <= 1.6
-					&& raycaster.time % 60 == 0)
+					&& raycaster.time % 60 == 0) {
 				Player.HEALTH -= DAMAGE;
+				AudioHandler.playAudio(AudioPaths.MONSTER_SCREECH).start();
+			}
 		}
 	}
 

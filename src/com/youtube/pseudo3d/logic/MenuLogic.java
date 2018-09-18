@@ -56,6 +56,12 @@ public class MenuLogic extends Logic{
 	public void handleInput(double elapsed) {
 		if(newGameButton.pressed)
 			main.setLogic(new GameLogic(main));
+		
+		if(aboutButton.pressed)
+			main.setLogic(new AboutLogic(main));
+		
+		if(exitButton.pressed)
+			System.exit(0);
 	}
 	
 	@Override

@@ -4,8 +4,11 @@ import com.youtube.pseudo3d.engine.objects.RandomlyMovingObject;
 import com.youtube.pseudo3d.engine.objects.collect.GoldCollect;
 import com.youtube.pseudo3d.logic.GameLogic;
 import com.youtube.pseudo3d.resource.Animator;
+import com.youtube.pseudo3d.resource.AudioPaths;
 import com.youtube.pseudo3d.resource.TextureHolder;
 import com.youtube.pseudo3d.resource.TextureHolder.ID;
+import com.youtube.pseudo3d.util.AudioHandler;
+import com.youtube.pseudo3d.util.MathUtil;
 import com.youtube.pseudo3d.util.Vector2d;
 
 public class Bat extends RandomlyMovingObject implements Enemy{
@@ -27,6 +30,9 @@ public class Bat extends RandomlyMovingObject implements Enemy{
 	public void update(double elapsed) {
 		super.update(elapsed);
 				
+		if(raycaster.time % 40 == 0 && MathUtil.pythagoreanDistance(position, raycaster.getPlayer().getPosition()) <= 2)
+			AudioHandler.playAudio(AudioPaths.BAT_SQUEAK).start();
+		
 		if(health <= 0)
 			dying = true;
 		

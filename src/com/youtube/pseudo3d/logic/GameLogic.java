@@ -40,6 +40,8 @@ import com.youtube.pseudo3d.engine.objects.still.Portal;
 import com.youtube.pseudo3d.gui.Gui;
 import com.youtube.pseudo3d.gui.QuickText;
 import com.youtube.pseudo3d.main.Main;
+import com.youtube.pseudo3d.resource.AudioPaths;
+import com.youtube.pseudo3d.util.AudioHandler;
 import com.youtube.pseudo3d.util.Constants;
 import com.youtube.pseudo3d.util.MathUtil;
 import com.youtube.pseudo3d.util.Vector2d;
@@ -94,9 +96,7 @@ public class GameLogic extends Logic{
 	}
 	
 	@Override
-	public void update(double elapsed) {		
-		//System.out.println(player.getPosition().x + " " + player.getPosition().y);
-		
+	public void update(double elapsed) {				
 		time += (elapsed * 1e3);		
 		// UPDATE SCREEN SIZE DEPENDING ON WINDOW SIZE
 		screen = new BufferedImage(Constants.RESOLUTION_WIDTH, Constants.RESOLUTION_HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -130,7 +130,8 @@ public class GameLogic extends Logic{
 	}
 	
 	private void updateDying() {
-		if(Player.HEALTH <= 0) {
+		if(Player.HEALTH <= 0) {	
+			AudioHandler.playAudio(AudioPaths.DEATH).start();
 			Player.HEALTH = 100;
 			
 			QuickText.resetTimers();
@@ -221,6 +222,8 @@ public class GameLogic extends Logic{
 		for(int i=0; i<currentLevel.getGameObjects().size(); i++) {
 			if(currentLevel.getGameObjects().get(i) instanceof Enemy
 					&& currentLevel.getGameObjects().get(i).dead) {
+				AudioHandler.playAudio(AudioPaths.BLOOD_SPLASH_0).start();
+				
 				currentLevel.getGameObjects().remove(i);
 				i--;				
 			}
@@ -253,6 +256,8 @@ public class GameLogic extends Logic{
 					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().x) == Math.floor(player.getPosition().x)
 					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().y) == Math.floor(player.getPosition().y)) {
 				Items.unlocked.put(Items.Holding.LATTERN, true);
+				AudioHandler.playAudio(AudioPaths.TREASURE_0).start();
+				
 				currentLevel.getGameObjects().remove(i);
 				i--;
 			}
@@ -264,6 +269,8 @@ public class GameLogic extends Logic{
 					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().x) == Math.floor(player.getPosition().x)
 					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().y) == Math.floor(player.getPosition().y)) {
 				Items.unlocked.put(Items.Holding.SWORD, true);
+				AudioHandler.playAudio(AudioPaths.TREASURE_0).start();
+
 				currentLevel.getGameObjects().remove(i);
 				i--;
 			}
@@ -275,6 +282,8 @@ public class GameLogic extends Logic{
 					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().x) == Math.floor(player.getPosition().x)
 					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().y) == Math.floor(player.getPosition().y)) {
 				Items.unlocked.put(Items.Holding.AXE, true);
+				AudioHandler.playAudio(AudioPaths.TREASURE_0).start();
+
 				currentLevel.getGameObjects().remove(i);
 				i--;
 			}
@@ -286,6 +295,8 @@ public class GameLogic extends Logic{
 					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().x) == Math.floor(player.getPosition().x)
 					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().y) == Math.floor(player.getPosition().y)) {
 				Items.unlocked.put(Items.Holding.WAND, true);
+				AudioHandler.playAudio(AudioPaths.TREASURE_0).start();
+
 				currentLevel.getGameObjects().remove(i);
 				i--;
 			}
@@ -298,10 +309,13 @@ public class GameLogic extends Logic{
 					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().y) == Math.floor(player.getPosition().y)
 					&& Player.HEALTH < 100) {
 				
-				if(Player.HEALTH < 100 - HealthPotionCollect.BONUS)
+				if(Player.HEALTH < 100 - HealthPotionCollect.BONUS) {
 					Player.HEALTH += HealthPotionCollect.BONUS;
+				}
 				else if(Player.HEALTH >= 100 - HealthPotionCollect.BONUS)
 					Player.HEALTH = 100;
+
+				AudioHandler.playAudio(AudioPaths.POTION_DRINK).start();
 				
 				currentLevel.getGameObjects().remove(i);
 				i--;
@@ -315,6 +329,7 @@ public class GameLogic extends Logic{
 					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().y) == Math.floor(player.getPosition().y)) {
 
 				Player.COINS += 10;
+				AudioHandler.playAudio(AudioPaths.GOLD_PICKUP).start();
 				
 				currentLevel.getGameObjects().remove(i);
 				i--;
@@ -327,6 +342,10 @@ public class GameLogic extends Logic{
 					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().x) == Math.floor(player.getPosition().x)
 					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().y) == Math.floor(player.getPosition().y)) {
 			
+				if(((RedLever) currentLevel.getGameObjects().get(i)).on == false) {
+					AudioHandler.playAudio(AudioPaths.METAL_SQUEAK).start();
+				}
+				
 				((RedLever) currentLevel.getGameObjects().get(i)).on = true;
 				
 				for(int x=0; x<currentLevel.getMap().getWidth(); x++)
@@ -340,8 +359,12 @@ public class GameLogic extends Logic{
 					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().x) == Math.floor(player.getPosition().x)
 					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().y) == Math.floor(player.getPosition().y)) {
 		
-				((BlueLever) currentLevel.getGameObjects().get(i)).on = true;
+				if(((BlueLever) currentLevel.getGameObjects().get(i)).on == false) {
+					AudioHandler.playAudio(AudioPaths.METAL_SQUEAK).start();
+				}
 				
+				((BlueLever) currentLevel.getGameObjects().get(i)).on = true;
+
 				for(int x=0; x<currentLevel.getMap().getWidth(); x++)
 					for(int y=0; y<currentLevel.getMap().getHeight(); y++)
 						if(currentLevel.getMap().getRGB(x, y) == 0xff004889)
@@ -381,8 +404,12 @@ public class GameLogic extends Logic{
 				&& Math.floor(player.getPosition().x) == 3
 				&& Math.floor(player.getPosition().y) == 5) {
 			currentLevel.getMap().setRGB(3, 6, 0xff3b1c26);
-			
+						
 			for(int i=0; i<currentLevel.getGameObjects().size(); i++) {
+				if(currentLevel.getGameObjects().get(i) instanceof Thanos 
+						&& ((Thanos)currentLevel.getGameObjects().get(i)).state == State.SLEEP)
+					AudioHandler.playAudio(AudioPaths.AVENGERS_THEME).start();
+				
 				if(currentLevel.getGameObjects().get(i) instanceof Thanos && !Thanos.trigerred)
 					((Thanos)currentLevel.getGameObjects().get(i)).state = State.FIGHT;
 			}
