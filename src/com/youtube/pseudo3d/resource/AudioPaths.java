@@ -19,5 +19,7 @@ public final class AudioPaths {
 	public static final String MAGE = 			"res/audio/mage.mp3";
 	public static final String MONSTER_SCREECH ="res/audio/monster-screech.mp3";
 	public static final String AVENGERS_THEME = "res/audio/avengers.mp3";
+	public static final String PORTAL = 		"res/audio/portal.mp3";
+	public static final String BUTTON = 		"res/audio/button.mp3";
 
 }

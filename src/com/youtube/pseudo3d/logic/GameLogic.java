@@ -22,6 +22,7 @@ import com.youtube.pseudo3d.engine.objects.enemy.Enemy;
 import com.youtube.pseudo3d.engine.objects.enemy.Thanos;
 import com.youtube.pseudo3d.engine.objects.enemy.Thanos.State;
 import com.youtube.pseudo3d.engine.objects.lever.BlueLever;
+import com.youtube.pseudo3d.engine.objects.lever.GreenLever;
 import com.youtube.pseudo3d.engine.objects.lever.RedLever;
 import com.youtube.pseudo3d.engine.objects.missle.AxeMissle;
 import com.youtube.pseudo3d.engine.objects.missle.BlueEnemyMissle;
@@ -370,6 +371,23 @@ public class GameLogic extends Logic{
 						if(currentLevel.getMap().getRGB(x, y) == 0xff004889)
 							currentLevel.getMap().setRGB(x, y, 0xff000000);
 			}
+			
+			
+			if(currentLevel.getGameObjects().get(i) instanceof GreenLever
+					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().x) == Math.floor(player.getPosition().x)
+					&& Math.floor(currentLevel.getGameObjects().get(i).getPosition().y) == Math.floor(player.getPosition().y)) {
+		
+				if(((GreenLever) currentLevel.getGameObjects().get(i)).on == false) {
+					AudioHandler.playAudio(AudioPaths.METAL_SQUEAK).start();
+				}
+				
+				((GreenLever) currentLevel.getGameObjects().get(i)).on = true;
+
+				for(int x=0; x<currentLevel.getMap().getWidth(); x++)
+					for(int y=0; y<currentLevel.getMap().getHeight(); y++)
+						if(currentLevel.getMap().getRGB(x, y) == 0xff294d2a)
+							currentLevel.getMap().setRGB(x, y, 0xff000000);
+			}
 		}
 	}
 	
@@ -485,6 +503,7 @@ public class GameLogic extends Logic{
 					|| Math.floor(player.getPosition().y) == 38)
 					&& Math.floor(player.getPosition().x) == 55)
 				QuickText.displayBlueSecretFound(this, g);
+			
 		}
 		
 		if(currentLevel instanceof Level_1) {
@@ -504,6 +523,18 @@ public class GameLogic extends Logic{
 					|| Math.floor(player.getPosition().x) == 19)
 					&& Math.floor(player.getPosition().y) == 15)
 				QuickText.displayThisWay(this, g);
+			
+			//GREEN SECRET
+			if(Math.floor(player.getPosition().x) == 27
+					&& Math.floor(player.getPosition().y) == 29)
+				QuickText.displayGreenDoorsOpen(this, g);
+			
+			if((Math.floor(player.getPosition().x) == 10 
+					|| Math.floor(player.getPosition().x) == 11
+					|| Math.floor(player.getPosition().x) == 12)
+					&& Math.floor(player.getPosition().y) == 30)
+				QuickText.displayGreenSecretFound(this, g);
+			
 		}
 		
 		if(currentLevel instanceof Level_2) {

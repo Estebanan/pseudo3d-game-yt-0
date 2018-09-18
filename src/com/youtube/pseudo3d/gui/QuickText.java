@@ -176,6 +176,16 @@ public class QuickText {
 		displayMediumTextOnMid(gameLogic, g, new Color(41, 128, 185), text);	
 	}
 	
+	public static void displayGreenSecretFound(GameLogic gameLogic, Graphics g) {
+		String text = "GREEN SECRET";
+		displayMediumTextOnMid(gameLogic, g, new Color(41, 77, 42), text);			
+	}
+	
+	public static void displayGreenDoorsOpen(GameLogic gameLogic, Graphics g) {
+		String text = "GREEN SECRET LEVER";
+		displayMediumTextOnMid(gameLogic, g, new Color(41, 77, 42), text);	
+	}
+	
 	public static void displayThisWay(GameLogic gameLogic, Graphics g) {
 		String text = "THIS WAY";
 		displayMediumTextOnMid(gameLogic, g, new Color(44, 62, 80), text);	

@@ -29,6 +29,7 @@ public class TextureHolder {
 		ROTTEN_WOOD,
 		RED_DOOR,
 		BLUE_DOOR,
+		GREEN_DOOR,
 		
 		//STILL SPRITES
 		SPIDER,
@@ -49,6 +50,8 @@ public class TextureHolder {
 		RED_LEVER_ON,
 		BLUE_LEVER_OFF,
 		BLUE_LEVER_ON,
+		GREEN_LEVER_OFF,
+		GREEN_LEVER_ON,
 		
 		//MISSLES
 		PUNCH_MISSLE,

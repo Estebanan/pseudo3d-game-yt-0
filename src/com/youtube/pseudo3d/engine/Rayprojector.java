@@ -171,6 +171,9 @@ public class Rayprojector {
 		case 0xff004889:
 			color = TextureHolder.get(ID.BLUE_DOOR).getRGB(Math.abs(texX), Math.abs(texY));
 			break;
+		case 0xff294d2a:
+			color = TextureHolder.get(ID.GREEN_DOOR).getRGB(Math.abs(texX), Math.abs(texY));
+			break;
 		default:
 			color = TextureHolder.get(ID.MOSSYSTONE).getRGB(Math.abs(texX), Math.abs(texY));
 			break;

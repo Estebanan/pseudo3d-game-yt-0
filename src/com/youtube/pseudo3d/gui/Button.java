@@ -36,6 +36,7 @@ public class Button {
 				&& InputHandler.mouseX <= position.x + size.x
 				&& InputHandler.mouseY >= position.y
 				&& InputHandler.mouseY <= position.y + size.y) {
+			
 			hover = true;
 		}
 	}

@@ -26,6 +26,7 @@ public class TextureLoader {
 		TextureHolder.load(ID.ROTTEN_WOOD, 		"/tiles/rotten-wood.png");
 		TextureHolder.load(ID.RED_DOOR, 		"/tiles/red-door.png");
 		TextureHolder.load(ID.BLUE_DOOR, 		"/tiles/blue-door.png");
+		TextureHolder.load(ID.GREEN_DOOR, 		"/tiles/green-door.png");
 		
 		//STILL SPRITES
 		TextureHolder.load(ID.BARREL, 			"/sprites/barrel.png");
@@ -46,6 +47,8 @@ public class TextureLoader {
 		TextureHolder.load(ID.RED_LEVER_ON, 	"/sprites/red-lever-on.png");
 		TextureHolder.load(ID.BLUE_LEVER_OFF, 	"/sprites/blue-lever-off.png");
 		TextureHolder.load(ID.BLUE_LEVER_ON, 	"/sprites/blue-lever-on.png");
+		TextureHolder.load(ID.GREEN_LEVER_OFF, 	"/sprites/green-lever-off.png");
+		TextureHolder.load(ID.GREEN_LEVER_ON, 	"/sprites/green-lever-on.png");
 
 		//MISSLES
 		TextureHolder.load(ID.PUNCH_MISSLE,  	"/sprites/missle/punch-missle.png");

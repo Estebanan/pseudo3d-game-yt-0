@@ -7,6 +7,7 @@ import com.youtube.pseudo3d.engine.objects.enemy.Bat;
 import com.youtube.pseudo3d.engine.objects.enemy.Mage;
 import com.youtube.pseudo3d.engine.objects.enemy.Rat;
 import com.youtube.pseudo3d.engine.objects.enemy.Zombie;
+import com.youtube.pseudo3d.engine.objects.lever.GreenLever;
 import com.youtube.pseudo3d.engine.objects.still.BlueFlower;
 import com.youtube.pseudo3d.engine.objects.still.GrassBush;
 import com.youtube.pseudo3d.engine.objects.still.GrassStalks;
@@ -38,7 +39,10 @@ public class Level_1 extends Level{
 	private void initGameObjects() {		
 		gameObjects.add(new Portal(gameLogic, new Vector2d(26.5, 23.5)));
 		
+		gameObjects.add(new GreenLever(gameLogic, new Vector2d(27.5, 29.5)));
+		
 		gameObjects.add(new AxeCollect(gameLogic, new Vector2d(17.5, 21.5)));
+		gameObjects.add(new AxeCollect(gameLogic, new Vector2d(7.5, 27.5)));
 		gameObjects.add(new HealthPotionCollect(gameLogic, new Vector2d(11.5, 21.5)));
 		gameObjects.add(new HealthPotionCollect(gameLogic, new Vector2d(21.5, 1.5)));
 		gameObjects.add(new HealthPotionCollect(gameLogic, new Vector2d(18.5, 1.5)));
