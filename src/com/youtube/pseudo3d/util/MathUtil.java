@@ -65,7 +65,6 @@ public class MathUtil {
 	   return (double)(Math.random() * range) + min;
 	}
 	
-	@SuppressWarnings("unlikely-arg-type")
 	public static List<Node> findPath(Level currentLevel, Vector2i start, Vector2i goal){
 		List<Node> openList = new ArrayList<Node>();
 		List<Node> closedList = new ArrayList<Node>();
@@ -123,14 +122,22 @@ public class MathUtil {
 					double hCost = pythagoreanDistance(selectedVector, goal);
 					
 					Node node = new Node(selectedVector, current, gCost, hCost);
-					if(closedList.contains(selectedVector) && gCost >= node.gCost)
+					if(vectorInList(closedList, selectedVector) && gCost >= node.gCost)
 						continue;
-					if(!openList.contains(selectedVector) || gCost < node.gCost)
+					if(!vectorInList(openList, selectedVector) || gCost < node.gCost)
 						openList.add(node);
 				}
 		}
 		
 		closedList.clear();
 		return null;
+	}
+	
+	private static boolean vectorInList(List<Node> list, Vector2i vector) {
+		for(Node n : list) {
+			if(n.position.equals(vector))
+				return true;
+		}
+		return false;
 	}
 }
