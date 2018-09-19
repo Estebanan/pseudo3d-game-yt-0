@@ -1,0 +1,12 @@
+0xff0000ff - bluestone.png
+0xff2c2c2c - brick_0.png
+0xffff0000 - brick_1.png
+0xff00ff00 - bush.png
+0xff878079 - cobblestone.png
+0xffd45b1d - emblem.png
+0xff254f18 - grass.png
+0xff657b39 - mossystone.png
+0xff533242 - purplestone.png
+0xff6b5945 - rotten-wood.png
+0xff645343 - wood.png
+0xff3b1c26 - red-door.png

@@ -93,7 +93,7 @@ public class Level_1 extends Level{
 		for(int i=0; i<7; i++)
 			gameObjects.add(new Bat(gameLogic, new Vector2d(28.5, 5.5)));
 		
-		gameObjects.add(new Zombie(gameLogic, new Vector2d(23.5, 29.5), 16));
+		gameObjects.add(new Zombie(gameLogic, new Vector2d(23.5, 29.5), 10));
 	}
 
 }
