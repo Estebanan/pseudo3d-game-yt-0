@@ -4,7 +4,7 @@
 
 ## About
 
-The game is documented on youtube channel - TEXT 2 PROGRAM (link in project description)
+The game is documented on youtube channel - TEXT 2 PROGRAM (https://www.youtube.com/channel/UC3koM_mVM4Uzes0XSf18A3A?view_as=subscribern)
 
 TYPES: ADVENTURE RETRO FPP ESCAPE MEDIEVAL TILE-BASED
 
