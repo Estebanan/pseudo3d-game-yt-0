@@ -3,17 +3,15 @@
 2DARK4U is an open-source pseudo-3d wolfenstein-3d like game made in JAVA.
 
 ## Screenshots
-![alt text](https://github.com/Estebanan/2DARK4U-game/blob/master/res/screenshots/Screenshot%202018-11-30%2016:01:05.png)
-![alt text](https://github.com/Estebanan/2DARK4U-game/blob/master/res/screenshots/Screenshot%202018-11-30%2016:02:32.png)
-![alt text](https://github.com/Estebanan/2DARK4U-game/blob/master/res/screenshots/Screenshot%202018-11-30%2016:03:32.png)
-![alt text](https://github.com/Estebanan/2DARK4U-game/blob/master/res/screenshots/Screenshot%202018-11-30%2016:04:31.png)
-![alt text](https://github.com/Estebanan/2DARK4U-game/blob/master/res/screenshots/Screenshot%202018-11-30%2016:04:47.png)
+![alt text](res/screenshots/Screenshot%202018-11-30%2016:01:05.png)
+![alt text](res/screenshots/Screenshot%202018-11-30%2016:02:32.png)
+![alt text](res/screenshots/Screenshot%202018-11-30%2016:03:32.png)
+![alt text](res/screenshots/Screenshot%202018-11-30%2016:04:31.png)
+![alt text](res/screenshots/Screenshot%202018-11-30%2016:04:47.png)
 
 ## About
 
-The game is documented on youtube channel - TEXT 2 PROGRAM (https://www.youtube.com/channel/UC3koM_mVM4Uzes0XSf18A3A?view_as=subscribern)
-
-TYPES: ADVENTURE RETRO FPP ESCAPE MEDIEVAL TILE-BASED
+The game is documented on youtube channel - Marcel Iwanicki (https://www.youtube.com/watch?v=iEig4KbJ-H4)
 
 ### Prerequisites
 
@@ -48,7 +46,7 @@ java -jar jar/2DARK4U.jar
 
 ## Author
 
-* **Marcel Iwanicki** - *Initial work* - [Estebanan](https://github.com/Estebanan)
+* **Marcel Iwanicki** - *Initial work* - [MarcelIwanicki](https://github.com/MarcelIwanicki)
 
 
 ## License
